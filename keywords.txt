@@ -1,0 +1,63 @@
+#######################################
+# Syntax Map For DFRobot_ICG20660L
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+DFRobot_SUAB	KEYWORD1
+DFRobot_RP2040_SUAB_IIC	KEYWORD1
+
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+begin	KEYWORD2
+adjustRtc	KEYWORD2
+getRtcTime	KEYWORD2
+setIF0	KEYWORD2
+setIF1	KEYWORD2
+setIF2	KEYWORD2
+getSensorModeDescribe	KEYWORD2
+getIF0Config	KEYWORD2
+getIF1Config	KEYWORD2
+getIF2Config	KEYWORD2
+enableRecord	KEYWORD2
+disableRecord	KEYWORD2
+oledScreenOn	KEYWORD2
+oledScreenOff	KEYWORD2
+getSensorData	KEYWORD2
+getInformation	KEYWORD2
+getSKU	KEYWORD2
+getKeys	KEYWORD2
+getValues	KEYWORD2
+getUnits	KEYWORD2
+getValue	KEYWORD2
+getUnit	KEYWORD2
+getAnalogSensorSKU	KEYWORD2
+getDigitalSensorSKU	KEYWORD2
+getI2CSensorSKU	KEYWORD2
+getUARTSensorSKU	KEYWORD2
+
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+RP2040_SUAB_DEF_I2C_ADDR	LITERAL1
+eAD	LITERAL1
+eI2C_UART1	LITERAL1
+eI2C_UART2	LITERAL1
+eALL	LITERAL1
+eInterfaceList_t	LITERAL1
+eAnalogMode	LITERAL1
+eDigitalMode	LITERAL1
+eADIFMode_t	LITERAL1
+eI2CMode	LITERAL1
+eUARTMode	LITERAL1
