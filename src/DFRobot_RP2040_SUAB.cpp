@@ -58,12 +58,12 @@
 #define CMD_GET_INFO         0x0D  ///< 获取传感器的数据名，值和单位名，值和单位名之间空一格，其他用逗号(,)分开
 
 #define CMD_GET_KEY_VALUE0    0x0E  ///< 根据数据名获取对应的数据的值
-#define CMD_GET_KEY_VALUE1    0x0F  ///< 根据数据名获取对应的数据的值
-#define CMD_GET_KEY_VALUE2    0x10  ///< 根据数据名获取对应的数据的值
+#define CMD_GET_KEY_VALUE1    0x0F  ///< 根据数据名获取选中的接口对应的数据的值
+#define CMD_GET_KEY_VALUE2    0x10  ///< 根据数据名获取选中的接口上指定SKU对应的数据的值
 #define CMD_GET_KEY_UINT0     0x11  ///< 根据数据名获取对应的数据的单位
-#define CMD_GET_KEY_UINT1     0x12  ///< 根据数据名获取对应的数据的单位
-#define CMD_GET_KEY_UINT2     0x13  ///< 根据数据名获取对应的数据的单位
-#define CMD_RESET             0x14  ///< 复位I2C从机发送缓存命令
+#define CMD_GET_KEY_UINT1     0x12  ///< 根据数据名获取选中的接口对应的数据的单位
+#define CMD_GET_KEY_UINT2     0x13  ///< 根据数据名获取选中的接口上指定SKU对应的数据的单位
+#define CMD_RESET             0x14  ///< 复制I2C从机发送缓存命令
 #define CMD_SKU_A             0x15  ///< 获取传感器转接板支持的Analog传感器SKU命令
 #define CMD_SKU_D             0x16  ///< 获取传感器转接板支持的Digital传感器SKU命令
 #define CMD_SKU_IIC           0x17  ///< 获取传感器转接板支持的I2C传感器SKU命令
@@ -74,7 +74,7 @@
 #define STATUS_SUCCESS      0x53  ///< 响应成功状态   
 #define STATUS_FAILED       0x63  ///< 响应失败状态 
 
-#define DEBUG_TIMEOUT_MS    1000
+#define DEBUG_TIMEOUT_MS    2000
 
 #define ERR_CODE_NONE               0x00 ///< 通信正常
 #define ERR_CODE_CMD_INVAILED       0x01 ///< 无效命令
@@ -87,9 +87,11 @@
 #define ERR_CODE_SKU                0x08 ///< 该SKU为无效SKU，或者传感器通用适配器板(Sensor Universal Adapter Board)不支持
 #define ERR_CODE_S_NO_SPACE         0x09 ///< I2C从机内存不够
 #define ERR_CODE_I2C_ADRESS         0x0A ///< I2C地址无效
-
+#if defined(ESP32)
+#define I2C_ACHE_MAX_LEN            32//128
+#else
 #define I2C_ACHE_MAX_LEN            32
-
+#endif
 typedef struct{
   uint8_t cmd;      /**< 命令                     */
   uint8_t argsNumL; /**< 命令后参数的个数低字节    */
@@ -105,12 +107,17 @@ typedef struct{
   uint8_t buf[0];   /**< 0长度数组，它的大小取决于上一个变量lenL和lenH的值 */
 }__attribute__ ((packed)) sCmdRecvPkt_t, *pCmdRecvPkt_t;
 
-DFRobot_SUAB::DFRobot_SUAB(){}
+DFRobot_SUAB::DFRobot_SUAB()
+  :_timeout(DEBUG_TIMEOUT_MS){}
 
 DFRobot_SUAB::~DFRobot_SUAB(){}
 
 int DFRobot_SUAB::begin(uint32_t freq){
   return init(freq);
+}
+
+void DFRobot_SUAB::setRecvTimeout(uint32_t timeout){
+  _timeout = timeout;
 }
 
 uint8_t DFRobot_SUAB::adjustRtc(const __FlashStringHelper* date, const __FlashStringHelper* time){
@@ -1259,7 +1266,7 @@ void * DFRobot_SUAB::recvPacket(uint8_t cmd, uint8_t *errorCode){
   pCmdRecvPkt_t recvPktPtr = NULL;
   uint16_t length = 0;
   uint32_t t = millis();
-  while(millis() - t < DEBUG_TIMEOUT_MS/*time_ms*/){
+  while(millis() - t < _timeout/*time_ms*/){
     recvData(&recvPkt.status, 1);
     switch(recvPkt.status){
       case STATUS_SUCCESS:
@@ -1420,7 +1427,11 @@ void DFRobot_RP2040_SUAB_IIC::sendPacket(void *pkt, int length, bool stop){
     _pWire->write(pBuf, length);
     remain -= length;
     pBuf += length;
+#if defined(ESP32)
+    if(remain) _pWire->endTransmission(true);
+#else
     if(remain) _pWire->endTransmission(false);
+#endif
   }
   _pWire->endTransmission(stop);
 }
@@ -1437,7 +1448,11 @@ int DFRobot_RP2040_SUAB_IIC::recvData(void *data, int len){
   while(remain){
     len = remain > I2C_ACHE_MAX_LEN ? I2C_ACHE_MAX_LEN : remain;
     remain -= len;
+#if defined(ESP32)
+    if(remain) _pWire->requestFrom(_addr, len, true);
+#else
     if(remain) _pWire->requestFrom(_addr, len, false);
+#endif
     else _pWire->requestFrom(_addr, len, true);
     for(int i = 0; i < len; i++){
       pBuf[i] = _pWire->read();
