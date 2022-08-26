@@ -121,7 +121,7 @@ class DFRobot_SUAB:
   ## 响应失败状态 
   STATUS_FAILED       = 0x63  
 
-  DEBUG_TIMEOUT_MS    = 1 #1s
+  DEBUG_TIMEOUT_MS    = 2 #2s
 
   ## 通信正常
   ERR_CODE_NONE            =   0x00 
@@ -184,7 +184,16 @@ class DFRobot_SUAB:
     '''
     self._reset(self.CMD_RESET)
     return 0
-  
+  def set_recv_timeout(self,timeout = 2):
+    '''!
+      @brief 传感器通用适配器板(Sensor Universal Adapter Board)初始化，旨在初始化通信接口
+      @param freq 设置通信频率
+      @return int 初始化状态
+      @n       0      初始化成功
+      @n      others  初始化失败
+    '''
+    self.DEBUG_TIMEOUT_MS = timeout
+    
   def adjust_rtc_datetime(self):
     '''!
       @brief 设置传感器通用适配器板(Sensor Universal Adapter Board)的日期和时间为树莓派的当前时间

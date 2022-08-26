@@ -101,13 +101,20 @@ DFRobot_RP2040_SUAB
    * @fn begin
    * @brief 传感器通用适配器板(Sensor Universal Adapter Board)初始化，旨在初始化通信接口
    * 
-   * @param freq 设置通信频率
+   * @param freq 设置通信频率,不能超过100kHz
    * @return int 初始化状态
    * @n       0  初始化成功
    * @n      -1  通信接口类对象未传入
    * @n      -2  请检测硬件连接是否正确
    */
   int begin(uint32_t freq = 100000);
+  /**
+   * @fn setRecvTimeout
+   * @brief 设置接收超时时间
+   * 
+   * @param timeout 当传感器通用适配器板(Sensor Universal Adapter Board)连接的传感器较多时，在读取大量数据时需要适当提高接收超时时间，默认2s
+   */
+  void setRecvTimeout(uint32_t timeout = 2000);
   /**
    * @fn adjustRtc(const __FlashStringHelper* date, const __FlashStringHelper* time)
    * @brief 设置传感器通用适配器板(Sensor Universal Adapter Board)的时间

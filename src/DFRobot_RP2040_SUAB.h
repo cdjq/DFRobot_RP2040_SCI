@@ -83,7 +83,7 @@ public:
    * @fn begin
    * @brief 传感器通用适配器板(Sensor Universal Adapter Board)初始化，旨在初始化通信接口
    * 
-   * @param freq 设置通信频率
+   * @param freq 设置通信频率,不能超过100kHz
    * @return int 初始化状态
    * @n       0  初始化成功
    * @n      -1  通信接口类对象未传入
