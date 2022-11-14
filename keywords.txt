@@ -6,8 +6,8 @@
 # Datatypes (KEYWORD1)
 #######################################
 
-DFRobot_SUAB	KEYWORD1
-DFRobot_RP2040_SUAB_IIC	KEYWORD1
+DFRobot_SCI	KEYWORD1
+DFRobot_RP2040_SCI_IIC	KEYWORD1
 
 
 #######################################
@@ -15,20 +15,24 @@ DFRobot_RP2040_SUAB_IIC	KEYWORD1
 #######################################
 
 begin	KEYWORD2
+setPort1	KEYWORD2
+getPort1	KEYWORD2
+setPort2	KEYWORD2
+getPort2	KEYWORD2
+setPort3	KEYWORD2
+getPort3	KEYWORD2
+setRecvTimeout	KEYWORD2
 adjustRtc	KEYWORD2
 getRtcTime	KEYWORD2
-setIF0	KEYWORD2
-setIF1	KEYWORD2
-setIF2	KEYWORD2
+setRefreshRate	KEYWORD2
+getRefreshRate	KEYWORD2
+getTimeStamp	KEYWORD2
 getSensorModeDescribe	KEYWORD2
-getIF0Config	KEYWORD2
-getIF1Config	KEYWORD2
-getIF2Config	KEYWORD2
+getSensorModeDescribe	KEYWORD2
 enableRecord	KEYWORD2
 disableRecord	KEYWORD2
 oledScreenOn	KEYWORD2
 oledScreenOff	KEYWORD2
-getSensorData	KEYWORD2
 getInformation	KEYWORD2
 getSKU	KEYWORD2
 getKeys	KEYWORD2
@@ -50,14 +54,26 @@ getUARTSensorSKU	KEYWORD2
 #######################################
 # Constants (LITERAL1)
 #######################################
-RP2040_SUAB_DEF_I2C_ADDR	LITERAL1
-eAD	LITERAL1
-eI2C_UART1	LITERAL1
-eI2C_UART2	LITERAL1
+RP2040_SCI_ADDR_0X21	LITERAL1
+RP2040_SCI_ADDR_0X22	LITERAL1
+RP2040_SCI_ADDR_0X23	LITERAL1
+ePort1	LITERAL1
+ePort2	LITERAL1
+ePort3	LITERAL1
 eALL	LITERAL1
 eInterfaceList_t	LITERAL1
 eAnalogMode	LITERAL1
 eDigitalMode	LITERAL1
-eADIFMode_t	LITERAL1
+ePort1IFMode_t	LITERAL1
 eI2CMode	LITERAL1
 eUARTMode	LITERAL1
+ePort23Mode_t	LITERAL1
+eRefreshRateMs	LITERAL1
+eRefreshRate1s	LITERAL1
+eRefreshRate3s	LITERAL1
+eRefreshRate5s	LITERAL1
+eRefreshRate10s	LITERAL1
+eRefreshRate30s	LITERAL1
+eRefreshRate1min	LITERAL1
+eRefreshRate5min	LITERAL1
+eRefreshRate10min	LITERAL1

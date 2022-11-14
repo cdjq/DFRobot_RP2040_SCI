@@ -1,126 +1,87 @@
-DFRobot_RP2040_SCI
-===========================
-* [中文版](./README_CN.md)
+/*!
+ * @file DFRobot_RP2040_SCI.h
+ * @brief 这是基于Arduino平台的一个SCI采集模块(SCI Acquisition Module)驱动库，用户可以通过I2C接口读取或设置SCI采集模块的相关配置和数据，具体功能如下所述：
+ * @n 1. 设置或读取SCI采集模块的I2C通信地址为0x21、0x22或0x23，出厂默认为0x21，I2C地址修改后，掉电重启后生效；
+ * @n 2. 设置或读取Port1、Port2或Port3接口的配置：
+ * @n    Port1: 可配置为模拟传感器模式或数字传感器模式，模拟传感器模式下，支持NULL、Analog、模拟传感器SKU，数字传感器模式下，支持数字传感器SKU
+ * @n    Port2: 可配置为I2C传感器模式或UART传感器模式，I2C传感器模式下：支持NULL或I2C传感器，在此模式下，I2C传感器上电将被模块自动识别，UART传感器模式下，支持UART传感器SKU
+ * @n    Port3: 可配置为I2C传感器模式或UART传感器模式，I2C传感器模式下：支持NULL或I2C传感器，在此模式下，I2C传感器上电将被模块自动识别，UART传感器模式下，支持UART传感器SKU
+ * @n 3. 开启/关闭数据CSV文件记录
+ * @n 4. 开启/关闭OLED屏显示
+ * @n 5. 读取适配器板上各传感器的参数：
+ * @n      a. 获取传感器数据的"名称"，各名称之间用逗号(,)隔开;;
+ * @n      b. 获取传感器数据的"值"，各值之间用逗号(,)隔开;
+ * @n      c. 获取传感器数据值的单位，各单位之间用逗号(,)隔开;；
+ * @n      d. 获取接入传感器的SKU；
+ * @n      e. 以名称:值 单位的方式获取完整的传感器信息，各信息之间用逗号（,）隔开
+ * @n 6.设置和读取数据刷新时间
+ * @n 7.获取数据刷新时间戳
+ *
+ * @copyright   Copyright (c) 2022 DFRobot Co.Ltd (http://www.dfrobot.com)
+ * @license     The MIT License (MIT)
+ * @author [Arya](xue.peng@dfrobot.com)
+ * @version  V1.0
+ * @date  2022-07-20
+ * @url https://github.com/DFRobot/DFRobot_RP2040_SCI
+ */
+#ifndef DFROBOT_RP2040_SCI_H
+#define DFROBOT_RP2040_SCI_H
 
-SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接板，它能够连接DFRobot的模拟、数字、I2C、UART等传感器，并将传感器采集到的数据转换为 名称+数据+单位的格式，供主控读取，或显示在板载的显示屏上供用户查看。看到这里，相信很多人都对它的使用有疑问，接下来我就用问答的方式来详细的介绍这块板子的功能: <br>
-* 问题1. DFRobot有那么多传感器，这块板子都能识别么？
-  答：不是哦，目前这个板子只支持了DFRobot的部分传感器，用户可以通过README的SKU支持列表、板载的按钮和屏的交互界面查看SKU Select、或通过主控读取等方式获取各类型传感器的支持列表。
-* 问题2：我想使用的模拟、数字、I2C或UART传感器不在支持列表里面怎么办?
-  答：完全不用担心这个问题，SCI采集模块(SCI Acquisition Module)有U盘固件升级的功能，你可以给我们留言，我们会将该传感器加入支持列表中，后续只要通过这个U盘固件升级功能烧录最新的固件就可以了。
-* 问题3: SCI采集模块(SCI Acquisition Module)能识别不同的传感器的原理是什么呢？
-  答：DFRobot每个传感器都有一个唯一的SKU，适配器板通过自动识别或用户选择的SKU来识别连接的是那个传感器，并调用相应的驱动程序来采集和转换数据。（注意：除部分I2C传感器可以通过I2C地址识别SKU外，其他的传感器只能通过用户手动选择SKU，告诉适配器板连接的是哪个传感器）
-* 问题4：SCI采集模块(SCI Acquisition Module)和这些传感器之间是通过什么连接的呢？
-  答：适配器板上板载了1个Gravity 3pin的模拟/数字切换接口(A&D 连接模拟或数字传感器),以及2个Gravity 4pin的I2C/UART接口(I2C&UART 连接I2C或UART传感器), 用户可以通过切换对应接口的模式来连接相应的传感器。
-* 问题5：板载的按钮和屏交互界面有什么用呢?
-  答: 用户可以通过这些配置和查看SCI采集模块(SCI Acquisition Module)的参数，比如I2C从机地址，时间，接口模式切换，选择SKU，固件版本，传感器数据。
-* 问题6：如何用Arduino主控或树莓派读取和设置SCI采集模块(SCI Acquisition Module)的参数，以及读取传感器数据呢?
-  答：SCI采集模块(SCI Acquisition Module)板载了一个Gravity I2C接口，主控可以通过这个接口操作适配器板。
-* 问题7：SCI采集模块(SCI Acquisition Module)上的USB有什么用呢？
-  答：固件升级或导出CSV文件。按住boot键上电进入U盘固件升级模式，可以升级固件，直接上电会弹出一个U盘，用户可以在这里查看或导出记录传感器数据的CSV文件。
-
-![产品效果图](./resources/images/SEN0443.png)
+#if ARDUINO >= 100
+#include "Arduino.h"
+#else
+#include "WProgram.h"
+#endif
+#include <Wire.h>
 
 
-## Product Link（[https://www.dfrobot.com](https://www.dfrobot.com)）
-    SKU: DFR0999
-## Supported Analog SKU
-* SEN0161 
-* SEN0232
-* SEN0244
-* SEN0231
-* SEN0193
-* DFR0300
+/* SCI支持的I2C地址 */
+#define RP2040_SCI_ADDR_0X21      0x21 ///< 转换板默认I2C地址
+#define RP2040_SCI_ADDR_0X22      0x22
+#define RP2040_SCI_ADDR_0X23      0x23
 
-## Supported Digital SKU
-* KIT0021
-
-## Supported I2C SKU
-* SEN0497
-* SEN0514
-* SEN0334
-* SEN0228
-* DFR0216
-* SEN0322 
-* SEN0364 
-* SEN0517
-* SEN0456
-* SEN0529
-* KIT0176
-* SEN0304
-* SEN0321 
-* SEN0498
-* SEN0460
-* SEN0206
-* SEN0291
-* SEN0536
-
-## Supported UART SKU
-* NULL  
-
-## Table of Contents
-
-* [Summary](#summary)
-* [Installation](#installation)
-* [Methods](#methods)
-* [Compatibility](#compatibility)
-* [History](#history)
-* [Credits](#credits)
-
-## Summary
-这是一个基于Arduino平台的SCI采集模块(SCI Acquisition Module)库。旨在为用户提供一系列接口函数去设置和读取该适配器板的参数，以及读取适配器板上各传感器的数据，它具有以下功能：<br>
-* 1. 读取/设置SCI采集模块(SCI Acquisition Module)的I2C地址，范围0x01~0x7F；
-* 2. 读取/设置SCI采集模块(SCI Acquisition Module)的年，月，日，时，分，秒的时间；
-* 3. 开启/关闭传感器数据CSV文件记录；
-* 4. 开启/关闭屏显示
-* 5. 读取和设置接口传感器模式，以及SKU
-* 6. 以读取传感器数据(名称+数值+单位)
-* 7. 读取模拟、数字、I2C、UART等类型传感器的SKU支持列表
-
-## Installation
-
-There two methods: 
-1. To use this library, first download the library file, paste it into the \Arduino\libraries directory, then open the examples folder and run the demo in the folder.
-2. Search the DFRobot_RP2040_SCI library from the Arduino Software Library Manager and download it.
-
-## Methods
-
-```C++
+class DFRobot_SCI{
+public:
   /**
-   * @fn DFRobot_RP2040_SCI_IIC
-   * @brief DFRobot_RP2040_SCI_IIC 类的构造函数.
-   * @param addr:  7位I2C地址，支持以下地址设置
-   * @n RP2040_SCI_ADDR_0X21      0x21 转换板默认I2C地址
-   * @n RP2040_SCI_ADDR_0X22      0x22
-   * @n RP2040_SCI_ADDR_0X23      0x23
-   * @n 或通过板子的OLED屏的初始页查看I2C地址，出厂默认I2C地址为0x01
-   * @param pWire:   TwoWire类对象指针.
+   * @enum eInterfaceList_t
+   * @brief 将要设置或者读取的接口
    */
-  DFRobot_RP2040_SCI_IIC(uint8_t addr = RP2040_SCI_ADDR_0X21, TwoWire *pWire = &Wire);
-  ~DFRobot_RP2040_SCI_IIC();
+  typedef enum{
+    ePort1         = 1 << 0, /**< Port1接口，模拟或数字传感器接口*/
+    ePort2         = 1 << 1, /**< Port2接口，I2C或UART传感器接口*/
+    ePort3         = 1 << 2, /**< Port3接口，I2C或UART传感器接口*/
+    eALL           = 0x07    /**< Port1，Port2，Port3接口*/
+  }eInterfaceList_t;
+
   /**
-   * @fn setI2CAddress
-   * @brief 设置SCI采集模块(SCI Acquisition Module)的I2C通信地址
-   * 
-   * @param addr    SCI采集模块(SCI Acquisition Module)的I2C通信地址，支持以下地址设置
-   * @n RP2040_SCI_ADDR_0X21      0x21 转换板默认I2C地址
-   * @n RP2040_SCI_ADDR_0X22      0x22
-   * @n RP2040_SCI_ADDR_0X23      0x23
-   * @return uint8_t 错误代码
-   * @n      ERR_CODE_NONE         or 0x00  设置成功
-   * @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-   * @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-   * @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-   * @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配 
-   * @n      ERR_CODE_I2C_ADRESS   or 0x0A  I2C地址无效
+   * @enum ePort1IFMode_t
+   * @brief Port1接口模式选择
    */
-  uint8_t setI2CAddress(uint8_t addr);
+  typedef enum{
+    eAnalogMode = 0,  /**< 模拟传感器模式*/
+    eDigitalMode      /**< 数字传感器模式*/
+  }ePort1IFMode_t;
+
   /**
-   * @fn getI2CAddress
-   * @brief 获取SCI采集模块(SCI Acquisition Module)的I2C通信地址
-   * @return I2C通信地址
+   * @enum ePort23Mode_t
+   * @brief Port2或Port3接口模式选择
    */
-  uint8_t getI2CAddress();
+  typedef enum{
+    eI2CMode  = 0,   /**< I2C传感器模式*/
+    eUARTMode        /**< UART传感器模式*/
+  }ePort23Mode_t;
+
+  typedef enum{
+    eRefreshRateMs = 0,  /**< ms级刷新率，按数据的实际刷新率刷新*/
+    eRefreshRate1s,      /**< 刷新率1s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新*/
+    eRefreshRate3s,      /**< 刷新率3s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新*/
+    eRefreshRate5s,      /**< 刷新率5s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新*/
+    eRefreshRate10s,     /**< 刷新率10s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新*/
+    eRefreshRate30s,     /**< 刷新率30s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新*/
+    eRefreshRate1min,    /**< 刷新率1min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新*/
+    eRefreshRate5min,    /**< 刷新率5min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新*/
+    eRefreshRate10min    /**< 刷新率10min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新*/
+  }eRefreshRate_t;
 
   /**
    * @fn DFRobot_RP2040_SCI
@@ -630,29 +591,192 @@ There two methods:
    * @return String 支持的UART传感器的SKU列表
    */
   String getUARTSensorSKU();
-```
 
-## Compatibility
+protected:
+  uint32_t getRefreshRate_ms(uint8_t rate);
+  /**
+   * @fn recvPacket
+   * @brief 接收并解析响应的数据包
+   * 
+   * @param cmd       要接收包的命令
+   * @param errorCode 接收错误代码
+   * @return 指针数组
+   * @n      NULL    表示接收包失败
+   * @n      非NULL  响应包指针
+   */
+  void *recvPacket(uint8_t cmd, uint8_t *errorCode);
+  /**
+   * @fn init
+   * @brief 纯虚函数，接口初始化
+   * 
+   * @param freq     通信频率
+   * @return 初始化状态
+   * @n       0    初始化成功
+   * @n      -1    接口对象为空指针
+   * @n      -2    设备不存在
+   */
+  virtual int init(uint32_t freq) = 0;
+  /**
+   * @fn sendPacket
+   * @brief I2C接口初始化
+   * 
+   * @param pkt    设置I2C通信频率
+   * @param length 设置I2C通信频率
+   * @param stop   
+   * @n     true   停止
+   * @n     false  不停止
+   */
+  virtual void sendPacket(void *pkt, int length, bool stop) = 0;
+  /**
+   * @fn recvData
+   * @brief I2C接口初始化
+   * 
+   * @param data    存放接收的数据缓存
+   * @param len     要读取得字节数
+   * @return 实际读取得字节数   
+   */
+  virtual int recvData(void *data, int len) = 0;
+  /**
+   * @fn recvFlush
+   * @brief 清空接收缓存
+   */
+  virtual void recvFlush() = 0;
+  /**
+   * @fn sendFlush
+   * @brief 清空发送缓存
+   */
+  virtual void sendFlush() = 0;
+  /**
+   * @fn dayOfTheWeek
+   * @brief 根据年/月/日计算星期数
+   * 
+   * @param year   年
+   * @param month  月
+   * @param day    日
+   * @return uint8_t 0~6星期数
+   * @n 0   星期天
+   * @n 1   星期一
+   * @n 2   星期二
+   * @n 3   星期三
+   * @n 4   星期四
+   * @n 5   星期五
+   * @n 6   星期六
+   */
+  uint8_t dayOfTheWeek(uint16_t year, uint8_t month, uint8_t day);
+ 	/**
+   * @fn date2days
+   * @brief 计算当前年月日距2000年1月1日相差的天数
+   * 
+   * @param year   年
+   * @param month  月
+   * @param day    日
+   * @return uint16_t 天数，当前年月日距离2000年1月1日的天数
+   * @note 只能保证2000年到2099年的计算是准确的
+   */
+  uint16_t date2days(uint16_t y, uint8_t m, uint8_t d);
+  /**
+   * @fn conv2d
+   * @brief 将字符转换为2位10进制数据
+   * 
+   * @param p 指向数组的指针
+   * @return uint8_t 返回2位十进制数据
+   */
+	uint8_t conv2d(const char* p);
+  /**
+   * @fn reset
+   * @brief 复位SCI采集模块(SCI Acquisition Module)的发送缓存
+   * 
+   * @param cmd 通信命令
+   */
+  void reset(uint8_t cmd);
 
-MCU                |  Work Well    | Work Wrong   | Untested    | Remarks
------------------- | :----------: | :----------: | :---------: | -----
-Arduino Uno        |       √       |              |             | 
-Mega2560           |      √       |              |             | 
-Leonardo           |      √       |              |             | 
-ESP32              |      √       |              |             | 
-ESP8266            |      √       |              |             | 
-micro:bit          |      √       |              |             | 
-FireBeetle M0      |      √       |              |             | 
+private:
+  uint32_t _timeout; ///< 接收超时时间
+};
 
-## History
+class DFRobot_RP2040_SCI_IIC: public DFRobot_SCI{
+public:
+  /**
+   * @fn DFRobot_RP2040_SCI_IIC
+   * @brief DFRobot_RP2040_SCI_IIC 类的构造函数.
+   * @param addr:  7位I2C地址，支持以下地址设置
+   * @n RP2040_SCI_ADDR_0X21      0x21 转换板默认I2C地址
+   * @n RP2040_SCI_ADDR_0X22      0x22
+   * @n RP2040_SCI_ADDR_0X23      0x23
+   * @n 或通过板子的OLED屏的初始页查看I2C地址，出厂默认I2C地址为0x01
+   * @param pWire:   TwoWire类对象指针.
+   */
+  DFRobot_RP2040_SCI_IIC(uint8_t addr = RP2040_SCI_ADDR_0X21, TwoWire *pWire = &Wire);
+  ~DFRobot_RP2040_SCI_IIC();
+  /**
+   * @fn setI2CAddress
+   * @brief 设置SCI采集模块(SCI Acquisition Module)的I2C通信地址
+   * 
+   * @param addr    SCI采集模块(SCI Acquisition Module)的I2C通信地址，支持以下地址设置
+   * @n RP2040_SCI_ADDR_0X21      0x21 转换板默认I2C地址
+   * @n RP2040_SCI_ADDR_0X22      0x22
+   * @n RP2040_SCI_ADDR_0X23      0x23
+   * @return uint8_t 错误代码
+   * @n      ERR_CODE_NONE         or 0x00  设置成功
+   * @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
+   * @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
+   * @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
+   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
+   * @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配 
+   * @n      ERR_CODE_I2C_ADRESS   or 0x0A  I2C地址无效
+   */
+  uint8_t setI2CAddress(uint8_t addr);
+  /**
+   * @fn getI2CAddress
+   * @brief 获取SCI采集模块(SCI Acquisition Module)的I2C通信地址
+   * @return I2C通信地址
+   */
+  uint8_t getI2CAddress();
 
-- 2021/08/17 - Version 1.0.0 released.
-
-## Credits
-
-Written by Arya(xue.peng@dfrobot.com), 2022. (Welcome to our [website](https://www.dfrobot.com/))
-
-
-
-
-
+protected:
+  /**
+   * @fn init
+   * @brief I2C接口初始化
+   * 
+   * @param freq 设置I2C通信频率
+   * @return int 初始化状态
+   * @n       0  初始化成功
+   * @n      -1  通信接口类对象未传入
+   * @n      -2  请检测硬件连接是否正确
+   */
+  int init(uint32_t freq);
+  /**
+   * @fn sendPacket
+   * @brief 发送数据
+   * 
+   * @param pkt    数据指针
+   * @param length 要发送的数据的长度
+   * @param stop   是否发送停止条件
+   * @n     true   停止
+   * @n     false  不停止
+   */
+  void sendPacket(void *pkt, int length, bool stop = true);
+  /**
+   * @fn recvData
+   * @brief I2C读取字节
+   * 
+   * @param data    存放接收的数据缓存
+   * @param len     要读取得字节数
+   * @return 实际读取得字节数   
+   */
+  int recvData(void *data, int len);
+  /**
+   * @fn recvFlush
+   * @brief 清空接收缓存
+   */
+  void recvFlush();
+  /**
+   * @fn sendFlush
+   * @brief 清空发送缓存
+   */
+  void sendFlush();
+private:
+  TwoWire *_pWire;
+  uint8_t _addr;
+};
+#endif

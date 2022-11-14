@@ -9,7 +9,7 @@
   @author [Arya](xue.peng@dfrobot.com)
   @version  V1.0
   @date  2021-08-11
-  @url https://github.com/DFRobot/DFRobot_RP2040_SUAB
+  @url https://github.com/DFRobot/DFRobot_RP2040_SCI
 '''
 
 import sys
@@ -17,21 +17,21 @@ import os
 import time
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-from DFRobot_RP2040_SUAB import *
+from DFRobot_RP2040_SCI import *
 
-suab = DFRobot_SUAB_IIC(addr = DFRobot_SUAB.RP2040_SUAB_DEF_I2C_ADDR)
+sci = DFRobot_RP2040_SCI_IIC(addr = DFRobot_SCI.RP2040_SCI_ADDR_0X21)
 
 if __name__ == "__main__":
-  while suab.begin() != 0:
-    print("Initialization Sensor Universal Adapter Board failed.")
+  while sci.begin() != 0:
+    print("Initialization SCI Acquisition Module failed.")
     time.sleep(1)
-  print("Initialization Sensor Universal Adapter Board done.")
+  print("Initialization SCI Acquisition Module done.")
   
   while True:
-    analog_sku   = suab.get_analog_sensor_sku()
-    digital_sku  = suab.get_digital_sensor_sku()
-    i2c_sku      = suab.get_i2c_sensor_sku()
-    uart_sku     = suab.get_uart_sensor_sku()
+    analog_sku   = sci.get_analog_sensor_sku()
+    digital_sku  = sci.get_digital_sensor_sku()
+    i2c_sku      = sci.get_i2c_sensor_sku()
+    uart_sku     = sci.get_uart_sensor_sku()
     print("Analog  SKU: %s"%analog_sku)
     print("Digital SKU: %s"%digital_sku)
     print("I2C     SKU: %s"%i2c_sku)

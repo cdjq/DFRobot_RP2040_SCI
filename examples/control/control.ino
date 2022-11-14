@@ -1,6 +1,6 @@
 /*!
  * @file control.ino
- * @brief 通过串口命令控制传感器通用适配器板(Sensor Universal Adapter Board)的CSV数据采集，以及屏幕开关。
+ * @brief 通过串口命令控制SCI采集模块(SCI Acquisition Module)的CSV数据采集，以及屏幕开关。
  * @n 命令1：RECORD ON: 开启CSV记录
  * @n 命令2：RECORD OFF: 关闭CSV记录
  * @n 命令3：OLED OFF: 关闭OLED屏
@@ -11,22 +11,22 @@
  * @author [Arya](xue.peng@dfrobot.com)
  * @version  V1.0
  * @date  2021-08-11
- * @url https://github.com/DFRobot/DFRobot_RP2040_SUAB
+ * @url https://github.com/DFRobot/DFRobot_RP2040_SCI
  */
-#include "DFRobot_RP2040_SUAB.h"
+#include "DFRobot_RP2040_SCI.h"
 
-DFRobot_RP2040_SUAB_IIC suab(/*addr=*/RP2040_SUAB_DEF_I2C_ADDR, &Wire);
+DFRobot_RP2040_SCI_IIC sci(/*addr=*/RP2040_SCI_ADDR_0X21, &Wire);
 
 void setup() {
   Serial.begin(115200);
   while(!Serial){                                                     //Waiting for USB Serial COM port to open.
   }
   
-  Serial.print("Initialization Sensor Universal Adapter Board...");
-  while(suab.begin() != 0){
+  Serial.print("Initialization SCI Acquisition Module...");
+  while(sci.begin() != 0){
       Serial.println("failed. Please check whether the hardware connection is wrong.");
       delay(1000);
-      Serial.print("Initialization Sensor Universal Adapter Board...");
+      Serial.print("Initialization SCI Acquisition Module...");
   }
   Serial.println("done.");
   usage();
@@ -56,16 +56,16 @@ void parseCmd(char *s){
   subCmd.toUpperCase();
   if(subCmd.equals("RECORD ON")){
     Serial.println("OPEN CSV FILE RECORD!");
-    suab.enableRecord();
+    sci.enableRecord();
   }else if(subCmd.equals("RECORD OFF")){
     Serial.println("Close CSV FILE RECORD!");
-    suab.disableRecord();
+    sci.disableRecord();
   }else if(subCmd.equals("OLED OFF")){
     Serial.println("TURN OFF OLED DISPLAY!");
-    suab.oledScreenOff();
+    sci.oledScreenOff();
   }else if(subCmd.equals("OLED ON")){
     Serial.println("TURN ON OLED DISPLAY!");
-    suab.oledScreenOn();
+    sci.oledScreenOn();
   }else if(subCmd.equals("HELP")){
     usage();
     return;
@@ -77,7 +77,7 @@ void parseCmd(char *s){
 }
 
 void usage(){
-  Serial.println("Input serial command to operate Sensor Universal Adapter Board: ");
+  Serial.println("Input serial command to operate SCI Acquisition Module: ");
   Serial.println("  RECORD ON  - OPEN CSV FILE RECORD!");
   Serial.println("  RECORD OFF - Close CSV FILE RECORD!");
   Serial.println("  OLED ON    - TURN ON OLED DISPLAY!");

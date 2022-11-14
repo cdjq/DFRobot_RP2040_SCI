@@ -9,7 +9,7 @@
   @author [Arya](xue.peng@dfrobot.com)
   @version  V1.0
   @date  2021-08-11
-  @url https://github.com/DFRobot/DFRobot_RP2040_SUAB
+  @url https://github.com/DFRobot/DFRobot_RP2040_SCI
 '''
 
 import sys
@@ -17,40 +17,41 @@ import os
 import time
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-from DFRobot_RP2040_SUAB import *
+from DFRobot_RP2040_SCI import *
 
-suab = DFRobot_SUAB_IIC(addr = DFRobot_SUAB.RP2040_SUAB_DEF_I2C_ADDR)
+sci = DFRobot_RP2040_SCI_IIC(addr = DFRobot_SCI.RP2040_SCI_ADDR_0X21)
 
 if __name__ == "__main__":
-  while suab.begin() != 0:
-    print("Initialization Sensor Universal Adapter Board failed.")
+  while sci.begin() != 0:
+    print("Initialization SCI Acquisition Module failed.")
     time.sleep(1)
-  print("Initialization Sensor Universal Adapter Board done.")
+  print("Initialization SCI Acquisition Module done.")
 
-  suab.set_IF1_mode(suab.eI2CMode)
-  suab.set_IF1_mode(suab.eI2CMode)
+  sci.set_port1("SEN0161")
+  sci.set_port2("NULL")
+  sci.set_port3("NULL")
 
-  IF0_list = suab.get_IF0_config()
-  IF1_list = suab.get_IF1_config()
-  IF2_list = suab.get_IF2_config()
+  IF0_list = sci.get_port1()
+  IF1_list = sci.get_port2()
+  IF2_list = sci.get_port3()
 
-  print("IF0: TYPE-%s SKU-%s"%(suab.get_AD_sensor_mode_describe(IF0_list[suab.INDEX_MODE]), IF0_list[suab.INDEX_SKU]))
-  print("IF1: TYPE-%s SKU-%s"%(suab.get_I2CUART_sensor_mode_describe(IF1_list[suab.INDEX_MODE]), IF1_list[suab.INDEX_SKU]))
-  print("IF2: TYPE-%s SKU-%s"%(suab.get_I2CUART_sensor_mode_describe(IF2_list[suab.INDEX_MODE]), IF2_list[suab.INDEX_SKU]))
+  print("IF0: TYPE-%s SKU-%s"%(sci.get_AD_sensor_mode_describe(IF0_list[sci.INDEX_MODE]), IF0_list[sci.INDEX_SKU]))
+  print("IF1: TYPE-%s SKU-%s"%(sci.get_I2CUART_sensor_mode_describe(IF1_list[sci.INDEX_MODE]), IF1_list[sci.INDEX_SKU]))
+  print("IF2: TYPE-%s SKU-%s"%(sci.get_I2CUART_sensor_mode_describe(IF2_list[sci.INDEX_MODE]), IF2_list[sci.INDEX_SKU]))
   print("\r\n")
 
   while True:
     '''!
       @fn get_keys/get_values/get_units
       @param inf 指定一个或多个接口参数
-      @n     eAD                                           指定A&D接口
-      @n     eI2C_UART1                                    指定I2C&UART1接口
-      @n     eI2C_UART2                                    选中I2C&UART2接口
-      @n     eALL  or  (eAD | eI2C_UART1 | eI2C_UART2)     选中A&D, I2C&UART1和I2C&UART2等所有接口
+      @n     ePort1                                           选中Port1接口
+      @n     ePort2                                           选中Port2接口
+      @n     ePort3                                           选中Port3接口
+      @n     eALL  or  (ePort1 | ePort2 | ePort3)             选中Port1, Port2和Port3接口
     '''
-    keys  = suab.get_keys(inf = suab.eALL)
-    vals  = suab.get_values(inf = suab.eALL)
-    units = suab.get_units(inf = suab.eALL)
+    keys  = sci.get_keys(inf = sci.eALL)
+    vals  = sci.get_values(inf = sci.eALL)
+    units = sci.get_units(inf = sci.eALL)
     print("KEYS  : " + keys)
     print("VALUES: " + vals)
     print("UNITS : " + units)

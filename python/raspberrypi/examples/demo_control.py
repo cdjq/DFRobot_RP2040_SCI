@@ -2,7 +2,7 @@
 
 '''
   @file demo_control.py
-  @brief 通过串口命令控制传感器通用适配器板(Sensor Universal Adapter Board)的CSV数据采集，以及屏幕开关。
+  @brief 通过串口命令控制SCI采集模块(SCI Acquisition Module)的CSV数据采集，以及屏幕开关。
   @n 命令0：RECORD ON: 开启CSV记录
   @n 命令1：RECORD OFF: 关闭CSV记录
   @n 命令2：OLED OFF: 关闭OLED屏
@@ -13,7 +13,7 @@
   @author [Arya](xue.peng@dfrobot.com)
   @version  V1.0
   @date  2021-08-11
-  @url https://github.com/DFRobot/DFRobot_RP2040_SUAB
+  @url https://github.com/DFRobot/DFRobot_RP2040_SCI
 '''
 
 import sys
@@ -21,19 +21,19 @@ import os
 import time
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-from DFRobot_RP2040_SUAB import *
+from DFRobot_RP2040_SCI import *
 
-suab = DFRobot_SUAB_IIC(addr = DFRobot_SUAB.RP2040_SUAB_DEF_I2C_ADDR)
+sci = DFRobot_RP2040_SCI_IIC(addr = DFRobot_SCI.RP2040_SCI_ADDR_0X21)
 RECORD_ON   = 0
 RECORD_OFF  = 1
 SCREEN_ON   = 2
 SCREEN_OFF  = 3
 INVAILD_CMD = 5
 if __name__ == "__main__":
-  while suab.begin() != 0:
-    print("Initialization Sensor Universal Adapter Board failed.")
+  while sci.begin() != 0:
+    print("Initialization SCI Acquisition Module failed.")
     time.sleep(1)
-  print("Initialization Sensor Universal Adapter Board done.")
+  print("Initialization SCI Acquisition Module done.")
 
   while True:
     global num
@@ -45,16 +45,16 @@ if __name__ == "__main__":
       num = int(num)
     if num == RECORD_ON:
       print("OPEN CSV FILE RECORD!")
-      suab.enable_record()
+      sci.enable_record()
     elif num == RECORD_OFF:
       print("Close CSV FILE RECORD!")
-      suab.disable_record()
+      sci.disable_record()
     elif num == SCREEN_ON:
       print("TURN ON OLED DISPLAY!")
-      suab.display_on()
+      sci.display_on()
     elif num == SCREEN_OFF:
       print("TURN OFF OLED DISPLAY!")
-      suab.display_off()
+      sci.display_off()
     else:
       print("INVAILD CMD!")
     print("\r\n")

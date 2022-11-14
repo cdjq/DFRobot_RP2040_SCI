@@ -7,31 +7,31 @@
  * @author [Arya](xue.peng@dfrobot.com)
  * @version  V1.0
  * @date  2021-08-11
- * @url https://github.com/DFRobot/DFRobot_RP2040_SUAB
+ * @url https://github.com/DFRobot/DFRobot_RP2040_SCI
  */
-#include "DFRobot_RP2040_SUAB.h"
+#include "DFRobot_RP2040_SCI.h"
 
-DFRobot_RP2040_SUAB_IIC suab(/*addr=*/RP2040_SUAB_DEF_I2C_ADDR, &Wire);
+DFRobot_RP2040_SCI_IIC sci(/*addr=*/RP2040_SCI_ADDR_0X21, &Wire);
 
 void setup() {
   Serial.begin(115200);
   while(!Serial){                                                     //Waiting for USB Serial COM port to open.
   }
   
-  Serial.print("Initialization Sensor Universal Adapter Board...");
-  while(suab.begin() != 0){
+  Serial.print("Initialization SCI Acquisition Module...");
+  while(sci.begin() != 0){
       Serial.println("failed. Please check whether the hardware connection is wrong.");
       delay(1000);
-      Serial.print("Initialization Sensor Universal Adapter Board...");
+      Serial.print("Initialization SCI Acquisition Module...");
   }
   Serial.println("done.");
 }
 
 void loop() {
-  String analogSku   = suab.getAnalogSensorSKU();
-  String digitalSku  = suab.getDigitalSensorSKU();
-  String i2cSku      = suab.getI2CSensorSKU();
-  String uartSku     = suab.getUARTSensorSKU();
+  String analogSku   = sci.getAnalogSensorSKU();
+  String digitalSku  = sci.getDigitalSensorSKU();
+  String i2cSku      = sci.getI2CSensorSKU();
+  String uartSku     = sci.getUARTSensorSKU();
   Serial.print("Analog  SKU: "); Serial.println(analogSku);
   Serial.print("Digital SKU: "); Serial.println(digitalSku);
   Serial.print("I2C     SKU: "); Serial.println(i2cSku);
