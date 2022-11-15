@@ -73,8 +73,9 @@
 #define CMD_GET_TIMESTAMP     0x19  ///< 获取时间戳
 #define CMD_SET_REFRESH_TIME  0x20  ///< 设置刷新率
 #define CMD_GET_REFRESH_TIME  0x20  ///< 获取刷新率
+#define CMD_GET_VERSION       0x21  ///< 获取版本号
 
-#define CMD_END             CMD_GET_REFRESH_TIME
+#define CMD_END             CMD_GET_VERSION
 
 #define STATUS_SUCCESS      0x53  ///< 响应成功状态   
 #define STATUS_FAILED       0x63  ///< 响应失败状态 
@@ -122,6 +123,42 @@ DFRobot_SCI::~DFRobot_SCI(){}
 int DFRobot_SCI::begin(uint32_t freq){
   return init(freq);
 }
+
+uint16_t DFRobot_SCI::getVersion(){
+  uint16_t version = 0;
+
+  uint8_t errorCode;
+  uint16_t length = 0;
+  pCmdSendPkt_t sendpkt = NULL;
+  sendpkt = (pCmdSendPkt_t)malloc(sizeof(sCmdSendPkt_t));
+  if(sendpkt == NULL) return version;
+  sendpkt->cmd = CMD_GET_VERSION;
+  sendpkt->argsNumL = length & 0xFF;
+  sendpkt->argsNumH = (length >> 8) & 0xFF;
+  length += sizeof(sCmdSendPkt_t);
+  sendPacket(sendpkt, length, true);
+  free(sendpkt);
+  
+  pCmdRecvPkt_t rcvpkt = (pCmdRecvPkt_t)recvPacket(CMD_GET_VERSION, &errorCode);
+  if((rcvpkt != NULL) && (rcvpkt->status == STATUS_FAILED)) errorCode = rcvpkt->buf[0];
+  if((rcvpkt != NULL) && (rcvpkt->status == STATUS_SUCCESS)){
+    length = (rcvpkt->lenH << 8) | rcvpkt->lenL;
+    if(length == 2){
+      version = (rcvpkt->buf[0] << 8) | rcvpkt->buf[1];
+    }
+  }
+  if(rcvpkt) free(rcvpkt);
+  return version;
+}
+
+String DFRobot_SCI::getVersionDescription(uint16_t version){
+  String verstr = "V";
+  verstr += String((version >> 8)&0xFF) + ".";
+  verstr += String((version >> 4) & 0x0F) + ".";
+  verstr += String(version & 0x0F);
+  return verstr;
+}
+
 
 uint8_t DFRobot_SCI::setPort1(char *sku){
   uint8_t errorCode;

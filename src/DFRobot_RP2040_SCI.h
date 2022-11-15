@@ -106,6 +106,24 @@ public:
    * @n      -2  请检测硬件连接是否正确
    */
   int begin(uint32_t freq = 100000);
+  /**
+   * @fn getVersion
+   * @brief 获取SCI采集模块(SCI Acquisition Module)的固件版本号
+   * @n 版本号是一个16位数据，高8位(b15~b9): 代表最高版本位
+   * @n 中4位(b8~b4):表示中间版本位
+   * @n 低4位：表示低版本位
+   * @n 例0x0123对应的版本号为 V1.2.3
+   * 
+   * @return 16位版本号
+   */
+  uint16_t getVersion();
+  /**
+   * @fn getVersionDescription
+   * @brief 获取版本描述字符串
+   * 
+   * @return 返回版本描述字符串，例版本id：0x0123返回的版本描述字符串为 V1.2.3
+   */
+  String getVersionDescription(uint16_t version);
 
   /**
    * @fn setPort1(char *sku)

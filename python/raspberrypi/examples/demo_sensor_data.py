@@ -31,7 +31,9 @@ if __name__ == "__main__":
   rate = sci.get_refresh_rate()
   if rate[0] == sci.ERR_CODE_NONE:
     print("Refresh rate: %d s"%sci.get_refresh_rate_describe(rate[1]))
-
+  version = sci.get_version()
+  print("Version: %s"%sci.get_version_description(version))
+  
   IF0_list = sci.get_port1()
   IF1_list = sci.get_port2()
   IF2_list = sci.get_port3()

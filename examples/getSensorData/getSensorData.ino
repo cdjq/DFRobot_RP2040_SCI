@@ -27,8 +27,9 @@ void setup() {
   Serial.println("done.");
 
   sci.setRefreshRate(sci.eRefreshRate1s);
-  Serial.print("Refresh rate: ");Serial.println(sci.getRefreshRate());Serial.print("ms");
-  
+  Serial.print("Refresh rate: ");Serial.print(sci.getRefreshRate());Serial.println(" ms");
+  uint16_t version = sci.getVersion();
+  Serial.print("Version: ");Serial.println(sci.getVersionDescription(version));
   DFRobot_RP2040_SCI_IIC::ePort1IFMode_t mode0;
   DFRobot_RP2040_SCI_IIC::ePort23Mode_t mode1, mode2;
   String skuIF0, skuIF1, skuIF2;

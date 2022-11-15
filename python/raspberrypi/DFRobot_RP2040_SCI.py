@@ -145,8 +145,9 @@ class DFRobot_SCI:
   CMD_SET_REFRESH_TIME  = 0x20  
   ## 获取刷新率
   CMD_GET_REFRESH_TIME  = 0x20  
+  CMD_GET_VERSION       = 0x21  ## 获取版本号
 
-  CMD_END             = CMD_GET_REFRESH_TIME
+  CMD_END             = CMD_GET_VERSION
   ## 响应成功状态   
   STATUS_SUCCESS      = 0x53  
   ## 响应失败状态 
@@ -217,6 +218,48 @@ class DFRobot_SCI:
     '''
     self._reset(self.CMD_RESET)
     return 0
+  
+  def get_version(self):
+    '''!
+      @brief 获取SCI采集模块(SCI Acquisition Module)的固件版本号
+      @n 版本号是一个16位数据，高8位(b15~b9): 代表最高版本位
+      @n 中4位(b8~b4):表示中间版本位
+      @n 低4位：表示低版本位
+      @n 例0x0123对应的版本号为 V1.2.3
+      @n     数字传感器SKU 表示选择了某个数字传感器的SKU，并将模式配置为数字传感器模式
+      @return 16位版本号
+    '''
+    rslt = [0,0,"NULL"]
+    version = 0
+    length = 0
+    pkt = [0] * (3 + length)
+    pkt[self.INDEX_CMD]        = self.CMD_GET_VERSION
+    pkt[self.INDEX_ARGS_NUM_L] = length & 0xFF
+    pkt[self.INDEX_ARGS_NUM_H] = (length >> 8) & 0xFF
+    self._send_packet(pkt)
+
+    recv_pkt = self._recv_packet(self.CMD_GET_VERSION)
+    rslt[self.INDEX_ERR_CODE] = recv_pkt[self.INDEX_RES_ERR]
+    if (len(recv_pkt) >= 5) and (recv_pkt[self.INDEX_RES_ERR] == self.ERR_CODE_NONE and recv_pkt[self.INDEX_RES_STATUS] == self.STATUS_SUCCESS):
+      length = recv_pkt[self.INDEX_RES_LEN_L] | (recv_pkt[self.INDEX_RES_LEN_H] << 8)
+      if length == 2:
+        version = ((recv_pkt[self.INDEX_RES_DATA] << 8) | recv_pkt[self.INDEX_RES_DATA + 1]) & 0xFFFF
+    return version
+  
+  def get_version_description(self, version):
+    '''!
+      @brief 获取版本描述字符串
+      @return 返回版本描述字符串，例版本id：0x0123返回的版本描述字符串为 V1.2.3
+    '''
+    ver_str = "V"
+    ver_str += str((version >> 8) & 0xFF)
+    ver_str += '.'
+    ver_str += str((version >> 4) & 0x0F)
+    ver_str += '.'
+    ver_str += str(version & 0x0F)
+    return ver_str
+
+
 
   def set_port1(self, sku):
     '''!

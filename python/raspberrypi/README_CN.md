@@ -135,6 +135,7 @@ class DFRobot_RP2040_SCI_IIC(DFRobot_SCI):
       @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配 
       @n      ERR_CODE_I2C_ADRESS   or 0x0A  I2C地址无效
     '''
+class DFRobot_SCI:
   def begin(self):
     '''!
       @brief SCI采集模块(SCI Acquisition Module)初始化，旨在初始化通信接口
@@ -143,7 +144,22 @@ class DFRobot_RP2040_SCI_IIC(DFRobot_SCI):
       @n       0      初始化成功
       @n      others  初始化失败
     '''
-class DFRobot_SCI:
+  def get_version(self):
+    '''!
+      @brief 获取SCI采集模块(SCI Acquisition Module)的固件版本号
+      @n 版本号是一个16位数据，高8位(b15~b9): 代表最高版本位
+      @n 中4位(b8~b4):表示中间版本位
+      @n 低4位：表示低版本位
+      @n 例0x0123对应的版本号为 V1.2.3
+      @n     数字传感器SKU 表示选择了某个数字传感器的SKU，并将模式配置为数字传感器模式
+      @return 16位版本号
+    '''
+  def get_version_description(self, version):
+    '''!
+      @brief 获取版本描述字符串
+      @return 返回版本描述字符串，例版本id：0x0123返回的版本描述字符串为 V1.2.3
+    '''
+
   def set_port1(self, sku):
     '''!
       @brief 设置Port1的SKU，此接口可连接模拟传感器和数字传感器，通过SKU选择Port1上连接的传感器
