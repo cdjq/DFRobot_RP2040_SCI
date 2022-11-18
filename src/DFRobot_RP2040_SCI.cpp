@@ -547,7 +547,7 @@ String DFRobot_SCI::getTimeStamp(){
   if((rcvpkt != NULL) && (rcvpkt->status == STATUS_SUCCESS)){
     length = (rcvpkt->lenH << 8) | rcvpkt->lenL;
     char data[length];
-    memcpy(data, rcvpkt->buf + 1, length - 1);
+    memcpy(data, rcvpkt->buf, length);
     data[length - 1] = '\0';
     timestamp = String(data);
   }

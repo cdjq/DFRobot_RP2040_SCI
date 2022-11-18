@@ -322,7 +322,6 @@ class DFRobot_SCI:
         rslt[self.INDEX_SKU]  = ""
         for data in recv_pkt[self.INDEX_RES_DATA + 1:]:
           rslt[self.INDEX_SKU] += chr(data)
-        #rslt[self.INDEX_SKU] += '\0'
     return rslt
   
   def set_port2(self, sku):
@@ -382,7 +381,6 @@ class DFRobot_SCI:
         rslt[self.INDEX_SKU]  = ""
         for data in recv_pkt[self.INDEX_RES_DATA + 1:]:
           rslt[self.INDEX_SKU] += chr(data)
-        rslt[self.INDEX_SKU] += '\0'
     return rslt
 
   def set_port3(self, sku):
@@ -442,7 +440,6 @@ class DFRobot_SCI:
         rslt[self.INDEX_SKU]  = ""
         for data in recv_pkt[self.INDEX_RES_DATA + 1:]:
           rslt[self.INDEX_SKU] += chr(data)
-        rslt[self.INDEX_SKU] += '\0'
     return rslt
 
 
@@ -831,7 +828,6 @@ class DFRobot_SCI:
       if length:
         for data in recv_pkt[self.INDEX_RES_DATA:]:
           rslt += chr(data)
-        rslt += '\0'
     return rslt
 
   def get_sku(self, inf):
@@ -860,7 +856,6 @@ class DFRobot_SCI:
       if length:
         for data in recv_pkt[self.INDEX_RES_DATA:]:
           rslt += chr(data)
-        rslt += '\0'
     return rslt
 
   def get_keys(self, inf):
@@ -889,7 +884,6 @@ class DFRobot_SCI:
       if length:
         for data in recv_pkt[self.INDEX_RES_DATA:]:
           rslt += chr(data)
-        rslt += '\0'
     return rslt
 
   def get_values(self, inf):
@@ -918,7 +912,6 @@ class DFRobot_SCI:
       if length:
         for data in recv_pkt[self.INDEX_RES_DATA:]:
           rslt += chr(data)
-        rslt += '\0'
     return rslt
 
   def get_units(self, inf):
@@ -947,7 +940,6 @@ class DFRobot_SCI:
       if length:
         for data in recv_pkt[self.INDEX_RES_DATA:]:
           rslt += chr(data)
-        rslt += '\0'
     return rslt
 
   def get_value0(self, keys):
@@ -975,7 +967,6 @@ class DFRobot_SCI:
       if length:
         for data in recv_pkt[self.INDEX_RES_DATA:]:
           rslt += chr(data)
-        rslt += '\0'
     return rslt
 
   def get_value1(self, inf, keys):
@@ -1011,7 +1002,6 @@ class DFRobot_SCI:
       if length:
         for data in recv_pkt[self.INDEX_RES_DATA:]:
           rslt += chr(data)
-        rslt += '\0'
     return rslt
 
   def get_value2(self, inf, sku, keys):
@@ -1051,7 +1041,6 @@ class DFRobot_SCI:
       if length:
         for data in recv_pkt[self.INDEX_RES_DATA:]:
           rslt += chr(data)
-        rslt += '\0'
     return rslt
 
   def get_unit0(self, keys):
@@ -1081,7 +1070,6 @@ class DFRobot_SCI:
       if length:
         for data in recv_pkt[self.INDEX_RES_DATA:]:
           rslt += chr(data)
-        rslt += '\0'
     return rslt
 
   def get_unit1(self, inf, keys):
@@ -1117,7 +1105,6 @@ class DFRobot_SCI:
       if length:
         for data in recv_pkt[self.INDEX_RES_DATA:]:
           rslt += chr(data)
-        rslt += '\0'
     return rslt
 
   def get_unit2(self, inf, sku, keys):
@@ -1157,7 +1144,6 @@ class DFRobot_SCI:
       if length:
         for data in recv_pkt[self.INDEX_RES_DATA:]:
           rslt += chr(data)
-        rslt += '\0'
     return rslt
 
   def get_analog_sensor_sku(self):
@@ -1179,7 +1165,6 @@ class DFRobot_SCI:
       if length:
         for data in recv_pkt[self.INDEX_RES_DATA:]:
           rslt += chr(data)
-        rslt += '\0'
     return rslt
   
   def get_digital_sensor_sku(self):
@@ -1201,7 +1186,6 @@ class DFRobot_SCI:
       if length:
         for data in recv_pkt[self.INDEX_RES_DATA:]:
           rslt += chr(data)
-        rslt += '\0'
     return rslt
 
   def get_i2c_sensor_sku(self):
@@ -1223,7 +1207,6 @@ class DFRobot_SCI:
       if length:
         for data in recv_pkt[self.INDEX_RES_DATA:]:
           rslt += chr(data)
-        rslt += '\0'
     return rslt
 
   def get_uart_sensor_sku(self):
@@ -1245,7 +1228,6 @@ class DFRobot_SCI:
       if length:
         for data in recv_pkt[self.INDEX_RES_DATA:]:
           rslt += chr(data)
-        rslt += '\0'
     return rslt
 
   def _recv_packet(self, cmd):
