@@ -2,21 +2,21 @@ DFRobot_RP2040_SCI
 ===========================
 * [中文版](./README_CN.md)
 
-SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接板，它能够连接DFRobot的模拟、数字、I2C、UART等传感器，并将传感器采集到的数据转换为 名称+数据+单位的格式，供主控读取，或显示在板载的显示屏上供用户查看。看到这里，相信很多人都对它的使用有疑问，接下来我就用问答的方式来详细的介绍这块板子的功能: <br>
-* 问题1. DFRobot有那么多传感器，这块板子都能识别么？
-  答：不是哦，目前这个板子只支持了DFRobot的部分传感器，用户可以通过README的SKU支持列表、板载的按钮和屏的交互界面查看SKU Select、或通过主控读取等方式获取各类型传感器的支持列表。
-* 问题2：我想使用的模拟、数字、I2C或UART传感器不在支持列表里面怎么办?
-  答：完全不用担心这个问题，SCI采集模块(SCI Acquisition Module)有U盘固件升级的功能，你可以给我们留言，我们会将该传感器加入支持列表中，后续只要通过这个U盘固件升级功能烧录最新的固件就可以了。
-* 问题3: SCI采集模块(SCI Acquisition Module)能识别不同的传感器的原理是什么呢？
-  答：DFRobot每个传感器都有一个唯一的SKU，适配器板通过自动识别或用户选择的SKU来识别连接的是那个传感器，并调用相应的驱动程序来采集和转换数据。（注意：除部分I2C传感器可以通过I2C地址识别SKU外，其他的传感器只能通过用户手动选择SKU，告诉适配器板连接的是哪个传感器）
-* 问题4：SCI采集模块(SCI Acquisition Module)和这些传感器之间是通过什么连接的呢？
-  答：适配器板上板载了1个Gravity 3pin的模拟/数字切换接口(A&D 连接模拟或数字传感器),以及2个Gravity 4pin的I2C/UART接口(I2C&UART 连接I2C或UART传感器), 用户可以通过切换对应接口的模式来连接相应的传感器。
-* 问题5：板载的按钮和屏交互界面有什么用呢?
-  答: 用户可以通过这些配置和查看SCI采集模块(SCI Acquisition Module)的参数，比如I2C从机地址，时间，接口模式切换，选择SKU，固件版本，传感器数据。
-* 问题6：如何用Arduino主控或树莓派读取和设置SCI采集模块(SCI Acquisition Module)的参数，以及读取传感器数据呢?
-  答：SCI采集模块(SCI Acquisition Module)板载了一个Gravity I2C接口，主控可以通过这个接口操作适配器板。
-* 问题7：SCI采集模块(SCI Acquisition Module)上的USB有什么用呢？
-  答：固件升级或导出CSV文件。按住boot键上电进入U盘固件升级模式，可以升级固件，直接上电会弹出一个U盘，用户可以在这里查看或导出记录传感器数据的CSV文件。
+This SCI acquisition module is a sensor adapter designed by DFRobot. It supports all kinds of digital, analog, I2C, and UART sensors from DFRobot. The module is capable of standardizing sensor output into the format of name+data+unit, which then will be read by main controllers or displayed on the onboard display so users can view it. The following demonstrates more details about this product through Q&A: <br>
+* DFRobot has so many sensors, so can this board recognize all of them?<br>
+  A: Sorry, it can't. This board only supports part of DFRobot's sensors currently. Users can get the list of supported kinds of sensors from the supported SKU in README, by viewing SKU Select on the onboard interactive display with button or reading it using the maincontroller or in other ways.
+* Q2: What if the analog, digital, I2C or UART sensor I want to use is not in the supported SKU list?<br>
+  A: Don't worry about it. The SCI Acquisition Module features USB firmware upgrading function, so you can leave comments and we'll add the sensor to the list, and then burn the latest firmware through the function.
+* Q3: What's the principle that SCI Acquisition Module can recognize various sensors?<br>
+  A: Each sensor from DFRobot has a unique SKU. The adapter can identify the connected sensor through automatic identification or the user-selected SKU, and call the corresponding driver to acquire and convert data. (Note: For some I2C sensors, the adapter can identify the SKU by I2C address, but for the others, it can only identify the connected one by user-selected SKU.)
+* Q4: How is the SCI Acquisition Module connected to these sensors?<br>
+  A: The adapter has an onboard Gravity 3pin analog/digital interfaces (for connecting analog or digital sensors) and 2 Gravity 4pin I2C/UART interfaces (for connecting I2C or UART sensors), so users can connect the corresponding sensor by switching to the corresponding interface mode.
+* What's the onboard interactive display and the button used for?<br>
+  A: Through the configurations, users can view the module's parameters, such as I2C slave address, time, switchable interface mode, SKU select, firmware version, and sensor data.
+* Q6: How can I use Arduino or Raspberry Pi to read and set parameters of SCI Acquisition Module, and read the sensor data?<br> 
+  A: The SCI Acquisition Module has an onboard Gravity I2C interface, which can be used by the maincontroller to control the adapter.
+* Q7: What's the USB on the module used for? <br>
+  A: It's used for firmware upgrading or CSV file export. Press the boot button to power on and enter USB firmware upgrading mode, and you can upgrade the firmware. When it's powered on directly, a USB will pop up and users can view or export the CSV file of recorded sensor data in the USB.
 
 ![产品效果图](./resources/images/SEN0443.png)
 
@@ -67,14 +67,14 @@ SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接�
 * [Credits](#credits)
 
 ## Summary
-这是一个基于Arduino平台的SCI采集模块(SCI Acquisition Module)库。旨在为用户提供一系列接口函数去设置和读取该适配器板的参数，以及读取适配器板上各传感器的数据，它具有以下功能：<br>
-* 1. 读取/设置SCI采集模块(SCI Acquisition Module)的I2C地址，范围0x01~0x7F；
-* 2. 读取/设置SCI采集模块(SCI Acquisition Module)的年，月，日，时，分，秒的时间；
-* 3. 开启/关闭传感器数据CSV文件记录；
-* 4. 开启/关闭屏显示
-* 5. 读取和设置接口传感器模式，以及SKU
-* 6. 以读取传感器数据(名称+数值+单位)
-* 7. 读取模拟、数字、I2C、UART等类型传感器的SKU支持列表
+This library of the SCI acquisition module based on Arduino is designed to provide a series of interface functions for users to set and read parameters of the adapter and read the data from the connected sensor. It has the following functions:<br>
+* 1. Read/set the I2C address of SCI Acquisition Module within the range of 0x01~0x7F;
+* 2. Read/set the time information of year, month, day, hour, minute and second of SCI Acquisition Module;
+* 3. Enable/disable sensor data record of CSV file;
+* 4. Enable/disable the display;
+* 5. Read/set the interface mode and SKU of the sensor;
+* 6. Read sensor data (name + value + unit);
+* 7. Read the list of supported SKU of analog, digital, I2C, UART and other types of sensors;
 
 ## Installation
 
@@ -87,116 +87,116 @@ There two methods:
 ```C++
   /**
    * @fn DFRobot_RP2040_SCI_IIC
-   * @brief DFRobot_RP2040_SCI_IIC 类的构造函数.
-   * @param addr:  7位I2C地址，支持以下地址设置
-   * @n RP2040_SCI_ADDR_0X21      0x21 转换板默认I2C地址
+   * @brief Constructor for DFRobot_RP2040_SCI_IIC class
+   * @param addr:  7-bit I2C address, support the following address settings
+   * @n RP2040_SCI_ADDR_0X21      0x21 Default I2C address of the adapter
    * @n RP2040_SCI_ADDR_0X22      0x22
    * @n RP2040_SCI_ADDR_0X23      0x23
-   * @n 或通过板子的OLED屏的初始页查看I2C地址，出厂默认I2C地址为0x01
-   * @param pWire:   TwoWire类对象指针.
+   * @n Or view the I2C address on the initial page of the onboard OLED display, the factory default I2C address is 0x01
+   * @param pWire:   TwoWire class & object pointer
    */
   DFRobot_RP2040_SCI_IIC(uint8_t addr = RP2040_SCI_ADDR_0X21, TwoWire *pWire = &Wire);
   ~DFRobot_RP2040_SCI_IIC();
   /**
    * @fn setI2CAddress
-   * @brief 设置SCI采集模块(SCI Acquisition Module)的I2C通信地址
+   * @brief Set the I2C communication address of SCI Acquisition Module
    * 
-   * @param addr    SCI采集模块(SCI Acquisition Module)的I2C通信地址，支持以下地址设置
-   * @n RP2040_SCI_ADDR_0X21      0x21 转换板默认I2C地址
+   * @param addr    I2C communication address of SCI Acquisition Module, support the following address settings
+   * @n RP2040_SCI_ADDR_0X21      0x21 Default I2C address of the adapter
    * @n RP2040_SCI_ADDR_0X22      0x22
    * @n RP2040_SCI_ADDR_0X23      0x23
-   * @return uint8_t 错误代码
-   * @n      ERR_CODE_NONE         or 0x00  设置成功
-   * @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-   * @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-   * @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-   * @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配 
-   * @n      ERR_CODE_I2C_ADRESS   or 0x0A  I2C地址无效
+   * @return uint8_t Error Code
+   * @n      ERR_CODE_NONE         or 0x00  Set successful
+   * @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
+   * @n      ERR_CODE_RES_PKT      or 0x02  Response packet error
+   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C master 
+   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response packet reception timeout
+   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command packet or command mismatch 
+   * @n      ERR_CODE_I2C_ADRESS   or 0x0A  Invalid I2C address
    */
   uint8_t setI2CAddress(uint8_t addr);
   /**
    * @fn getI2CAddress
-   * @brief 获取SCI采集模块(SCI Acquisition Module)的I2C通信地址
-   * @return I2C通信地址
+   * @brief Get the I2C communication address of SCI Acquisition Module
+   * @return I2C communication address
    */
   uint8_t getI2CAddress();
 
   /**
    * @fn DFRobot_RP2040_SCI
-   * @brief DFRobot_RP2040_SCI类的构造函数.
+   * @brief Constructor of DFRobot_RP2040_SCI class.
    */
   DFRobot_SCI();
 
   /**
    * @fn  ~DFRobot_RP2040_SCI
-   * @brief DFRobot_RP2040_SCI类的析构函数. 
+   * @brief Destructor of class DFRobot_RP2040_SCI. 
    */
   ~DFRobot_SCI();
   
   /**
    * @fn begin
-   * @brief SCI采集模块(SCI Acquisition Module)初始化，旨在初始化通信接口
+   * @brief Init SCI Acquisition Module, which aims to init the communication interface
    * 
-   * @param freq 设置通信频率,不能超过100kHz
-   * @return int 初始化状态
-   * @n       0  初始化成功
-   * @n      -1  通信接口类对象未传入
-   * @n      -2  请检测硬件连接是否正确
+   * @param freq Set communication frequency, no more than 100kHz
+   * @return int Init status
+   * @n       0  Init successful
+   * @n      -1  The communication interface class & object are not passed in
+   * @n      -2  Check if the hardware connection is correct
    */
   int begin(uint32_t freq = 100000);
 
   /**
    * @fn getVersion
-   * @brief 获取SCI采集模块(SCI Acquisition Module)的固件版本号
-   * @n 版本号是一个16位数据，高8位(b15~b9): 代表最高版本位
-   * @n 中4位(b8~b4):表示中间版本位
-   * @n 低4位：表示低版本位
-   * @n 例0x0123对应的版本号为 V1.2.3
+   * @brief Get firmware version number of SCI Acquisition Module
+   * @n The version number is 16-bit data, high 8 bits (b15~b9): represents the highest version bit
+   * @n Middle 4 bits (b8~b4): represents middle version bit
+   * @n Low 4 bits: represents low version bit
+   * @n For example: 0x0123 corresponds to the version number of V1.2.3
    * 
-   * @return 16位版本号
+   * @return 16-bit version number
    */
   uint16_t getVersion();
   /**
    * @fn getVersionDescription
-   * @brief 获取版本描述字符串
+   * @brief Get version description character string
    * 
-   * @return 返回版本描述字符串，例版本id：0x0123返回的版本描述字符串为 V1.2.3
+   * @return Return version description character string, for example, version id: 0x0123 returns the version description character string of V1.2.3
    */
   String getVersionDescription(uint16_t version);
 
   /**
    * @fn setPort1(char *sku)
-   * @brief 设置Port1的SKU，此接口可连接模拟传感器和数字传感器，通过SKU选择Port1上连接的传感器
+   * @brief Set supported SKU on Port1, which can be connected to analog & digital sensors, select the sensor connected to Port1 by SKU
    * 
-   * @param sku  Port1接口的参数，支持的SKU列表可以通过OLED显示或者 getAnalogSensorSKU()/getDigitalSensorSKU()查看
-   * @n     "NULL"       表示清除Port1接口的传感器设置,并将传感器模式配置为模拟传感器配置
-   * @n     "Analog"     表示选择Analog电压数据采集，单位mV
-   * @n     模拟传感器SKU 表示选择了某个模拟传感器的SKU，并将模式配置为模拟传感器模式
-   * @n     数字传感器SKU 表示选择了某个数字传感器的SKU，并将模式配置为数字传感器模式
-   * @return uint8_t 错误代码
-   * @n      ERR_CODE_NONE         or 0x00  设置成功
-   * @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-   * @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-   * @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-   * @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
-   * @n      ERR_CODE_SLAVE_BREAK  or 0x06  从机故障
-   * @n      ERR_CODE_ARGS         or 0x07  设置的参数错误
+   * @param sku  Parameters of Port1, the list of supported SKU can be viewed on OLED display or by getAnalogSensorSKU()/getDigitalSensorSKU()
+   * @n     "NULL"       Indicates clearing sensor settings of Port1 and configuring sensor mode as analog sensor mode
+   * @n     "Analog"     Indicates selecting Analog voltage data acquisition, unit mV
+   * @n     SKU of analog sensor indicates selecting the SKU of an analog sensor and configuring mode as analog sensor mode
+   * @n     SKU of digital sensor indicates selecting the SKU of an analog sensor and configuring mode as digital sensor mode
+   * @return uint8_t Error Code
+   * @n      ERR_CODE_NONE         or 0x00  Set successful
+   * @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
+   * @n      ERR_CODE_RES_PKT      or 0x02  Response packet error
+   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C master
+   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response packet reception timeout
+   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command packet or command mismatch
+   * @n      ERR_CODE_SLAVE_BREAK  or 0x06  Slave break
+   * @n      ERR_CODE_ARGS         or 0x07  The set parameter is wrong
    */
   uint8_t setPort1(char *sku);
 
   /**
    * @fn getPort1(ePort1IFMode_t mode)
-   * @brief 获取Port1接口的传感器模式，及SKU配置
+   * @brief Get the sensor mode and SKU config of Port1
    * 
-   * @param mode  eADIFMode_t枚举变量指针
-   * @n     eAnalogMode    模拟传感器模式
-   * @n     eDigitalMode   数字传感器模式
-   * @return 接口0连接的传感器的SKU
-   * @n      "NULL"        表示Port1接口没有配置或连接传感器
-   * @n      "Analog"      表示Port1接口被配置为读取Port1接口两端的电压数据
-   * @n      7位SKU        表示Port1接口被配置为读数字或模拟传感器的数据
+   * @param mode  eADIFMode_t enum variable pointer
+   * @n     eAnalogMode    Analog sensor mode
+   * @n     eDigitalMode   Digital sensor mode
+   * @return SKU of the sensor connected to Port1
+   * @n      "NULL"        Indicates that Port1 is configured or connected to no sensor 
+   * @n      "Analog"      Indicates that Port1 is configured as reading voltage data of Port1
+   * @n      7-bit SKU        Indicates that Port1 is configured as reading data from a digital or analog sensor
    */
   String getPort1(ePort1IFMode_t *mode);
 
