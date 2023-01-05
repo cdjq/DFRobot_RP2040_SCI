@@ -2,7 +2,7 @@
 
 '''
   @file demo_config.py
-  @brief 设置SCI采集模块(SCI Acquisition Module)的I2C地址和时间。
+  @brief Set the I2C address and time of SCI Acquisition Module
   
   @copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
   @license     The MIT License (MIT)
@@ -27,10 +27,10 @@ if __name__ == "__main__":
     time.sleep(1)
   print("Initialization SCI Acquisition Module done.")
   
-  # 将树莓派的本地时间设置为适配板的时间
+  # Set the local time of Raspberry Pi as the time of the module
   sci.adjust_rtc_datetime()
   #Set the RTC time manually
-  #sci.adjust_rtc(2022,8,17,3,12,0,0);  #Set time: 2022/08/17, 星期3, 12:00:00
+  #sci.adjust_rtc(2022,8,17,3,12,0,0);  #Set time: 2022/08/17, Wednesday, 12:00:00
 
   print(sci.get_rtc_time())
 
@@ -38,19 +38,19 @@ if __name__ == "__main__":
   print("Address: 0x%x"%addr)
   
   '''!
-    @brief 设置SCI采集模块(SCI Acquisition Module)的I2C通信地址 
-    @param addr SCI采集模块(SCI Acquisition Module)的I2C通信地址，支持以下地址设置
-    @n RP2040_SCI_ADDR_0X21      0x21 转换板默认I2C地址
+    @brief Set the I2C communication address of SCI Acquisition Module 
+    @param addr I2C communication address of SCI Acquisition Module, support the following address settings
+    @n RP2040_SCI_ADDR_0X21      0x21 Default I2C address 
     @n RP2040_SCI_ADDR_0X22      0x22
     @n RP2040_SCI_ADDR_0X23      0x23
-    @return 错误代码
-    @n      ERR_CODE_NONE         or 0x00  设置成功
-    @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-    @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-    @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-    @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-    @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配 
-    @n      ERR_CODE_I2C_ADRESS   or 0x0A  I2C地址无效
+    @return Error code
+    @n      ERR_CODE_NONE         or 0x00  Set successful
+    @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
+    @n      ERR_CODE_RES_PKT      or 0x02  Response packet error
+    @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C master 
+    @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response packet reception timeout
+    @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command packet or command mismatch 
+    @n      ERR_CODE_I2C_ADRESS   or 0x0A  Invalid I2C address
   '''
   err_code = sci.set_i2c_address(sci.RP2040_SCI_ADDR_0X23)
   if(err_code == sci.ERR_CODE_NONE):
