@@ -12,7 +12,7 @@ This SCI acquisition module is a multi-functional data acquisition module design
 * **Q4: How is the SCI Acquisition Module connected to these sensors?**<br>
   A: The module has an onboard Gravity 3pin analog/digital interface (for connecting analog or digital sensors) and 2 Gravity 4pin I2C/UART interfaces (for connecting I2C or UART sensors), so users can connect the corresponding sensor by switching to the corresponding interface mode.
 * **Q5: What are the onboard display and button used for?** <br>
-  A: Users can configure or view the module parameters such as I2C slave address, time, switchable interface mode, SKU select, firmware version, and sensor data by the onboard display and buttons.
+  A: Users can configure or view the module parameters such as I2C slave address, time, interface mode, SKU select, firmware version, and sensor data by the onboard display and buttons.
 * **Q6: How can I use Arduino or Raspberry Pi to read and set parameters of the SCI Acquisition Module, and read the sensor data?**<br>
   Connect your controller to the acquisition module via the onboard Gravity I2C interface, and then you can operate the module. Find more details on [the wiki page](https://wiki.dfrobot.com/SKU_DFR0999_Gravity_SCI_Acquisition_Module). 
 * **Q7: What's the USB on the module used for?** <br>
@@ -105,68 +105,68 @@ python3 demo_config.py
 class DFRobot_RP2040_SCI_IIC(DFRobot_SCI):
   def __init__(self,addr):
     '''!
-      @brief DFRobot_SCI_IIC 构造函数
-      @param addr:  7-bit IIC address，支持以下地址设置
-      @n RP2040_SCI_ADDR_0X21      0x21 转换板默认I2C地址
+      @brief DFRobot_SCI_IIC Constructor
+      @param addr:  7-bit IIC address, support the following address settings 
+      @n RP2040_SCI_ADDR_0X21      0x21 default I2C address 
       @n RP2040_SCI_ADDR_0X22      0x22
       @n RP2040_SCI_ADDR_0X23      0x23
     '''
     
   def get_i2c_address(self):
     '''!
-      @brief 获取SCI采集模块(SCI Acquisition Module)的I2C通信地址
-      @return I2C通信地址
+      @brief Get SCI Acquisition Module I2C address
+      @return I2C address
     '''
   
   def set_i2c_address(self, addr):
     '''!
-      @brief 设置SCI采集模块(SCI Acquisition Module)的I2C通信地址 
-      @param addr SCI采集模块(SCI Acquisition Module)的I2C通信地址，支持以下地址设置
-      @n RP2040_SCI_ADDR_0X21      0x21 转换板默认I2C地址
+      @brief Set SCI Acquisition Module I2C address 
+      @param addr SCI Acquisition Module I2C address, support the following address settings 
+      @n RP2040_SCI_ADDR_0X21      0x21 default I2C address
       @n RP2040_SCI_ADDR_0X22      0x22
       @n RP2040_SCI_ADDR_0X23      0x23
-      @return 错误代码
-      @n      ERR_CODE_NONE         or 0x00  设置成功
-      @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-      @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-      @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-      @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-      @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配 
-      @n      ERR_CODE_I2C_ADRESS   or 0x0A  I2C地址无效
+      @return Error code 
+      @n      ERR_CODE_NONE         or 0x00  Setting succeed 
+      @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command 
+      @n      ERR_CODE_RES_PKT      or 0x02  Response packkage error 
+      @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller(master) 
+      @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout 
+      @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command 
+      @n      ERR_CODE_I2C_ADRESS   or 0x0A  Invalid I2C address
     '''
 class DFRobot_SCI:
   def begin(self):
     '''!
-      @brief SCI采集模块(SCI Acquisition Module)初始化，旨在初始化通信接口
-      @param freq 设置通信频率
-      @return int 初始化状态
-      @n       0      初始化成功
-      @n      others  初始化失败
+      @brief Initalize the SCI Acquisition Module, mainly for initializing communication interface
+      @param freq Set communication frequency
+      @return int Init status
+      @n       0      Init successful
+      @n      others  Init failed
     '''
   def get_version(self):
     '''!
-      @brief 获取SCI采集模块(SCI Acquisition Module)的固件版本号
-      @n 版本号是一个16位数据，高8位(b15~b9): 代表最高版本位
-      @n 中4位(b8~b4):表示中间版本位
-      @n 低4位：表示低版本位
-      @n 例0x0123对应的版本号为 V1.2.3
-      @n     数字传感器SKU 表示选择了某个数字传感器的SKU，并将模式配置为数字传感器模式
-      @return 16位版本号
+      @brief Get firmware version number of SCI Acquisition Module
+      @n The version number is 16-bit data, the high 8bits(b15-b9) represent the leftmost number
+      @n The middle 4bits (b8-b4) represent the middle number 
+      @n The low 4bits represent the rightmost number 
+      @n For example, 0x0123 corresponds to V1.2.3
+      @n     Digital sensor SKU, means selecting the SKU of a digital sensor and configuring to digital sensor mode
+      @return 16-bit version data
     '''
   def get_version_description(self, version):
     '''!
-      @brief 获取版本描述字符串
-      @return 返回版本描述字符串，例版本id：0x0123返回的版本描述字符串为 V1.2.3
+      @brief Get version description char string 
+      @return Return version description char string, e.g. id：0x0123 The returned version decription char string is V1.2.3
     '''
   def set_port1(self, sku):
     '''!
-      @brief 设置Port1的SKU，此接口可连接模拟传感器和数字传感器，通过SKU选择Port1上连接的传感器
-      @param sku  Port1接口的参数，支持的SKU列表可以通过OLED显示或者 getAnalogSensorSKU()/getDigitalSensorSKU()查看
-      @n     "NULL"       表示清除Port1接口的传感器设置,并将传感器模式配置为模拟传感器配置
-      @n     "Analog"     表示选择Analog电压数据采集，单位mV
-      @n     模拟传感器SKU 表示选择了某个模拟传感器的SKU，并将模式配置为模拟传感器模式
-      @n     数字传感器SKU 表示选择了某个数字传感器的SKU，并将模式配置为数字传感器模式
-      @return  错误代码
+      @brief Set SKU on Port1, which can be connected to analog & digital sensors. Select the sensor connected to Port1 by SKU
+      @param sku  Parameter for port1. The supported SKU list can be viewed on the OLED or by getAnalogSensorSKU()/getDigitalSensorSKU()
+      @n     "NULL"             Clear sensor settings for Port1 and configure mode as analog sensor mode
+      @n     "Analog"           Select analog voltage data acquisition, unit mV 
+      @n     Analog sensor SKU  Select the SKU of a analog sensor and configure mode as analog sensor mode
+      @n     Digital sensor SKU Select the SKU of a digital sensor and configure mode as digital sensor mode
+      @return  Error code 
       @n      ERR_CODE_NONE         or 0x00  设置成功
       @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
       @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
