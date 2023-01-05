@@ -2,27 +2,27 @@
 
 * [中文版](./README_CN.md)
 
-SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接板，它能够连接DFRobot的模拟、数字、I2C、UART等传感器，并将传感器采集到的数据转换为 名称+数据+单位的格式，供主控读取，或显示在板载的显示屏上供用户查看。看到这里，相信很多人都对它的使用有疑问，接下来我就用问答的方式来详细的介绍这块板子的功能: <br>
-* 问题1. DFRobot有那么多传感器，这块板子都能识别么？
-  答：不是哦，目前这个板子只支持了DFRobot的部分传感器，用户可以通过README的SKU支持列表、板载的按钮和屏的交互界面查看SKU Select、或通过主控读取等方式获取各类型传感器的支持列表。
-* 问题2：我想使用的模拟、数字、I2C或UART传感器不在支持列表里面怎么办?
-  答：完全不用担心这个问题，传感器SCI采集模块(SCI Acquisition Module)有U盘固件升级的功能，你可以给我们留言，我们会将该传感器加入支持列表中，后续只要通过这个U盘固件升级功能烧录最新的固件就可以了。
-* 问题3: 传感器SCI采集模块(SCI Acquisition Module)能识别不同的传感器的原理是什么呢？
-  答：DFRobot每个传感器都有一个唯一的SKU，适配器板通过自动识别或用户选择的SKU来识别连接的是那个传感器，并调用相应的驱动程序来采集和转换数据。（注意：除部分I2C传感器可以通过I2C地址识别SKU外，其他的传感器只能通过用户手动选择SKU，告诉适配器板连接的是哪个传感器）
-* 问题4：传感器SCI采集模块(SCI Acquisition Module)和这些传感器之间是通过什么连接的呢？
-  答：适配器板上板载了1个Gravity 3pin的模拟/数字切换接口(A&D 连接模拟或数字传感器),以及2个Gravity 4pin的I2C/UART接口(I2C&UART 连接I2C或UART传感器), 用户可以通过切换对应接口的模式来连接相应的传感器。
-* 问题5：板载的按钮和屏交互界面有什么用呢?
-  答: 用户可以通过这些配置和查看传感器SCI采集模块(SCI Acquisition Module)的参数，比如I2C从机地址，时间，接口模式切换，选择SKU，固件版本，传感器数据。
-* 问题6：如何用Arduino主控或树莓派读取和设置传感器SCI采集模块(SCI Acquisition Module)的参数，以及读取传感器数据呢?
-  答：传感器SCI采集模块(SCI Acquisition Module)板载了一个Gravity I2C接口，主控可以通过这个接口操作适配器板。
-* 问题7：SCI采集模块(SCI Acquisition Module)上的USB有什么用呢？
-  答：固件升级或导出CSV文件。按住boot键上电进入U盘固件升级模式，可以升级固件，直接上电会弹出一个U盘，用户可以在这里查看或导出记录传感器数据的CSV文件。
+This SCI acquisition module is a multi-functional data acquisition module designed by DFRobot. It supports all kinds of digital, analog, I2C, and UART sensors from DFRobot. The module is capable of standardizing sensor output into the format of name+data+unit, which then can be read by main controllers or displayed on the onboard display so users can view it. The following demonstrates more details about this product through Q&A. <br>
+* Q1: DFRobot has so many sensors, so can this board support all of them? 
+  A: Sorry, it can't. This board only supports part of DFRobot's sensors currently. You can check the supported product list on the library Readme, SKU select on display, or read sensor type through a controller.
+* Q2: What if the analog, digital, I2C or UART sensor I want to use is not in the supported SKU list?
+  A: Don't worry about it. The SCI Acquisition Module features USB firmware upgrading function. Please leave us comments and we'll add the sensor to the list. Then it will be available once you upgrade your firmware to the latest.
+* Q3: How does the SCI Acquisition module recognize different sensors? 
+  A: Each sensor from DFRobot has a unique SKU. The module can identify the connected sensor through automatic identification or the user-selected SKU, and call the corresponding driver to acquire and convert data. (Note: For some I2C sensors, the adapter can identify the SKU by I2C address, but for the others, it can only identify the connected one by user-selected SKU.)
+* Q4: How is the SCI Acquisition Module connected to these sensors?
+  A: The module has an onboard Gravity 3pin analog/digital interface (for connecting analog or digital sensors) and 2 Gravity 4pin I2C/UART interfaces (for connecting I2C or UART sensors), so users can connect the corresponding sensor by switching to the corresponding interface mode.
+* Q5: What's the onboard display and button used for? 
+  A: Users can configure or view the module parameters such as I2C slave address, time, switchable interface mode, SKU select, firmware version, and sensor data by the onboard display and buttons.
+* Q6: How can I use Arduino or Raspberry Pi to read and set parameters of the SCI Acquisition Module, and read the sensor data?
+  Connect your controller to the acquisition module via the onboard Gravity I2C interface, and then you can operate the module. Find more details on [the wiki page](https://wiki.dfrobot.com/SKU_DFR0999_Gravity_SCI_Acquisition_Module). 
+* Q7: What's the USB on the module used for? 
+  It's used for firmware upgrading or CSV file export. Press the boot button and power on the module to enter the firmware upgrading mode, then you can upgrade the firmware. When it's powered on directly, a U-disk will pop up on your PC and you can view or export the CSV file of recorded sensor data there. 
 
-![产品效果图](../../resources/images/SEN0443.png)
+![Product Image](../../resources/images/SEN0443.png)
 
 
 ## Product Link（[https://www.dfrobot.com](https://www.dfrobot.com)）
-    SKU: DFR0999
+    SKU: DFR0999   
 ## Supported Analog SKU
 * SEN0161 
 * SEN0232
@@ -68,14 +68,15 @@ SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接�
 * [Credits](#credits)
 
 ## Summary
-这是一个基于python平台的传感器SCI采集模块(SCI Acquisition Module)库。旨在为用户提供一系列接口函数去设置和读取该适配器板的参数，以及读取适配器板上各传感器的数据，它具有以下功能：<br>
-* 1. 读取/设置传感器SCI采集模块(SCI Acquisition Module)的I2C地址，范围0x01~0x7F；
-* 2. 读取/设置传感器SCI采集模块(SCI Acquisition Module)的年，月，日，时，分，秒的时间；
-* 3. 开启/关闭传感器数据CSV文件记录；
-* 4. 开启/关闭屏显示
-* 5. 读取和设置接口传感器模式，以及SKU
-* 6. 以读取传感器数据(名称+数值+单位)
-* 7. 读取模拟、数字、I2C、UART等类型传感器的SKU支持列表   
+This is an Arduino library for the DFRobot SCI Acquisition module. It aims to provide users with a series of interface functions to set and read module parameters or read sensor data. Its functions are as follows: <br>
+* 1. Read/set the I2C address of SCI Acquisition Module within the range of 0x01-0x7F;
+* 2. Read/set the time information of year, month, day, hour, minute and second of SCI Acquisition Module;
+* 3. Enable/disable sensor data record of CSV file;
+* 4. Enable/disable the display;
+* 5. Read/set the interface mode and SKU of the sensor;
+* 6. Read sensor data (name + value + unit);
+* 7. Read the supported product SKU list, including, analog, digital, I2C, UART and other types of sensors;
+
 ```python
 > sudo nano boot/config.txt
 dtparam=i2c_arm=on,i2c_arm_baudrate=100000
@@ -91,9 +92,9 @@ sudo git clone https://github.com/DFRobot/DFRobot_RP2040_SCI
 
 ```python
 python demo_config.py 
-或 
+or 
 python2 demo_config.py 
-或 
+or 
 python3 demo_config.py
 ```
 
