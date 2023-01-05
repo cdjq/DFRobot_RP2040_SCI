@@ -1,6 +1,6 @@
 /*!
  * @file getConfigAndData.ino
- * @brief 获取SCI采集模块(SCI Acquisition Module)的配置以及各接口上传感器数据
+ * @brief Get config of SCI Acquisition Module and the uploaded sensor data on each port
  *
  * @copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
  * @license     The MIT License (MIT)
@@ -50,11 +50,11 @@ void loop() {
   /**
    * @fn getSKU/getInformation
    * 
-   * @param inf    接口选择
-   * @n     ePort1                                           选中Port1接口
-   * @n     ePort2                                           选中Port2接口
-   * @n     ePort3                                           选中Port3接口
-   * @n     eALL  or  (ePort1 | ePort2 | ePort3)             选中Port1, Port2和Port3接口
+   * @param inf    Port select
+   * @n     ePort1                                           Select Port1
+   * @n     ePort2                                           Select Port2
+   * @n     ePort3                                           Select Port3
+   * @n     eALL  or  (ePort1 | ePort2 | ePort3)             Select Port1, Port2 and Port3
    */
   String sku0  = "SKU-"  + sci.getSKU(sci.ePort1);
   String sku1  = "SKU-"  + sci.getSKU(sci.ePort2);
