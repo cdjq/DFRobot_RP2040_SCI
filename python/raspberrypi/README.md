@@ -2,7 +2,7 @@
 
 * [中文版](./README_CN.md)
 
-This SCI acquisition module is a multi-functional data acquisition module designed by DFRobot. It supports all kinds of digital, analog, I2C, and UART sensors from DFRobot. The module is capable of standardizing sensor output into the format of name+data+unit, which then can be read by main controllers or displayed on the onboard display so users can view it. The following demonstrates more details about this product through Q&A. <br>
+This SCI acquisition module is a multi-functional data acquisition module designed by DFRobot. It supports all kinds of digital, analog, I2C, and UART sensors from DFRobot. The module is capable of standardizing sensor output into the format of name+data+unit, which then can be read by main controllers or displayed on the onboard display so users can view it. The following demonstrates more details about this product through Q&A. <br/>
 * Q1: DFRobot has so many sensors, so can this board support all of them? 
   A: Sorry, it can't. This board only supports part of DFRobot's sensors currently. You can check the supported product list on the library Readme, SKU select on display, or read sensor type through a controller.
 * Q2: What if the analog, digital, I2C or UART sensor I want to use is not in the supported SKU list?
