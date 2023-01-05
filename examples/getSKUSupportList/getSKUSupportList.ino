@@ -1,6 +1,6 @@
 /*!
  * @file valueUnit.ino
- * @brief 获取各类型传感器的支持列表
+ * @brief Get the supported sensor list
  *
  * @copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
  * @license     The MIT License (MIT)
