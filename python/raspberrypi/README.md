@@ -128,7 +128,7 @@ class DFRobot_RP2040_SCI_IIC(DFRobot_SCI):
       @return Error code 
       @n      ERR_CODE_NONE         or 0x00  Setting succeed 
       @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command 
-      @n      ERR_CODE_RES_PKT      or 0x02  Response packkage error 
+      @n      ERR_CODE_RES_PKT      or 0x02  Response package error 
       @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller(master) 
       @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout 
       @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command 
@@ -167,31 +167,32 @@ class DFRobot_SCI:
       @n     Analog sensor SKU  Select the SKU of a analog sensor and configure mode as analog sensor mode
       @n     Digital sensor SKU Select the SKU of a digital sensor and configure mode as digital sensor mode
       @return  Error code 
-      @n      ERR_CODE_NONE         or 0x00  设置成功
-      @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-      @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-      @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-      @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-      @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
-      @n      ERR_CODE_SLAVE_BREAK  or 0x06  从机故障
-      @n      ERR_CODE_ARGS         or 0x07  设置的参数错误
-      @n      ERR_CODE_SKU          or 0x08  该SKU为无效SKU，或者SCI采集模块(SCI Acquisition Module)不支持
-      @n      ERR_CODE_S_NO_SPACE   or 0x09  I2C从机内存不够
+      @n      ERR_CODE_NONE         or 0x00  Setting succeed
+      @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
+      @n      ERR_CODE_RES_PKT      or 0x02  Response package error
+      @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller(master)
+      @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout
+      @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command 
+      @n      ERR_CODE_SLAVE_BREAK  or 0x06  Peripheral(slave) fault
+      @n      ERR_CODE_ARGS         or 0x07  Set wrong parameters 
+      @n      ERR_CODE_SKU          or 0x08  The SKU is invalid SKU or unsupported by the SCI Acquisition Module
+      @n      ERR_CODE_S_NO_SPACE   or 0x09  Insufficient memory of I2C peripheral(slave)
     '''
   
   def get_port1(self):
     '''!
-      @brief 获取Port1接口的传感器模式，及SKU配置
-      @return 列表
-      @n      列表中第0个元素： 错误代码
-      @n      列表中第1个元素： 传感器模式
-      @n      列表中第2个元素： sku配置
+      @brief Get the sensor mode on port1 and SKU config 
+      @return List 
+      @n      The zeroth element in the list: error code 
+      @n      The first element in the list: sensor mode 
+      @n      The second element in the list: sku config 
     '''
   
   def set_port2(self, sku):
     '''!
-      @brief 设置Port2的SKU，此接口可连接I2C传感器和UART传感器，其中UART传感器需通过SKU选择，I2C是连接后，自动选择，只需将Port2配置为I2C模式即可
-      @param sku  I2C传感器或者UART传感器的7位SKU代码
+      @brief Set SKU on Port2, which can be connected to I2C or UART sensor. I2C sensors can be auto selected when connected, 
+      @ you just need to configure the mode as I2C mode for port2. But for UART sensors, please select by SKU. 
+      @param sku  The 7-bit SKU code for I2C or UART Sensor 
       @return 错误代码
       @n      ERR_CODE_NONE         or 0x00  设置成功
       @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
