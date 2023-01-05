@@ -2,7 +2,7 @@
 
 '''
   @file demo_get_key_value_unit.py
-  @brief 获取板子上所有的key，value，unit值
+  @brief Get all the key, value, and unit of the board
   
   @copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
   @license     The MIT License (MIT)
@@ -43,11 +43,11 @@ if __name__ == "__main__":
   while True:
     '''!
       @fn get_keys/get_values/get_units
-      @param inf 指定一个或多个接口参数
-      @n     ePort1                                           选中Port1接口
-      @n     ePort2                                           选中Port2接口
-      @n     ePort3                                           选中Port3接口
-      @n     eALL  or  (ePort1 | ePort2 | ePort3)             选中Port1, Port2和Port3接口
+      @param inf Parameter of the designated one or more ports
+      @n     ePort1                                           Select Port1
+      @n     ePort2                                           Select Port2
+      @n     ePort3                                           Select Port3
+      @n     eALL  or  (ePort1 | ePort2 | ePort3)             Select Port1, Port2 and Port3
     '''
     keys  = sci.get_keys(inf = sci.eALL)
     vals  = sci.get_values(inf = sci.eALL)
