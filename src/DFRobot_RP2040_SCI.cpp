@@ -1,21 +1,21 @@
 /*!
  * @file DFRobot_RP2040_SCI.cpp
- * @brief 这是基于Arduino平台的一个SCI采集模块(SCI Acquisition Module)驱动库，用户可以通过I2C接口读取或设置SCI采集模块的相关配置和数据，具体功能如下所述：
- * @n 1. 设置或读取SCI采集模块的I2C通信地址为0x21、0x22或0x23，出厂默认为0x21，I2C地址修改后，掉电重启后生效；
- * @n 2. 设置或读取Port1、Port2或Port3接口的配置：
- * @n    Port1: 可配置为模拟传感器模式或数字传感器模式，模拟传感器模式下，支持NULL、Analog、模拟传感器SKU，数字传感器模式下，支持数字传感器SKU
- * @n    Port2: 可配置为I2C传感器模式或UART传感器模式，I2C传感器模式下：支持NULL或I2C传感器，在此模式下，I2C传感器上电将被模块自动识别，UART传感器模式下，支持UART传感器SKU
- * @n    Port3: 可配置为I2C传感器模式或UART传感器模式，I2C传感器模式下：支持NULL或I2C传感器，在此模式下，I2C传感器上电将被模块自动识别，UART传感器模式下，支持UART传感器SKU
- * @n 3. 开启/关闭数据CSV文件记录
- * @n 4. 开启/关闭OLED屏显示
- * @n 5. 读取适配器板上各传感器的参数：
- * @n      a. 获取传感器数据的"名称"，各名称之间用逗号(,)隔开;;
- * @n      b. 获取传感器数据的"值"，各值之间用逗号(,)隔开;
- * @n      c. 获取传感器数据值的单位，各单位之间用逗号(,)隔开;；
- * @n      d. 获取接入传感器的SKU；
- * @n      e. 以名称:值 单位的方式获取完整的传感器信息，各信息之间用逗号（,）隔开
- * @n 6.设置和读取数据刷新时间
- * @n 7.获取数据刷新时间戳
+ * @brief This is an Arduino drive library for the DFRobot SCI Acquisition module. Users can read or set its relevant config and data through the I2C interface. The following demonstrates its detailed functions:
+ * @n 1. Set or read the I2C communication address of the SCI acquisition module as 0x21, 0x22 or 0x23, the factory default is 0x21, after the I2C address is changed, it takes effect after power-off and reboot;
+ * @n 2. Set or read the config of Port1, Port2 or Port3:
+ * @n    Port1: can be configured as analog or digital sensor mode, supporting NULL, Analog, and analog sensor SKU in analog sensor mode, and supporting digital sensor SKU in digital sensor mode
+ * @n    Port2: can be configured as I2C or UART sensor mode, supporting NULL or I2C sensor in I2C sensor mode, in which I2C sensor will be automatically recognized by the module when powered on, and supporting UART sensor SKU in UART sensor mode
+ * @n    Port3: can be configured as I2C or UART sensor mode, supporting NULL or I2C sensor in I2C sensor mode, in which I2C sensor will be automatically recognized by the module when powered on, and supporting UART sensor SKU in UART sensor mode
+ * @n 3. Enable/disable data record of CSV file
+ * @n 4. Enable/disable OLED display
+ * @n 5. Read the parameters of the sensors on the board：
+ * @n      a. Get the "name" of the sensor data, the names are separated by a comma(,);
+ * @n      b. Get the "value" of the sensor data, the values are separated by a comma(,);
+ * @n      c. Get the unit of the sensor data, the units are separated by a comma(,);
+ * @n      d. Get the SKU of the connected sensor;
+ * @n      e. Get the complete sensor information in the format of name:value unit, multiple pieces of information are separated by a comma (,)
+ * @n 6. Set and read the data refresh time
+ * @n 7. Get data refresh timestamp
  *
  * @copyright   Copyright (c) 2022 DFRobot Co.Ltd (http://www.dfrobot.com)
  * @license     The MIT License (MIT)
@@ -35,21 +35,21 @@
 #else
 #define RP2040_SUAB_DBG(...)
 #endif
-#define IIC_MAX_TRANSFER     32     ///< I2C最大传输数据
+#define IIC_MAX_TRANSFER     32     ///< Maximum transferred data via I2C
 #define CMD_START            0x00
-#define CMD_SET_IF0          0x00  ///< 设置接口0命令，可以用此命令配置A&D接口的功能和SKU
-#define CMD_SET_IF1          0x01  ///< 设置接口1命令，可以用此命令配置I2C1&UART1接口的功能和SKU
-#define CMD_SET_IF2          0x02  ///< 设置接口2命令，可以用此命令配置I2C2&UART2接口的功能和SKU
-#define CMD_READ_IF0         0x00  ///< 读取接口0的功能和SKU
-#define CMD_READ_IF1         0x01  ///< 读取接口1的功能和SKU
-#define CMD_READ_IF2         0x02  ///< 读取接口2的功能和SKU
+#define CMD_SET_IF0          0x00  ///< Set port 0 command, which can be used to configure the function and SKU on A&D ports
+#define CMD_SET_IF1          0x01  ///< Set port 1 command, which can be used to configure the function and SKU on I2C1&UART1 ports 
+#define CMD_SET_IF2          0x02  ///< Set port 2 command, which can be used to configure the function and SKU on I2C2 & UART2 ports
+#define CMD_READ_IF0         0x00  ///< Read the function and SKU on port 0
+#define CMD_READ_IF1         0x01  ///< Read the function and SKU on port 1
+#define CMD_READ_IF2         0x02  ///< Read the function and SKU on port 2
 
-#define CMD_SET_ADDR         0x03  ///< 设置I2C地址命令（此命令，设置成功后，立即生效）
-#define CMD_READ_ADDR        0x03  ///< 读取I2C地址命令（此命令，设置成功后，立即生效）
-#define CMD_SET_TIME         0x04  ///< 设置时间的年，月，日，时，分，秒
-#define CMD_GET_TIME         0x04  ///< 获取时间的年，月，日，时，分，秒
-#define CMD_RECORD_ON        0x05  ///< 启动csv记录
-#define CMD_RECORD_OFF       0x06  ///< 停止CSV记录
+#define CMD_SET_ADDR         0x03  ///< Set I2C address command (the command will take effect immediately when it's set successfully)
+#define CMD_READ_ADDR        0x03  ///< Read I2C address command (the command will take effect immediately when it's set successfully)
+#define CMD_SET_TIME         0x04  ///< Set the time information of year, month, day, hour, minute, second 
+#define CMD_GET_TIME         0x04  ///< Get the time information of year, month, day, hour, minute, second
+#define CMD_RECORD_ON        0x05  ///< Enable CSV record
+#define CMD_RECORD_OFF       0x06  ///< Disable CSV record
 
 #define CMD_SCREEN_ON        0x07  ///< 开启oled显示
 #define CMD_SCREEN_OFF       0x08  ///< 关闭oled显示
