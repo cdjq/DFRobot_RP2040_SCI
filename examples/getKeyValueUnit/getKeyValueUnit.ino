@@ -1,6 +1,6 @@
 /*!
  * @file getKeyValueUnit.ino
- * @brief 获取板子上所有的key，value，unit值
+ * @brief Get all the key, value, and unit of the board
  *
  * @copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
  * @license     The MIT License (MIT)
@@ -47,11 +47,11 @@ void loop() {
  /**
    * @fn getKeys/getValues/getUnits
    * 
-   * @param inf    接口选择
-   * @n     ePort1                                           选中Port1接口
-   * @n     ePort2                                           选中Port2接口
-   * @n     ePort3                                           选中Port3接口
-   * @n     eALL  or  (ePort1 | ePort2 | ePort3)             选中Port1, Port2和Port3接口
+   * @param inf    Port select
+   * @n     ePort1                                           Select Port1
+   * @n     ePort2                                           Select Port2
+   * @n     ePort3                                           Select Port3
+   * @n     eALL  or  (ePort1 | ePort2 | ePort3)             Select Port1, Port2 and Port3
    */
   String keys  = sci.getKeys(/*inf =*/sci.eALL);
   String vals  = sci.getValues(/*inf =*/sci.eALL);
