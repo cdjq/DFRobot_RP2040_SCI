@@ -2,11 +2,11 @@
 
 '''
   @file demo_control.py
-  @brief 通过串口命令控制SCI采集模块(SCI Acquisition Module)的CSV数据采集，以及屏幕开关。
-  @n 命令0：RECORD ON: 开启CSV记录
-  @n 命令1：RECORD OFF: 关闭CSV记录
-  @n 命令2：OLED OFF: 关闭OLED屏
-  @n 命令3：OLED ON: 开启OLED屏
+  @brief Control the CSV data acquisition and display On/Off of SCI Acquisition Module via serial commands.
+  @n Command 0: RECORD ON: Enable CSV record
+  @n Command 1: RECORD OFF: Disable CSV record
+  @n Command 2: OLED OFF: Disable OLED display
+  @n Command 3: OLED ON: Enable OLED display
   
   @copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
   @license     The MIT License (MIT)
