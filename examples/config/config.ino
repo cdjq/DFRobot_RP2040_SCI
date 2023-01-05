@@ -1,6 +1,6 @@
 /*!
  * @file config.ino
- * @brief 设置传感器SCI采集模块(SCI Acquisition Module)的I2C地址和时间。
+ * @brief Set the I2C address and time of SCI Acquisition Module
  *
  * @copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
  * @license     The MIT License (MIT)
@@ -26,7 +26,7 @@ void setup() {
   }
   Serial.println("done.");
 
-  //根据烧录时间，设置时间
+  //Set time according to the time for burning
   sci.adjustRtc(F(__DATE__), F(__TIME__)); 
   
   //Set the RTC time manually
@@ -36,24 +36,24 @@ void setup() {
   Serial.print("Address: 0x"); Serial.println(addr,HEX);
   Serial.println(sci.getRtcTime());
   
-  //将I2C地址设置为3
+  //Set I2C address as 3
   Serial.print("Set I2C Address: 0x23......");
   /**
    * @fn setI2CAddress
-   * @brief 设置SCI采集模块(SCI Acquisition Module)的I2C通信地址
+   * @brief Set the I2C communication address of SCI Acquisition Module
    * 
-   * @param addr    SCI采集模块(SCI Acquisition Module)的I2C通信地址，支持以下地址设置
-   * @n RP2040_SCI_ADDR_0X21      0x21 转换板默认I2C地址
+   * @param addr    I2C communication address of SCI Acquisition Module, support the following address settings
+   * @n RP2040_SCI_ADDR_0X21      0x21 Default I2C address
    * @n RP2040_SCI_ADDR_0X22      0x22
    * @n RP2040_SCI_ADDR_0X23      0x23
-   * @return uint8_t 错误代码
-   * @n      ERR_CODE_NONE         or 0x00  设置成功
-   * @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-   * @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-   * @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-   * @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配 
-   * @n      ERR_CODE_I2C_ADRESS   or 0x0A  I2C地址无效
+   * @return uint8_t Error code
+   * @n      ERR_CODE_NONE         or 0x00  Set successful
+   * @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
+   * @n      ERR_CODE_RES_PKT      or 0x02  Response packet error
+   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C master 
+   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response packet reception timeout
+   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command packet or command mismatch 
+   * @n      ERR_CODE_I2C_ADRESS   or 0x0A  Invalid I2C address
    */
   uint8_t errCode = sci.setI2CAddress(RP2040_SCI_ADDR_0X23);
   if(errCode == 0){
