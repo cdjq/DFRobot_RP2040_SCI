@@ -2,7 +2,7 @@
 
 '''
   @file demo_value_unit.py
-  @brief 根据SEN0334 温湿度传感器的数据名，获取相应的值和单位
+  @brief According to the name of SEN0334 temperature and humidity sensor data, get the corresponding value and unit
   
   @copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
   @license     The MIT License (MIT)
