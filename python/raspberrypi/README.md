@@ -193,243 +193,244 @@ class DFRobot_SCI:
       @brief Set SKU on Port2, which can be connected to I2C or UART sensor. I2C sensors can be auto selected when connected, 
       @ you just need to configure the mode as I2C mode for port2. But for UART sensors, please select by SKU. 
       @param sku  The 7-bit SKU code for I2C or UART Sensor 
-      @return 错误代码
-      @n      ERR_CODE_NONE         or 0x00  设置成功
-      @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-      @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-      @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-      @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-      @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
-      @n      ERR_CODE_SLAVE_BREAK  or 0x06  从机故障
-      @n      ERR_CODE_ARGS         or 0x07  设置的参数错误
-      @n      ERR_CODE_SKU          or 0x08  该SKU为无效SKU，或者SCI采集模块(SCI Acquisition Module)不支持
-      @n      ERR_CODE_S_NO_SPACE   or 0x09  I2C从机内存不够
+      @return Error code
+      @n      ERR_CODE_NONE         or 0x00  Setting succeed
+      @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
+      @n      ERR_CODE_RES_PKT      or 0x02  Response package error
+      @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+      @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout
+      @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command
+      @n      ERR_CODE_SLAVE_BREAK  or 0x06  Peripheral fault
+      @n      ERR_CODE_ARGS         or 0x07  Set wrong parameters 
+      @n      ERR_CODE_SKU          or 0x08  The SKU is invalid SKU or unsupported by the SCI Acquisition Module
+      @n      ERR_CODE_S_NO_SPACE   or 0x09  Insufficient memory of I2C peripheral
     '''
 
   def get_port2(self):
     '''!
-      @brief 获取Port2的传感器模式，及SKU配置
-      @return 列表
-      @n      列表中第0个元素： 错误代码
-      @n      列表中第1个元素： 传感器模式
-      @n      列表中第2个元素： sku配置
+      @brief Get the sensor mode on port2 and SKU config
+      @return List
+      @n      The zeroth element in the list: error code 
+      @n      The first element in the list: sensor mode 
+      @n      The second element in the list: sku config
     '''
 
   def set_port3(self, sku):
     '''!
-      @brief 设置Port3的SKU，此接口可连接I2C传感器和UART传感器，其中UART传感器需通过SKU选择，I2C是连接后，自动选择，只需将Port2配置为I2C模式即可
-      @param sku  I2C传感器或者UART传感器的7位SKU代码
-      @return 错误代码
-      @n      ERR_CODE_NONE         or 0x00  设置成功
-      @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-      @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-      @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-      @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-      @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
-      @n      ERR_CODE_SLAVE_BREAK  or 0x06  从机故障
-      @n      ERR_CODE_ARGS         or 0x07  设置的参数错误
-      @n      ERR_CODE_SKU          or 0x08  该SKU为无效SKU，或者SCI采集模块(SCI Acquisition Module)不支持
-      @n      ERR_CODE_S_NO_SPACE   or 0x09  I2C从机内存不够
+      @brief Set SKU on Port2, which can be connected to I2C or UART sensor. I2C sensors can be auto selected when connected,
+      @ you just need to configure the mode as I2C mode for port2. But for UART sensors, please select by SKU. 
+      @param sku  The 7-bit SKU code for I2C or UART Sensor
+      @return Error code 
+      @n      ERR_CODE_NONE         or 0x00  Setting succeed
+      @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
+      @n      ERR_CODE_RES_PKT      or 0x02  Response package error
+      @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+      @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout
+      @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command 
+      @n      ERR_CODE_SLAVE_BREAK  or 0x06  Peripheral fault
+      @n      ERR_CODE_ARGS         or 0x07  Set wrong parameters 
+      @n      ERR_CODE_SKU          or 0x08  The SKU is invalid SKU or unsupported by the SCI Acquisition Module
+      @n      ERR_CODE_S_NO_SPACE   or 0x09  Insufficient memory of I2C peripheral
     '''
 
   def get_port3(self):
     '''!
-      @brief 获取Port3接口的传感器模式，及SKU配置
-      @return 列表
-      @n      列表中第0个元素： 错误代码
-      @n      列表中第1个元素： 传感器模式
-      @n      列表中第2个元素： sku配置
+      @brief Get the sensor mode on port3 and SKU config
+      @return List
+      @n      The zeroth element in the list: error code 
+      @n      The first element in the list: sensor mode 
+      @n      The second element in the list: sku config
     '''
 
   def set_recv_timeout(self,timeout = 2):
     '''!
-      @brief SCI采集模块(SCI Acquisition Module)初始化，旨在初始化通信接口
-      @param freq 设置通信频率
-      @return int 初始化状态
-      @n       0      初始化成功
-      @n      others  初始化失败
+      @brief Initalize the SCI Acquisition Module, mainly for initializing communication interface
+      @param freq Set communication frequency
+      @return int Init status
+      @n       0      Init successful
+      @n      others  Init failed
     '''
     
   def adjust_rtc_datetime(self):
     '''!
-      @brief 设置SCI采集模块(SCI Acquisition Module)的日期和时间为树莓派的当前时间
-      @return  错误代码
-      @n      ERR_CODE_NONE         or 0x00  设置成功
-      @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-      @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-      @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-      @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-      @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
+      @brief Set the date and time of the SCI Acquisition Module as the current time of Raspbbery Pi 
+      @return  rror code
+      @n      ERR_CODE_NONE         or 0x00  Setting succeed 
+      @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
+      @n      ERR_CODE_RES_PKT      or 0x02  Response package error 
+      @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+      @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout 
+      @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command 
     '''
 
   def adjust_rtc(self, year, month, day, week, hour, minute, second):
     '''!
-      @brief 设置SCI采集模块(SCI Acquisition Module)的年月日时分秒周等日期
-      @param year   年
-      @param month  月
-      @param day    日
-      @param week   周
-      @param hour   时
-      @param minute 分
-      @param second 秒
-      @return  错误代码
-      @n      ERR_CODE_NONE         or 0x00  设置成功
-      @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-      @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-      @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-      @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-      @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
+      @brief Set the year, month, day, week, hour, minute, second for the SCI Acquisition Module
+      @param year   Year
+      @param month  Month
+      @param day    Day
+      @param week   Week 
+      @param hour   Hour
+      @param minute Minute
+      @param second Second
+      @return  Error code 
+      @n      ERR_CODE_NONE         or 0x00  Setting succeed 
+      @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command 
+      @n      ERR_CODE_RES_PKT      or 0x02  Response package error 
+      @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+      @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout 
+      @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command
     '''
 
   def get_rtc_time(self):
     '''!
-      @brief @brief 获取SCI采集模块(SCI Acquisition Module)的年月日时分秒周等日期
-      @return 长度为2的列表
-      @n      列表中第0个元数: 列表年，月，日，星期，时，分，秒[年，月，日，星期，时，分，秒]
-      @n      列表中第2个元数: 字符串，年/月/日 星期 时:分:秒 例: 2022/08/09 2 09:08:00
+      @brief @brief Get the year, month, day, week, hour, minute, second of the SCI Acquisition Module
+      @return List with a length of 2 data 
+      @n      The first data in the list: list year, month, day, week, hour, minute, second[year, month, day, week, hour, minute, second]
+      @n      The second data in the list: char string, year/month/day week hour:minute/second e.g. 2022/08/09 2 09:08:00
     '''
   
   def set_refresh_rate(self, rate):
     '''!
-      @brief 设置数据刷新时间
-      @param rate 枚举变量
-      @n eRefreshRateMs     ms级刷新率，按数据的实际刷新率刷新
-      @n eRefreshRate1s     刷新率1s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate3s     刷新率3s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate5s     刷新率5s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate10s    刷新率10s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate30s    刷新率30s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate1min   刷新率1min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate5min   刷新率5min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate10min  刷新率10min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @return  错误代码
-      @n      ERR_CODE_NONE         or 0x00  设置成功
-      @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-      @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-      @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-      @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-      @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
+      @brief Set data refresh rate
+      @param rate Enum variable
+      @n eRefreshRateMs     ms-level, refresh at the actual refresh rate
+      @n eRefreshRate1s     1s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate 
+      @n eRefreshRate3s     3s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @n eRefreshRate5s     5s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @n eRefreshRate10s    10s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @n eRefreshRate30s    30s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @n eRefreshRate1min   1min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @n eRefreshRate5min   5min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @n eRefreshRate10min  10min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @return  Error code
+      @n      ERR_CODE_NONE         or 0x00  Setting succeed
+      @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
+      @n      ERR_CODE_RES_PKT      or 0x02  Response package error
+      @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+      @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout
+      @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command 
     '''
 
   def get_refresh_rate(self):
     '''!
-      @brief 获取数据刷新时间
-      @param rate 枚举变量
-      @n eRefreshRateMs     ms级刷新率，按数据的实际刷新率刷新
-      @n eRefreshRate1s     刷新率1s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate3s     刷新率3s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate5s     刷新率5s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate10s    刷新率10s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate30s    刷新率30s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate1min   刷新率1min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate5min   刷新率5min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate10min  刷新率10min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @return  列表
-      @n      列表中第0个元素：错误代码
-      @n      列表中第1个元素：刷新率
-      @n      0 or eRefreshRateMs     ms级刷新率，按数据的实际刷新率刷新
-      @n      1 or eRefreshRate1s     刷新率1s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n      2 or eRefreshRate3s     刷新率3s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n      3 or eRefreshRate5s     刷新率5s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n      4 or eRefreshRate10s    刷新率10s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n      5 or eRefreshRate30s    刷新率30s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n      6 or eRefreshRate1min   刷新率1min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n      7 or eRefreshRate5min   刷新率5min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n      8 or eRefreshRate10min  刷新率10min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
+      @brief Get data refresh rate
+      @param rate Enum variable
+      @n eRefreshRateMs     ms-level, refresh at the actual refresh rate
+      @n eRefreshRate1s     1s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate 
+      @n eRefreshRate3s     3s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @n eRefreshRate5s     5s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @n eRefreshRate10s    10s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @n eRefreshRate30s    30s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @n eRefreshRate1min   1min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @n eRefreshRate5min   5min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @n eRefreshRate10min  10min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @return  List
+      @n      The zeroth element in the list: error code 
+      @n      The first element in the list: refresh rate
+      @n      0 or eRefreshRateMs     ms-level, refresh at the actual refresh rate
+      @n      1 or eRefreshRate1s     1s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate 
+      @n      2 or eRefreshRate3s     3s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate 
+      @n      3 or eRefreshRate5s     5s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate 
+      @n      4 or eRefreshRate10s    10s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate 
+      @n      5 or eRefreshRate30s    30s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate 
+      @n      6 or eRefreshRate1min   1min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate 
+      @n      7 or eRefreshRate5min   5min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate 
+      @n      8 or eRefreshRate10min  10min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate 
     '''
 
   def get_refresh_rate_describe(self, rate):
     '''!
-      @brief 获取刷新率的描述，单位s
+      @brief Get refresh rate description, unit s 
     '''
     
   def get_timestamp(self):
     '''!
-      @brief 获取时间戳,此时间戳为(SCI Acquisition Module)数据刷新时间
-      @return 时:分:秒(00:00:00) 或 分:秒.百分之（0~99）秒(00:00.00)
+      @brief Get time stamp, also the data refresh time of the SCI Acquisition Module
+      @return Hour:Minute:Second(00:00:00) or Minute:Second. X%(0-99)second(00:00.00)
     '''
 
   def get_AD_sensor_mode_describe(self, mode):
     '''!
-      @brief 获取A&D类型传感器的模式描述
-      @param mode 传感器类型模式
-      @n     eAnalogMode    模拟传感器模式
-      @n     eDigitalMode   数字传感器模式
-      @return 传感器的模式描述字符串
-      @n      "ANALOG"         模拟传感器模式
-      @n      "DIGITAL"        数字传感器模式
-      @n      "UNKNOWN"        未知模式
+      @brief Get mode description of Aanlog & Digital sensor 
+      @param mode Sensor mode 
+      @n     eAnalogMode    Aanlog sensor mode
+      @n     eDigitalMode   Digital sensor mode
+      @return Sensor mode description char string 
+      @n      "ANALOG"         Analog sensor mode 
+      @n      "DIGITAL"        Digital sensor mode 
+      @n      "UNKNOWN"        Unknown mode 
     '''
 
   def get_I2CUART_sensor_mode_describe(self, mode):
     '''!
-      @brief 获取I2C&UART类型传感器的模式描述
-      @param mode 传感器类型模式
-      @n     eI2CMode    I2C传感器模式
-      @n     eUARTMode   UART传感器模式
-      @return 传感器的模式描述字符串
-      @n      "I2C"         I2C传感器模式
-      @n      "UART"        UART传感器模式
-      @n      "UNKNOWN"     未知模式
+      @brief Get mode description of I2C & UART sensor 
+      @param mode Sensor mode 
+      @n     eI2CMode    I2C sensor mode 
+      @n     eUARTMode   UART sensor mode 
+      @return Sensor mode description char string
+      @n      "I2C"         I2C sensor mode 
+      @n      "UART"        UART sensor mode 
+      @n      "UNKNOWN"     Unknown
     '''
   def enable_record(self):
     '''!
-      @brief 开启CSV文件记录，调用此命令后，会将传感器采集到的数据记录在以年月日时分秒命名的CSV文件中
-      @return 错误代码
-      @n      ERR_CODE_NONE         or 0x00  设置成功
-      @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-      @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-      @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-      @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-      @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
+      @brief Enable data recording in CSV file. When enabled, the sensor data will be recorded in the csv file named by date year, year, day, hour, minute, and second.
+      @return Error code 
+      @n      ERR_CODE_NONE         or 0x00  Setting succeed
+      @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
+      @n      ERR_CODE_RES_PKT      or 0x02  Response package error
+      @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+      @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout
+      @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command
     '''
 
   def disable_record(self):
     '''!
-      @brief 关闭CSV文件记录，调用此命令后，会停止将传感器采集到的数据记录在以年月日时分秒命名的CSV文件中
-      @return 错误代码
-      @n      ERR_CODE_NONE         or 0x00  设置成功
-      @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-      @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-      @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-      @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-      @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
+      @brief Disable data recording in CSV file. When disabled, data recording stops 
+      @return Error code
+      @n      ERR_CODE_NONE         or 0x00  Setting succeed
+      @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
+      @n      ERR_CODE_RES_PKT      or 0x02  Response package error
+      @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+      @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout
+      @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command
     '''
 
   def display_on(self):
     '''!
-      @brief 开启SCI采集模块(SCI Acquisition Module)屏显示
-      @return 错误代码
-      @n      ERR_CODE_NONE         or 0x00  设置成功
-      @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-      @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-      @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-      @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-      @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
+      @brief Switch on SCI Acquisition Module Screen 
+      @return Error code
+      @n      ERR_CODE_NONE         or 0x00  Setting succeed
+      @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
+      @n      ERR_CODE_RES_PKT      or 0x02  Response package error
+      @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+      @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout
+      @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command
     '''
 
   def display_off(self):
     '''!
-      @brief 关闭SCI采集模块(SCI Acquisition Module)屏显示
-      @return 错误代码
-      @n      ERR_CODE_NONE         or 0x00  设置成功
-      @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-      @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-      @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-      @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-      @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
+      @brief Switch off SCI Acquisition Module Screen
+      @return Error code
+      @n      ERR_CODE_NONE         or 0x00  Setting succeed
+      @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
+      @n      ERR_CODE_RES_PKT      or 0x02  Response package error
+      @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+      @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout
+      @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command
     '''
 
   def get_information(self, inf, timestamp = False):
     '''!
-      @brief 获取SCI采集模块(SCI Acquisition Module)上指定的一个或多个接口上所连接的所有传感器的属性项(属性名称:数据值 单位)信息，属性项与属性项之间用','号隔开
-      @param inf 指定一个或多个接口参数
-      @n     ePort1                                    指定Port1接口，获取Port1接口上所连接的所有传感器的属性项
-      @n     ePort2                                    指定Port2接口，获取ePort2接口上所连接的所有传感器的属性项
-      @n     ePort3                                    选中Port3接口，获取ePort3接口上所连接的所有传感器的属性项
-      @n     eALL  or  (ePort1 | ePort2 | ePort3)      选中Port1, Port2和Port3接口，获取所有接口上所连接的所有传感器的属性项
-      @return SCI采集模块(SCI Acquisition Module)上指定的一个或多个接口上所连接的所有传感器的属性项
-      @n 例 SEN0334:  Temp_Air:28.65 C,Humi_Air:30.12 %RH
+      @brief Get the attribute information(attribute: value unit) of all sensors connected to the designated one or more ports. Separate attributes using "," 
+      @param inf Designate one or more ports
+      @n     ePort1                                    Designate port1, get attributes of all sensors connected to port1 
+      @n     ePort2                                    Designate port2, get attributes of all sensors connected to port2
+      @n     ePort3                                    Designate port3, get attributes of all sensors connected to port3
+      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Designate port1, port2 and port3, get attributes of all sensors connected to all ports
+      @return The attribute information of all sensors connected to the designated one or more ports of the SCI Acquisition Module
+      @n For example, SEN0334:  Temp_Air:28.65 C,Humi_Air:30.12 %RH
     '''
 
   def get_sku(self, inf):
