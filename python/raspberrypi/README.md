@@ -11,7 +11,7 @@ This SCI acquisition module is a multi-functional data acquisition module design
   A: Each sensor from DFRobot has a unique SKU. The module can identify the connected sensor through automatic identification or the user-selected SKU, and call the corresponding driver to acquire and convert data. (Note: For some I2C sensors, the adapter can identify the SKU by I2C address, but for the others, it can only identify the connected one by user-selected SKU.)
 * **Q4: How is the SCI Acquisition Module connected to these sensors?**<br>
   A: The module has an onboard Gravity 3pin analog/digital interface (for connecting analog or digital sensors) and 2 Gravity 4pin I2C/UART interfaces (for connecting I2C or UART sensors), so users can connect the corresponding sensor by switching to the corresponding interface mode.
-* **Q5: What's the onboard display and button used for?** <br>
+* **Q5: What are the onboard display and button used for?** <br>
   A: Users can configure or view the module parameters such as I2C slave address, time, switchable interface mode, SKU select, firmware version, and sensor data by the onboard display and buttons.
 * **Q6: How can I use Arduino or Raspberry Pi to read and set parameters of the SCI Acquisition Module, and read the sensor data?**<br>
   Connect your controller to the acquisition module via the onboard Gravity I2C interface, and then you can operate the module. Find more details on [the wiki page](https://wiki.dfrobot.com/SKU_DFR0999_Gravity_SCI_Acquisition_Module). 
