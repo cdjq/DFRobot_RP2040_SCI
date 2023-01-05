@@ -1,10 +1,10 @@
 /*!
  * @file control.ino
- * @brief 通过串口命令控制SCI采集模块(SCI Acquisition Module)的CSV数据采集，以及屏幕开关。
- * @n 命令1：RECORD ON: 开启CSV记录
- * @n 命令2：RECORD OFF: 关闭CSV记录
- * @n 命令3：OLED OFF: 关闭OLED屏
- * @n 命令4：OLED ON: 开启OLED屏
+ * @brief Control the CSV data acquisition and display On/Off of SCI Acquisition Module via serial commands.
+ * @n Command 1: RECORD ON: Enable CSV record
+ * @n Command 2: RECORD OFF: Disable CSV record
+ * @n Command 3: OLED OFF: Disable OLED display
+ * @n Command 4: OLED ON: Enable OLED display
  *
  * @copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
  * @license     The MIT License (MIT)
@@ -50,8 +50,8 @@ void loop() {
 void parseCmd(char *s){
   String cmd = String(s);
   String subCmd;
-  int idx = cmd.indexOf("\r\n");//返回"\r\n"在字符串中第一次出现的位置索引
-  if(idx) subCmd = cmd.substring(0, idx);//去掉"\r\n"，并去掉字符串前后的空格
+  int idx = cmd.indexOf("\r\n");//Return the index to the location where "\r\n" appears in the character string for the first time 
+  if(idx) subCmd = cmd.substring(0, idx);//Remove "\r\n" and the spaces before and after the character string
   subCmd.trim();
   subCmd.toUpperCase();
   if(subCmd.equals("RECORD ON")){
