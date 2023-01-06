@@ -51,48 +51,48 @@
 #define CMD_RECORD_ON        0x05  ///< Enable CSV record
 #define CMD_RECORD_OFF       0x06  ///< Disable CSV record
 
-#define CMD_SCREEN_ON        0x07  ///< 开启oled显示
-#define CMD_SCREEN_OFF       0x08  ///< 关闭oled显示
-#define CMD_GET_NAME         0x09  ///< 获取传感器数据名
-#define CMD_GET_VALUE        0x0A  ///< 获取传感器数据值
-#define CMD_GET_UNIT         0x0B  ///< 获取传感器数据单位
-#define CMD_GET_SKU          0x0C  ///< 获取传感器的SKU, SKU之间用逗号(,)分开
-#define CMD_GET_INFO         0x0D  ///< 获取传感器的数据名，值和单位名，值和单位名之间空一格，其他用逗号(,)分开
+#define CMD_SCREEN_ON        0x07  ///< Enable OLED display
+#define CMD_SCREEN_OFF       0x08  ///< Disable OLED display
+#define CMD_GET_NAME         0x09  ///< Get sensor data name
+#define CMD_GET_VALUE        0x0A  ///< Get sensor data value
+#define CMD_GET_UNIT         0x0B  ///< Get sensor data unit
+#define CMD_GET_SKU          0x0C  ///< Get sensor SKU, SKUs are separated by a comma(,) 
+#define CMD_GET_INFO         0x0D  ///< Get the sensor data name, value and unit name, the value and unit name are separated by space, and others are separated by comma(,)
 
-#define CMD_GET_KEY_VALUE0    0x0E  ///< 根据数据名获取对应的数据的值
-#define CMD_GET_KEY_VALUE1    0x0F  ///< 根据数据名获取选中的接口对应的数据的值
-#define CMD_GET_KEY_VALUE2    0x10  ///< 根据数据名获取选中的接口上指定SKU对应的数据的值
-#define CMD_GET_KEY_UINT0     0x11  ///< 根据数据名获取对应的数据的单位
-#define CMD_GET_KEY_UINT1     0x12  ///< 根据数据名获取选中的接口对应的数据的单位
-#define CMD_GET_KEY_UINT2     0x13  ///< 根据数据名获取选中的接口上指定SKU对应的数据的单位
-#define CMD_RESET             0x14  ///< 复制I2C从机发送缓存命令
-#define CMD_SKU_A             0x15  ///< 获取传感器转接板支持的Analog传感器SKU命令
-#define CMD_SKU_D             0x16  ///< 获取传感器转接板支持的Digital传感器SKU命令
-#define CMD_SKU_IIC           0x17  ///< 获取传感器转接板支持的I2C传感器SKU命令
-#define CMD_SKU_UART          0x18  ///< 获取传感器转接板支持的UART传感器SKU命令
-#define CMD_GET_TIMESTAMP     0x19  ///< 获取时间戳
-#define CMD_SET_REFRESH_TIME  0x20  ///< 设置刷新率
-#define CMD_GET_REFRESH_TIME  0x20  ///< 获取刷新率
-#define CMD_GET_VERSION       0x21  ///< 获取版本号
+#define CMD_GET_KEY_VALUE0    0x0E  ///< Get the corresponding data value according to the data name
+#define CMD_GET_KEY_VALUE1    0x0F  ///< Get the data value on the selected port according to the data name
+#define CMD_GET_KEY_VALUE2    0x10  ///< Get the data value of the designated SKU on the selected port according to the data name
+#define CMD_GET_KEY_UINT0     0x11  ///< Get the corresponding data unit according to the data name
+#define CMD_GET_KEY_UINT1     0x12  ///< Get unit of the data on the selected port according to the data name
+#define CMD_GET_KEY_UINT2     0x13  ///< Get the data unit of the designated SKU on the selected port according to the data name
+#define CMD_RESET             0x14  ///< Copy I2C peripheral(slave) and send cache command
+#define CMD_SKU_A             0x15  ///< Command to get the supported analog sensor SKU 
+#define CMD_SKU_D             0x16  ///< Command to get the supported digital sensor SKU
+#define CMD_SKU_IIC           0x17  ///< Command to get the supported I2C sensor SKU
+#define CMD_SKU_UART          0x18  ///< Command to get the supported UART sensor SKU
+#define CMD_GET_TIMESTAMP     0x19  ///< Get timestamp
+#define CMD_SET_REFRESH_TIME  0x20  ///< Set refresh rate
+#define CMD_GET_REFRESH_TIME  0x20  ///< Get refresh rate
+#define CMD_GET_VERSION       0x21  ///< Get version number
 
 #define CMD_END             CMD_GET_VERSION
 
-#define STATUS_SUCCESS      0x53  ///< 响应成功状态   
-#define STATUS_FAILED       0x63  ///< 响应失败状态 
+#define STATUS_SUCCESS      0x53  ///< Status of successful response   
+#define STATUS_FAILED       0x63  ///< Status of failed response 
 
 #define DEBUG_TIMEOUT_MS    2000
 
-#define ERR_CODE_NONE               0x00 ///< 通信正常
-#define ERR_CODE_CMD_INVAILED       0x01 ///< 无效命令
-#define ERR_CODE_RES_PKT            0x02 ///< 响应包错误
-#define ERR_CODE_M_NO_SPACE         0x03 ///< I2C主机内存不够
-#define ERR_CODE_RES_TIMEOUT        0x04 ///< 响应包接收超时
-#define ERR_CODE_CMD_PKT            0x05 ///< 无效的命令包或者命令不匹配
-#define ERR_CODE_SLAVE_BREAK        0x06 ///< 从机故障
-#define ERR_CODE_ARGS               0x07 ///< 设置的参数错误
-#define ERR_CODE_SKU                0x08 ///< 该SKU为无效SKU，或者SCI采集模块(SCI Acquisition Module)不支持
-#define ERR_CODE_S_NO_SPACE         0x09 ///< I2C从机内存不够
-#define ERR_CODE_I2C_ADRESS         0x0A ///< I2C地址无效
+#define ERR_CODE_NONE               0x00 ///< Normal communication 
+#define ERR_CODE_CMD_INVAILED       0x01 ///< Invalid command
+#define ERR_CODE_RES_PKT            0x02 ///< Response packet error
+#define ERR_CODE_M_NO_SPACE         0x03 ///< Insufficient memory of I2C controller(master)
+#define ERR_CODE_RES_TIMEOUT        0x04 ///< Response packet reception timeout
+#define ERR_CODE_CMD_PKT            0x05 ///< Invalid command packet or the command doesn't match
+#define ERR_CODE_SLAVE_BREAK        0x06 ///< Peripheral(slave) fault
+#define ERR_CODE_ARGS               0x07 ///< The set parameter is wrong
+#define ERR_CODE_SKU                0x08 ///< The SKU is an invalid SKU, or the one not supported by SCI Acquisition Module
+#define ERR_CODE_S_NO_SPACE         0x09 ///< Insufficient memory of I2C peripheral(slave)
+#define ERR_CODE_I2C_ADRESS         0x0A ///< Invalid I2C address
 #if defined(ESP32)
 #define I2C_ACHE_MAX_LEN            32//128
 #else
@@ -101,18 +101,18 @@
 
 #define SKU_MAX_VAILD_LEN           7
 typedef struct{
-  uint8_t cmd;      /**< 命令                     */
-  uint8_t argsNumL; /**< 命令后参数的个数低字节    */
-  uint8_t argsNumH; /**< 命令后参数的个数高字节    */
-  uint8_t args[0];  /**< 0长度数组，它的大小取决于上一个变量argsNumL和argsNumH的值     */
+  uint8_t cmd;      /**< Command                     */
+  uint8_t argsNumL; /**< Low byte of parameter number after the command    */
+  uint8_t argsNumH; /**< High byte of parameter number after the command    */
+  uint8_t args[0];  /**< The array with length of 0, its size depends on the value of the previous variables argsNumL and argsNumH     */
 }__attribute__ ((packed)) sCmdSendPkt_t, *pCmdSendPkt_t;
 
 typedef struct{
-  uint8_t status;   /**< 响应包状态，0x53，响应成功，0x63，响应失败 */
-  uint8_t cmd;      /**< 响应包命令 */
-  uint8_t lenL;     /**< 除去包头的buf数组的长度的低字节 */
-  uint8_t lenH;     /**< 除去包头的buf数组的长度的高字节 */
-  uint8_t buf[0];   /**< 0长度数组，它的大小取决于上一个变量lenL和lenH的值 */
+  uint8_t status;   /**< Response packet status, 0x53, response succeeded, 0x63, response failed */
+  uint8_t cmd;      /**< Response packet command */
+  uint8_t lenL;     /**< Low byte of the buf array length excluding packet header */
+  uint8_t lenH;     /**< High byte of the buf array length excluding packet header */
+  uint8_t buf[0];   /**< The array with length of 0, its size depends on the value of the previous variables lenL and lenH */
 }__attribute__ ((packed)) sCmdRecvPkt_t, *pCmdRecvPkt_t;
 
 DFRobot_SCI::DFRobot_SCI()
@@ -164,18 +164,18 @@ uint8_t DFRobot_SCI::setPort1(char *sku){
   uint8_t errorCode;
   pCmdSendPkt_t sendpkt = NULL;
   uint16_t length = 0;
-  //1.判断sku指针是否为空
+  //1. Determine if the SKU pointer is null
   if(sku == NULL){
     RP2040_SUAB_DBG("sku pointer is NULL");
     return ERR_CODE_ARGS;
   }
-  //2.判断sku长度
+  //2. Determine SKU length
   if(strlen(sku) > SKU_MAX_VAILD_LEN){
     RP2040_SUAB_DBG("sku length is too long!");
     return ERR_CODE_ARGS;
   }
   
-  //3.发送命令
+  //3. Send command
   length            = (strlen(sku) > SKU_MAX_VAILD_LEN) ? SKU_MAX_VAILD_LEN : strlen(sku);
   sendpkt           = (pCmdSendPkt_t)malloc(sizeof(sCmdSendPkt_t) + length);
   if(sendpkt == NULL) return ERR_CODE_M_NO_SPACE;
@@ -226,18 +226,18 @@ uint8_t DFRobot_SCI::setPort2(char *sku){
   uint8_t errorCode;
   pCmdSendPkt_t sendpkt = NULL;
   uint16_t length = 0;
-  //1.判断sku指针是否为空
+  //1. Determine if the SKU pointer is null
   if(sku == NULL){
     RP2040_SUAB_DBG("sku pointer is NULL");
     return ERR_CODE_ARGS;
   }
-  //2.判断sku长度
+  //2. Determine SKU length
   if(strlen(sku) > SKU_MAX_VAILD_LEN){
     RP2040_SUAB_DBG("sku length is too long!");
     return ERR_CODE_ARGS;
   }
   
-  //3.发送命令
+  //3. Send command
   length            = (strlen(sku) > SKU_MAX_VAILD_LEN) ? SKU_MAX_VAILD_LEN : strlen(sku);
   sendpkt           = (pCmdSendPkt_t)malloc(sizeof(sCmdSendPkt_t) + length);
   if(sendpkt == NULL) return ERR_CODE_M_NO_SPACE;
@@ -288,18 +288,18 @@ uint8_t DFRobot_SCI::setPort3(char *sku){
   uint8_t errorCode;
   pCmdSendPkt_t sendpkt = NULL;
   uint16_t length = 0;
-  //1.判断sku指针是否为空
+  //1. Determine if the SKU pointer is null
   if(sku == NULL){
     RP2040_SUAB_DBG("sku pointer is NULL");
     return ERR_CODE_ARGS;
   }
-  //2.判断sku长度
+  //2. Determine SKU length
   if(strlen(sku) > SKU_MAX_VAILD_LEN){
     RP2040_SUAB_DBG("sku length is too long!");
     return ERR_CODE_ARGS;
   }
   
-  //3.发送命令
+  //3. Send command
   length            = (strlen(sku) > SKU_MAX_VAILD_LEN) ? SKU_MAX_VAILD_LEN : strlen(sku);
   sendpkt           = (pCmdSendPkt_t)malloc(sizeof(sCmdSendPkt_t) + length);
   if(sendpkt == NULL) return ERR_CODE_M_NO_SPACE;
@@ -1214,7 +1214,7 @@ uint32_t DFRobot_SCI::getRefreshRate_ms(uint8_t rate){
 void * DFRobot_SCI::recvPacket(uint8_t cmd, uint8_t *errorCode){
   if(cmd > CMD_END){
     RP2040_SUAB_DBG("cmd is error!");
-    if(errorCode) *errorCode = ERR_CODE_CMD_INVAILED; //没有这个命令
+    if(errorCode) *errorCode = ERR_CODE_CMD_INVAILED; //There is no this command
     return NULL;
   }
   
@@ -1231,7 +1231,7 @@ void * DFRobot_SCI::recvPacket(uint8_t cmd, uint8_t *errorCode){
         recvData(&recvPkt.cmd, 1);
         if(recvPkt.cmd != cmd){
           reset(cmd);
-          if(errorCode) *errorCode = ERR_CODE_RES_PKT; //响应包错误
+          if(errorCode) *errorCode = ERR_CODE_RES_PKT; //Response packet error
           RP2040_SUAB_DBG("Response pkt is error!");
           return NULL;
         }
@@ -1240,7 +1240,7 @@ void * DFRobot_SCI::recvPacket(uint8_t cmd, uint8_t *errorCode){
         recvPktPtr = (pCmdRecvPkt_t)malloc(sizeof(sCmdRecvPkt_t) + length);
         if(recvPktPtr == NULL){
           reset(cmd);
-          if(errorCode) *errorCode = ERR_CODE_M_NO_SPACE; //I2C主机内存不够
+          if(errorCode) *errorCode = ERR_CODE_M_NO_SPACE; //Insufficient memory of I2C controller(master)
           return NULL;
         }
         memcpy(recvPktPtr, &recvPkt, sizeof(sCmdRecvPkt_t));
@@ -1254,7 +1254,7 @@ void * DFRobot_SCI::recvPacket(uint8_t cmd, uint8_t *errorCode){
     yield();
   }
   reset(cmd);
-  if(errorCode) *errorCode = ERR_CODE_RES_TIMEOUT; //接收包超时
+  if(errorCode) *errorCode = ERR_CODE_RES_TIMEOUT; //Receive packet timeout
   RP2040_SUAB_DBG("Time out!");
   RP2040_SUAB_DBG(millis() - t);
   return NULL;
@@ -1298,11 +1298,11 @@ uint16_t DFRobot_SCI::date2days(uint16_t year, uint8_t month, uint8_t day)
         }
     }
     if (month > 2 && year % 4 == 0)
-        ++days; //闰年
-    //闰年分为普通闰年和世纪闰年
-    //判断方法：公历年份（阳历）是4的倍数，且不是一百的倍数，为普通闰年，公历年份是整百数，且必须是400的倍数才是世纪闰年。
-    //4年一闰，百年不润，400年再闰
-    //2000年是闰年，2004是闰年，2100不是闰年，2104是闰年
+        ++days; //Leap year
+    //Leap years are divided into common and century leap years
+    //The rule to decide leap year: In the Gregorian calendar, a common leap year is a year that is exactly divisible by 4 but not divisible by 100; a century leap year is a year that is exactly divisible by 400.
+    //Add a leap year every 4 years, skip one every 100 years except every 400
+    //The year 2000 is a leap year, 2004 is a leap year, 2100 is not a leap year, and 2104 is a leap year
     return days + 365 * year + (year + 3) / 4 - 1;
 }
 
