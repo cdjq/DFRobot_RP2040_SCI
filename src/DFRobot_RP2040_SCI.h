@@ -1,14 +1,14 @@
 /*!
  * @file DFRobot_RP2040_SCI.h
- * @brief 这是基于Arduino平台的一个SCI采集模块(SCI Acquisition Module)驱动库，用户可以通过I2C接口读取或设置SCI采集模块的相关配置和数据，具体功能如下所述：
- * @n 1. 设置或读取SCI采集模块的I2C通信地址为0x21、0x22或0x23，出厂默认为0x21，I2C地址修改后，掉电重启后生效；
- * @n 2. 设置或读取Port1、Port2或Port3接口的配置：
- * @n    Port1: 可配置为模拟传感器模式或数字传感器模式，模拟传感器模式下，支持NULL、Analog、模拟传感器SKU，数字传感器模式下，支持数字传感器SKU
- * @n    Port2: 可配置为I2C传感器模式或UART传感器模式，I2C传感器模式下：支持NULL或I2C传感器，在此模式下，I2C传感器上电将被模块自动识别，UART传感器模式下，支持UART传感器SKU
- * @n    Port3: 可配置为I2C传感器模式或UART传感器模式，I2C传感器模式下：支持NULL或I2C传感器，在此模式下，I2C传感器上电将被模块自动识别，UART传感器模式下，支持UART传感器SKU
- * @n 3. 开启/关闭数据CSV文件记录
- * @n 4. 开启/关闭OLED屏显示
- * @n 5. 读取适配器板上各传感器的参数：
+ * @brief This is an Arduino drive library for the DFRobot SCI Acquisition module. Users can read or set its relevant config and data through the I2C interface. The following demonstrates its detailed functions:
+ * @n 1. Set or read the I2C communication address of the SCI acquisition module as 0x21, 0x22 or 0x23, the factory default is 0x21, after the I2C address is changed, it takes effect after power-off and reboot;
+ * @n 2. Set or read the config of Port1, Port2 or Port3:
+ * @n    Port1: can be configured as analog or digital sensor mode, supporting NULL, Analog, and analog sensor SKU in analog sensor mode, and supporting digital sensor SKU in digital sensor mode
+ * @n    Port2: can be configured as I2C or UART sensor mode, supporting NULL or I2C sensor in I2C sensor mode, in which I2C sensor will be automatically recognized by the module when powered on, and supporting UART sensor SKU in UART sensor mode
+ * @n    Port3: can be configured as I2C or UART sensor mode, supporting NULL or I2C sensor in I2C sensor mode, in which I2C sensor will be automatically recognized by the module when powered on, and supporting UART sensor SKU in UART sensor mode
+ * @n 3. Enable/disable data record of CSV file
+ * @n 4. Enable/disable OLED display
+ * @n 5. Read the parameters of the sensors on the board:
  * @n      a. 获取传感器数据的"名称"，各名称之间用逗号(,)隔开;;
  * @n      b. 获取传感器数据的"值"，各值之间用逗号(,)隔开;
  * @n      c. 获取传感器数据值的单位，各单位之间用逗号(,)隔开;；
