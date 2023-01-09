@@ -50,9 +50,9 @@ void setup() {
    * @n      ERR_CODE_NONE         or 0x00  Set successful
    * @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
    * @n      ERR_CODE_RES_PKT      or 0x02  Response packet error
-   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C master 
+   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller(master) 
    * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response packet reception timeout
-   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command packet or command mismatch 
+   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command packet or unmatched command 
    * @n      ERR_CODE_I2C_ADRESS   or 0x0A  Invalid I2C address
    */
   uint8_t errCode = sci.setI2CAddress(RP2040_SCI_ADDR_0X23);
