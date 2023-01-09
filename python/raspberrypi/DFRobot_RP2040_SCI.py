@@ -210,24 +210,24 @@ class DFRobot_SCI:
   
   def begin(self):
     '''!
-      @brief SCI采集模块(SCI Acquisition Module)初始化，旨在初始化通信接口
-      @param freq 设置通信频率
-      @return int 初始化状态
-      @n       0      初始化成功
-      @n      others  初始化失败
+      @brief Initalize the SCI Acquisition Module, mainly for initializing communication interface
+      @param freq Set communication frequency
+      @return int Init status
+      @n       0      Init successful
+      @n      others  Init failed
     '''
     self._reset(self.CMD_RESET)
     return 0
   
   def get_version(self):
     '''!
-      @brief 获取SCI采集模块(SCI Acquisition Module)的固件版本号
-      @n 版本号是一个16位数据，高8位(b15~b9): 代表最高版本位
-      @n 中4位(b8~b4):表示中间版本位
-      @n 低4位：表示低版本位
-      @n 例0x0123对应的版本号为 V1.2.3
-      @n     数字传感器SKU 表示选择了某个数字传感器的SKU，并将模式配置为数字传感器模式
-      @return 16位版本号
+      @brief Get firmware version number of SCI Acquisition Module
+      @n The version number is 16-bit data, the high 8bits(b15-b9) represent the leftmost number
+      @n The middle 4bits (b8-b4) represent the middle number 
+      @n The low 4bits represent the rightmost number
+      @n For example, 0x0123 corresponds to V1.2.3
+      @n     Digital sensor SKU, means selecting the SKU of a digital sensor and configuring to digital sensor mode
+      @return 16-bit version data
     '''
     rslt = [0,0,"NULL"]
     version = 0
@@ -248,8 +248,8 @@ class DFRobot_SCI:
   
   def get_version_description(self, version):
     '''!
-      @brief 获取版本描述字符串
-      @return 返回版本描述字符串，例版本id：0x0123返回的版本描述字符串为 V1.2.3
+      @brief Get version description char string
+      @return Return version description char string, e.g. id：0x0123 The returned version decription char string is V1.2.3
     '''
     ver_str = "V"
     ver_str += str((version >> 8) & 0xFF)
@@ -263,23 +263,23 @@ class DFRobot_SCI:
 
   def set_port1(self, sku):
     '''!
-      @brief 设置Port1的SKU，此接口可连接模拟传感器和数字传感器，通过SKU选择Port1上连接的传感器
-      @param sku  Port1接口的参数，支持的SKU列表可以通过OLED显示或者 getAnalogSensorSKU()/getDigitalSensorSKU()查看
-      @n     "NULL"       表示清除Port1接口的传感器设置,并将传感器模式配置为模拟传感器配置
-      @n     "Analog"     表示选择Analog电压数据采集，单位mV
-      @n     模拟传感器SKU 表示选择了某个模拟传感器的SKU，并将模式配置为模拟传感器模式
-      @n     数字传感器SKU 表示选择了某个数字传感器的SKU，并将模式配置为数字传感器模式
-      @return  错误代码
-      @n      ERR_CODE_NONE         or 0x00  设置成功
-      @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-      @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-      @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-      @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-      @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
-      @n      ERR_CODE_SLAVE_BREAK  or 0x06  从机故障
-      @n      ERR_CODE_ARGS         or 0x07  设置的参数错误
-      @n      ERR_CODE_SKU          or 0x08  该SKU为无效SKU，或者SCI采集模块(SCI Acquisition Module)不支持
-      @n      ERR_CODE_S_NO_SPACE   or 0x09  I2C从机内存不够
+      @brief Set SKU on Port1, which can be connected to analog & digital sensors. Select the sensor connected to Port1 by SKU
+      @param sku  Parameter for port1. The supported SKU list can be viewed on the OLED or by getAnalogSensorSKU()/getDigitalSensorSKU()
+      @n     "NULL"       Clear sensor settings for Port1 and configure mode as analog sensor mode
+      @n     "Analog"     Select analog voltage data acquisition, unit mV
+      @n     Analog sensor SKU Select the SKU of an analog sensor and configure mode as analog sensor mode
+      @n     Digital sensor SKU Select the SKU of a digital sensor and configure mode as digital sensor mode
+      @return  Error code
+      @n      ERR_CODE_NONE         or 0x00  Setting succeed
+      @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
+      @n      ERR_CODE_RES_PKT      or 0x02  Response package error
+      @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller(master)
+      @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout
+      @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command 
+      @n      ERR_CODE_SLAVE_BREAK  or 0x06  Peripheral(slave) fault
+      @n      ERR_CODE_ARGS         or 0x07  Set wrong parameters 
+      @n      ERR_CODE_SKU          or 0x08  The SKU is invalid SKU or unsupported by the SCI Acquisition Module
+      @n      ERR_CODE_S_NO_SPACE   or 0x09  Insufficient memory of I2C peripheral(slave)
     '''
     length = len(sku)
     pkt = [0] * (3 + length)
@@ -299,11 +299,11 @@ class DFRobot_SCI:
   
   def get_port1(self):
     '''!
-      @brief 获取Port1接口的传感器模式，及SKU配置
-      @return 列表
-      @n      列表中第0个元素： 错误代码
-      @n      列表中第1个元素： 传感器模式
-      @n      列表中第2个元素： sku配置
+      @brief Get the sensor mode on port1 and SKU config
+      @return List
+      @n      The zeroth element in the list: error code
+      @n      The first element in the list: sensor mode
+      @n      The second element in the list: sku config
     '''
     rslt = [0,0,"NULL"]
     length = 0
@@ -326,19 +326,20 @@ class DFRobot_SCI:
   
   def set_port2(self, sku):
     '''!
-      @brief 设置Port2的SKU，此接口可连接I2C传感器和UART传感器，其中UART传感器需通过SKU选择，I2C是连接后，自动选择，只需将Port2配置为I2C模式即可
-      @param sku  I2C传感器或者UART传感器的7位SKU代码
-      @return 错误代码
-      @n      ERR_CODE_NONE         or 0x00  设置成功
-      @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-      @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-      @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-      @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-      @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
-      @n      ERR_CODE_SLAVE_BREAK  or 0x06  从机故障
-      @n      ERR_CODE_ARGS         or 0x07  设置的参数错误
-      @n      ERR_CODE_SKU          or 0x08  该SKU为无效SKU，或者SCI采集模块(SCI Acquisition Module)不支持
-      @n      ERR_CODE_S_NO_SPACE   or 0x09  I2C从机内存不够
+      @brief Set SKU on Port2, which can be connected to I2C or UART sensor. I2C sensors can be auto selected when connected,
+      @ you just need to configure the mode as I2C mode for port2. But for UART sensors, please select by SKU.
+      @param sku  The 7-bit SKU code for I2C or UART Sensor
+      @return Error code
+      @n      ERR_CODE_NONE         or 0x00  Setting succeed
+      @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
+      @n      ERR_CODE_RES_PKT      or 0x02  Response package error
+      @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+      @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout
+      @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command 
+      @n      ERR_CODE_SLAVE_BREAK  or 0x06  Peripheral fault
+      @n      ERR_CODE_ARGS         or 0x07  Set wrong parameters 
+      @n      ERR_CODE_SKU          or 0x08  The SKU is invalid SKU or unsupported by the SCI Acquisition Module
+      @n      ERR_CODE_S_NO_SPACE   or 0x09  Insufficient memory of I2C peripheral(slave)
     '''
     length = len(sku)
     pkt = [0] * (3 + length)
@@ -358,11 +359,11 @@ class DFRobot_SCI:
 
   def get_port2(self):
     '''!
-      @brief 获取Port2的传感器模式，及SKU配置
-      @return 列表
-      @n      列表中第0个元素： 错误代码
-      @n      列表中第1个元素： 传感器模式
-      @n      列表中第2个元素： sku配置
+      @brief Get the sensor mode on port2 and SKU config
+      @return List
+      @n      The zeroth element in the list: error code
+      @n      The first element in the list: sensor mode
+      @n      The second element in the list: sku config
     '''
     rslt = [0,0,"NULL"]
     length = 0
@@ -385,19 +386,20 @@ class DFRobot_SCI:
 
   def set_port3(self, sku):
     '''!
-      @brief 设置Port3的SKU，此接口可连接I2C传感器和UART传感器，其中UART传感器需通过SKU选择，I2C是连接后，自动选择，只需将Port2配置为I2C模式即可
-      @param sku  I2C传感器或者UART传感器的7位SKU代码
-      @return 错误代码
-      @n      ERR_CODE_NONE         or 0x00  设置成功
-      @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-      @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-      @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-      @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-      @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
-      @n      ERR_CODE_SLAVE_BREAK  or 0x06  从机故障
-      @n      ERR_CODE_ARGS         or 0x07  设置的参数错误
-      @n      ERR_CODE_SKU          or 0x08  该SKU为无效SKU，或者SCI采集模块(SCI Acquisition Module)不支持
-      @n      ERR_CODE_S_NO_SPACE   or 0x09  I2C从机内存不够
+      @brief Set SKU on Port3, which can be connected to I2C or UART sensor. I2C sensors can be auto selected when connected,
+      @ you just need to configure the mode as I2C mode for port2. But for UART sensors, please select by SKU.
+      @param sku  The 7-bit SKU code for I2C or UART Sensor
+      @return Error code
+      @n      ERR_CODE_NONE         or 0x00  Setting succeed
+      @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
+      @n      ERR_CODE_RES_PKT      or 0x02  Response package error
+      @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+      @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout
+      @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command 
+      @n      ERR_CODE_SLAVE_BREAK  or 0x06  Peripheral fault
+      @n      ERR_CODE_ARGS         or 0x07  Set wrong parameters 
+      @n      ERR_CODE_SKU          or 0x08  The SKU is invalid SKU or unsupported by the SCI Acquisition Module
+      @n      ERR_CODE_S_NO_SPACE   or 0x09  Insufficient memory of I2C peripheral
     '''
     length = len(sku)
     pkt = [0] * (3 + length)
@@ -417,11 +419,11 @@ class DFRobot_SCI:
 
   def get_port3(self):
     '''!
-      @brief 获取Port3接口的传感器模式，及SKU配置
-      @return 列表
-      @n      列表中第0个元素： 错误代码
-      @n      列表中第1个元素： 传感器模式
-      @n      列表中第2个元素： sku配置
+      @brief Get the sensor mode on port3 and SKU config
+      @return List
+      @n      The zeroth element in the list: error code 
+      @n      The first element in the list: sensor mode 
+      @n      The second element in the list: sku config
     '''
     rslt = [0,0,"NULL"]
     length = 0
@@ -445,24 +447,24 @@ class DFRobot_SCI:
 
   def set_recv_timeout(self,timeout = 2):
     '''!
-      @brief SCI采集模块(SCI Acquisition Module)初始化，旨在初始化通信接口
-      @param freq 设置通信频率
-      @return int 初始化状态
-      @n       0      初始化成功
-      @n      others  初始化失败
+      @brief Initalize the SCI Acquisition Module, mainly for initializing communication interface
+      @param freq Set communication frequency
+      @return int Init status
+      @n       0      Init successful
+      @n      others  Init failed
     '''
     self.DEBUG_TIMEOUT_MS = timeout
     
   def adjust_rtc_datetime(self):
     '''!
-      @brief 设置SCI采集模块(SCI Acquisition Module)的日期和时间为树莓派的当前时间
-      @return  错误代码
-      @n      ERR_CODE_NONE         or 0x00  设置成功
-      @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-      @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-      @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-      @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-      @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
+      @brief Set the date and time of the SCI Acquisition Module as the current time of Raspbbery Pi
+      @return  Error code
+      @n      ERR_CODE_NONE         or 0x00  Setting succeed 
+      @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
+      @n      ERR_CODE_RES_PKT      or 0x02  Response package error 
+      @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+      @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout 
+      @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command 
     '''
     time = datetime.datetime.now()
     week = self._day_of_week(time.year, time.month, time.day)
@@ -471,21 +473,21 @@ class DFRobot_SCI:
   
   def adjust_rtc(self, year, month, day, week, hour, minute, second):
     '''!
-      @brief 设置SCI采集模块(SCI Acquisition Module)的年月日时分秒周等日期
-      @param year   年
-      @param month  月
-      @param day    日
-      @param week   周
-      @param hour   时
-      @param minute 分
-      @param second 秒
-      @return  错误代码
-      @n      ERR_CODE_NONE         or 0x00  设置成功
-      @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-      @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-      @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-      @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-      @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
+      @brief Set the year, month, day, week, hour, minute, second for the SCI Acquisition Module
+      @param year   Year
+      @param month  Month
+      @param day    Day
+      @param week   Week 
+      @param hour   Hour
+      @param minute Minute
+      @param second Second
+      @return  Error code
+      @n      ERR_CODE_NONE         or 0x00  Setting succeed 
+      @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command 
+      @n      ERR_CODE_RES_PKT      or 0x02  Response package error 
+      @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+      @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout 
+      @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command
     '''
     length = 8
     addr = 0
@@ -508,10 +510,10 @@ class DFRobot_SCI:
 
   def get_rtc_time(self):
     '''!
-      @brief @brief 获取SCI采集模块(SCI Acquisition Module)的年月日时分秒周等日期
-      @return 长度为2的列表
-      @n      列表中第0个元数: 列表年，月，日，星期，时，分，秒[年，月，日，星期，时，分，秒]
-      @n      列表中第2个元数: 字符串，年/月/日 星期 时:分:秒 例: 2022/08/09 2 09:08:00
+      @brief @brief Get the year, month, day, week, hour, minute, second of the SCI Acquisition Module
+      @return List with a length of 2 data
+      @n      The first data in the list: list year, month, day, week, hour, minute, second[year, month, day, week, hour, minute, second]
+      @n      The second data in the list: char string, year/month/day week hour:minute/second e.g. 2022/08/09 2 09:08:00
     '''
     rslt = [[0,0,0,0,0,0,0],"0000/00/00 0 00:00:00"]
     length = 0
@@ -562,24 +564,24 @@ class DFRobot_SCI:
   
   def set_refresh_rate(self, rate):
     '''!
-      @brief 设置数据刷新时间
-      @param rate 枚举变量
-      @n eRefreshRateMs     ms级刷新率，按数据的实际刷新率刷新
-      @n eRefreshRate1s     刷新率1s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate3s     刷新率3s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate5s     刷新率5s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate10s    刷新率10s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate30s    刷新率30s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate1min   刷新率1min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate5min   刷新率5min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate10min  刷新率10min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @return  错误代码
-      @n      ERR_CODE_NONE         or 0x00  设置成功
-      @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-      @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-      @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-      @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-      @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
+      @brief Set data refresh rate
+      @param rate Enum variable
+      @n eRefreshRateMs     ms-level, refresh at the actual refresh rate
+      @n eRefreshRate1s     1s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @n eRefreshRate3s     3s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @n eRefreshRate5s     5s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @n eRefreshRate10s    10s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @n eRefreshRate30s    30s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @n eRefreshRate1min   1min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @n eRefreshRate5min   5min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @n eRefreshRate10min  10min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @return  Error code
+      @n      ERR_CODE_NONE         or 0x00  Setting succeed
+      @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
+      @n      ERR_CODE_RES_PKT      or 0x02  Response package error
+      @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+      @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout
+      @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command 
     '''
     length = 1
     pkt = [0] * (3 + length)
@@ -594,29 +596,29 @@ class DFRobot_SCI:
 
   def get_refresh_rate(self):
     '''!
-      @brief 获取数据刷新时间
-      @param rate 枚举变量
-      @n eRefreshRateMs     ms级刷新率，按数据的实际刷新率刷新
-      @n eRefreshRate1s     刷新率1s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate3s     刷新率3s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate5s     刷新率5s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate10s    刷新率10s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate30s    刷新率30s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate1min   刷新率1min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate5min   刷新率5min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate10min  刷新率10min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @return  列表
-      @n      列表中第0个元素：错误代码
-      @n      列表中第1个元素：刷新率
-      @n      0 or eRefreshRateMs     ms级刷新率，按数据的实际刷新率刷新
-      @n      1 or eRefreshRate1s     刷新率1s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n      2 or eRefreshRate3s     刷新率3s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n      3 or eRefreshRate5s     刷新率5s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n      4 or eRefreshRate10s    刷新率10s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n      5 or eRefreshRate30s    刷新率30s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n      6 or eRefreshRate1min   刷新率1min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n      7 or eRefreshRate5min   刷新率5min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n      8 or eRefreshRate10min  刷新率10min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
+      @brief Get data refresh rate
+      @param rate Enum variable
+      @n eRefreshRateMs     ms-level, refresh at the actual refresh rate
+      @n eRefreshRate1s     1s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate 
+      @n eRefreshRate3s     3s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @n eRefreshRate5s     5s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @n eRefreshRate10s    10s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @n eRefreshRate30s    30s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @n eRefreshRate1min   1min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @n eRefreshRate5min   5min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @n eRefreshRate10min  10min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @return  List
+      @n      The zeroth element in the list: error code 
+      @n      The first element in the list: refresh rate
+      @n      0 or eRefreshRateMs     ms-level, refresh at the actual refresh rate
+      @n      1 or eRefreshRate1s     1s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate 
+      @n      2 or eRefreshRate3s     3s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @n      3 or eRefreshRate5s     5s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @n      4 or eRefreshRate10s    10s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @n      5 or eRefreshRate30s    30s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @n      6 or eRefreshRate1min   1min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @n      7 or eRefreshRate5min   5min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+      @n      8 or eRefreshRate10min  10min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
     '''
     rslt = [0,0]
     length = 0
@@ -636,7 +638,7 @@ class DFRobot_SCI:
 
   def get_refresh_rate_describe(self, rate):
     '''!
-      @brief 获取刷新率的描述，单位s
+      @brief Get refresh rate description, unit s
     '''
     if rate == self.eRefreshRateMs:
       return 0
@@ -660,8 +662,8 @@ class DFRobot_SCI:
     
   def get_timestamp(self):
     '''!
-      @brief 获取时间戳,此时间戳为(SCI Acquisition Module)数据刷新时间
-      @return 时:分:秒(00:00:00) 或 分:秒.百分之（0~99）秒(00:00.00)
+      @brief Get time stamp, also the data refresh time of the SCI Acquisition Module
+      @return Hour:Minute:Second(00:00:00) or Minute:Second. X%(0-99)second(00:00.00)
     '''
     rslt = ""
     length = 0
@@ -681,14 +683,14 @@ class DFRobot_SCI:
 
   def get_AD_sensor_mode_describe(self, mode):
     '''!
-      @brief 获取A&D类型传感器的模式描述
-      @param mode 传感器类型模式
-      @n     eAnalogMode    模拟传感器模式
-      @n     eDigitalMode   数字传感器模式
-      @return 传感器的模式描述字符串
-      @n      "ANALOG"         模拟传感器模式
-      @n      "DIGITAL"        数字传感器模式
-      @n      "UNKNOWN"        未知模式
+      @brief Get mode description of Aanlog & Digital sensor
+      @param mode Sensor mode 
+      @n     eAnalogMode    Aanlog sensor mode
+      @n     eDigitalMode   Digital sensor mode
+      @return Sensor mode description char string
+      @n      "ANALOG"         Analog sensor mode 
+      @n      "DIGITAL"        Digital sensor mode 
+      @n      "UNKNOWN"        Unknown mode 
     '''
     if mode == self.eAnalogMode:
       return "ANALOG" 
@@ -699,14 +701,14 @@ class DFRobot_SCI:
 
   def get_I2CUART_sensor_mode_describe(self, mode):
     '''!
-      @brief 获取I2C&UART类型传感器的模式描述
-      @param mode 传感器类型模式
-      @n     eI2CMode    I2C传感器模式
-      @n     eUARTMode   UART传感器模式
-      @return 传感器的模式描述字符串
-      @n      "I2C"         I2C传感器模式
-      @n      "UART"        UART传感器模式
-      @n      "UNKNOWN"     未知模式
+      @brief Get mode description of I2C & UART sensor
+      @param mode Sensor mode
+      @n     eI2CMode    I2C sensor mode 
+      @n     eUARTMode   UART sensor mode
+      @return Sensor mode description char string
+      @n      "I2C"         I2C sensor mode 
+      @n      "UART"        UART sensor mode 
+      @n      "UNKNOWN"     Unknown mode
     '''
     if mode == self.eI2CMode:
       return "I2C" 
@@ -719,14 +721,14 @@ class DFRobot_SCI:
 
   def enable_record(self):
     '''!
-      @brief 开启CSV文件记录，调用此命令后，会将传感器采集到的数据记录在以年月日时分秒命名的CSV文件中
-      @return 错误代码
-      @n      ERR_CODE_NONE         or 0x00  设置成功
-      @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-      @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-      @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-      @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-      @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
+      @brief Enable data recording in CSV file. When enabled, the sensor data will be recorded in the csv file named by date year, year, day, hour, minute, and second.
+      @return Error code
+      @n      ERR_CODE_NONE         or 0x00  Setting succeed
+      @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
+      @n      ERR_CODE_RES_PKT      or 0x02  Response package error
+      @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+      @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout
+      @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command
     '''
     length = 0
     pkt = [0] * (3 + length)
@@ -740,14 +742,14 @@ class DFRobot_SCI:
 
   def disable_record(self):
     '''!
-      @brief 关闭CSV文件记录，调用此命令后，会停止将传感器采集到的数据记录在以年月日时分秒命名的CSV文件中
-      @return 错误代码
-      @n      ERR_CODE_NONE         or 0x00  设置成功
-      @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-      @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-      @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-      @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-      @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
+      @brief Disable data recording in CSV file. When disabled, data recording stops 
+      @return Error code
+      @n      ERR_CODE_NONE         or 0x00  Setting succeed
+      @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
+      @n      ERR_CODE_RES_PKT      or 0x02  Response package error
+      @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+      @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout
+      @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command
     '''
     length = 0
     pkt = [0] * (3 + length)
@@ -761,14 +763,14 @@ class DFRobot_SCI:
 
   def display_on(self):
     '''!
-      @brief 开启SCI采集模块(SCI Acquisition Module)屏显示
-      @return 错误代码
-      @n      ERR_CODE_NONE         or 0x00  设置成功
-      @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-      @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-      @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-      @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-      @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
+      @brief Switch on SCI Acquisition Module Screen
+      @return Error code
+      @n      ERR_CODE_NONE         or 0x00  Setting succeed
+      @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
+      @n      ERR_CODE_RES_PKT      or 0x02  Response package error
+      @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+      @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout
+      @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command
     '''
     length = 0
     pkt = [0] * (3 + length)
@@ -782,14 +784,14 @@ class DFRobot_SCI:
 
   def display_off(self):
     '''!
-      @brief 关闭SCI采集模块(SCI Acquisition Module)屏显示
-      @return 错误代码
-      @n      ERR_CODE_NONE         or 0x00  设置成功
-      @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-      @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-      @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-      @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-      @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
+      @brief Switch off SCI Acquisition Module Screen
+      @return Error code
+      @n      ERR_CODE_NONE         or 0x00  Setting succeed
+      @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
+      @n      ERR_CODE_RES_PKT      or 0x02  Response package error
+      @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+      @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout
+      @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command
     '''
     length = 0
     pkt = [0] * (3 + length)
@@ -803,14 +805,14 @@ class DFRobot_SCI:
 
   def get_information(self, inf, timestamp = False):
     '''!
-      @brief 获取SCI采集模块(SCI Acquisition Module)上指定的一个或多个接口上所连接的所有传感器的属性项(属性名称:数据值 单位)信息，属性项与属性项之间用','号隔开
-      @param inf 指定一个或多个接口参数
-      @n     ePort1                                    指定Port1接口，获取Port1接口上所连接的所有传感器的属性项
-      @n     ePort2                                    指定Port2接口，获取ePort2接口上所连接的所有传感器的属性项
-      @n     ePort3                                    选中Port3接口，获取ePort3接口上所连接的所有传感器的属性项
-      @n     eALL  or  (ePort1 | ePort2 | ePort3)      选中Port1, Port2和Port3接口，获取所有接口上所连接的所有传感器的属性项
-      @return SCI采集模块(SCI Acquisition Module)上指定的一个或多个接口上所连接的所有传感器的属性项
-      @n 例 SEN0334:  Temp_Air:28.65 C,Humi_Air:30.12 %RH
+      @brief Get the attribute information(attribute: value unit) of all sensors connected to the designated one or more ports. Separate attributes using ","
+      @param inf Designate one or more ports
+      @n     ePort1                                    Designate port1, get attributes of all sensors connected to port1
+      @n     ePort2                                    Designate port2, get attributes of all sensors connected to port2
+      @n     ePort3                                    Designate port3, get attributes of all sensors connected to port3
+      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Designate port1, port2 and port3, get attributes of all sensors
+      @return The attribute information of all sensors connected to the designated one or more ports of the SCI Acquisition Module
+      @n For example, SEN0334:  Temp_Air:28.65 C,Humi_Air:30.12 %RH
     '''
     rslt = ""
     length = 2
@@ -832,14 +834,14 @@ class DFRobot_SCI:
 
   def get_sku(self, inf):
     '''!
-      @brief 获取SCI采集模块(SCI Acquisition Module)上指定的一个或多个接口上所连接的所有传感器的SKU，SKU与SKU之间用','号隔开
-      @param inf 指定一个或多个接口参数
-      @n     ePort1                                    指定Port1接口，获取Port1接口上所连接的所有传感器的SKU
-      @n     ePort2                                    指定Port2接口，获取Port2接口上所连接的所有传感器的SKU
-      @n     ePort3                                    指定Port3接口，获取Port3接口上所连接的所有传感器的SKU
-      @n     eALL  or  (ePort1 | ePort2 | ePort3)      选中Port1, Port2和Port3接口，获取所有接口上所连接的所有传感器的SKU
-      @return SCI采集模块(SCI Acquisition Module)上指定的一个或多个接口上所连接的所有传感器的SKU
-      @n 例:  SEN0161,SEN0334
+      @brief Get the SKU of all sensors connected to the designated one or more ports. Separate SKUs using ","
+      @param inf Designate one or more ports
+      @n     ePort1                                    Designate port1, get SKUs of all sensors connected to port1
+      @n     ePort2                                    Designate port2, get SKUs of all sensors connected to port2
+      @n     ePort3                                    Designate port3, get SKUs of all sensors connected to port3
+      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Designate port1, port2 and port3, get SKUs of all sensors
+      @return The SKU of all sensors connected to the designated one or more ports of the SCI Acquisition Module
+      @n For example:  SEN0161,SEN0334
     '''
     rslt = ""
     length = 1
@@ -860,14 +862,14 @@ class DFRobot_SCI:
 
   def get_keys(self, inf):
     '''!
-      @brief 获取SCI采集模块(SCI Acquisition Module)上指定的一个或多个接口上所连接的所有传感器的所有属性名，属性名与属性名之间用','号隔开
-      @param inf 指定一个或多个接口参数
-      @n     ePort1                                    选中Port1接口，获取Port1接口上所连接的所有传感器的所有属性名
-      @n     ePort2                                    选中Port2接口，获取Port2接口上所连接的所有传感器的所有属性名
-      @n     ePort3                                    选中Port3接口，获取Port3接口上所连接的所有传感器的所有属性名
-      @n     eALL  or  (ePort1 | ePort2 | ePort3)      选中Port1, Port2和Port3接口，获取所有接口上所连接的所有传感器的所有属性名
-      @return SCI采集模块(SCI Acquisition Module)上指定的一个或多个接口上所连接的所有传感器的所有属性名
-      @n 例:  Temp_Air,Humi_Air
+      @brief Get attribute names of all sensors connected to the designated one or more ports. Separate attribute names using ","
+      @param inf Designate one or more ports
+      @n     ePort1                                    Select port1, get attribute names of all sensors connected to port1
+      @n     ePort2                                    Select port2, get attribute names of all sensors connected to port2
+      @n     ePort3                                    Select port3, get attribute names of all sensors connected to port3
+      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select port1, port2 and port3, get attribute names of all sensors
+      @return The attribute names of all sensors connected to the designated one or more ports of the SCI Acquisition Module
+      @n For example:  Temp_Air,Humi_Air
     '''
     rslt = ""
     length = 1
@@ -888,14 +890,14 @@ class DFRobot_SCI:
 
   def get_values(self, inf):
     '''!
-      @brief 获取SCI采集模块(SCI Acquisition Module)上指定的一个或多个接口上所连接的所有传感器的所有属性数据值，数据值与数据值之间用','号隔开
-      @param inf 指定一个或多个接口参数
-      @n     ePort1                                    选中Port1接口，获取Port1接口上所连接的所有传感器的所有属性数据值
-      @n     ePort2                                    选中Port2接口，获取Port2接口上所连接的所有传感器的所有属性数据值
-      @n     ePort3                                    选中Port3接口，获取Port3接口上所连接的所有传感器的所有属性数据值
-      @n     eALL  or  (ePort1 | ePort2 | ePort3)      选中Port1, Port2和Port3接口，获取所有接口上所连接的所有传感器的所有属性数据值
-      @return SCI采集模块(SCI Acquisition Module)上指定的一个或多个接口上所连接的所有传感器的所有属性数据值
-      @n 例:  28.65,30.12
+      @brief Get attribute data values of all sensors connected to the designated one or more ports. Separate attribute data values using ","
+      @param inf Designate one or more ports
+      @n     ePort1                                    Select port1, get attribute data values of all sensors connected to port1
+      @n     ePort2                                    Select port2, get attribute data values of all sensors connected to port2
+      @n     ePort3                                    Select port3, get attribute data values of all sensors connected to port3
+      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select port1, port2 and port3, get attribute data values of all sensors
+      @return The attribute data values of all sensors connected to the designated one or more ports of the SCI Acquisition Module
+      @n For example:  28.65,30.12
     '''
     rslt = ""
     length = 1
@@ -916,14 +918,14 @@ class DFRobot_SCI:
 
   def get_units(self, inf):
     '''!
-      @brief 获取SCI采集模块(SCI Acquisition Module)上指定的一个或多个接口上所连接的所有传感器的所有属性单位，单位与单位之间用','号隔开
-      @param inf 指定一个或多个接口参数
-      @n     ePort1                                    选中Port1接口，获取Port1接口上所连接的所有传感器的所有属性单位
-      @n     ePort2                                    选中Port2接口，获取Port2接口上所连接的所有传感器的所有属性单位
-      @n     ePort3                                    选中Port3接口，获取Port3接口上所连接的所有传感器的所有属性单位
-      @n     eALL  or  (ePort1 | ePort2 | ePort3)      选中Port1, Port2和Port3接口，获取所有接口上所连接的所有传感器的所有属性单位
-      @return SCI采集模块(SCI Acquisition Module)上指定的一个或多个接口上所连接的所有传感器的所有属性单位
-      @n 例:  C,%RH
+      @brief Get attribute units of all sensors connected to the designated one or more ports. Separate attribute units using ","
+      @param inf Designate one or more ports
+      @n     ePort1                                    Select port1, get attribute units of all sensors connected to port1
+      @n     ePort2                                    Select port2, get attribute units of all sensors connected to port2
+      @n     ePort3                                    Select port3, get attribute units of all sensors connected to port3
+      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select port1, port2 and port3, get attribute units of all sensors
+      @return The attribute units of all sensors connected to the designated one or more ports of the SCI Acquisition Module
+      @n For example:  C,%RH
     '''
     rslt = ""
     length = 1
@@ -944,10 +946,10 @@ class DFRobot_SCI:
 
   def get_value0(self, keys):
     '''!
-      @brief 获取所有接口所连接的传感器中属性名称为 keys 的数据值，多个属性值之间用','号隔开
-      @param keys  传感器属性名称
-      @return 所有接口所连接的传感器中属性名称为 keys 的数据值，多个属性值之间用','号隔开
-      @n 例Temp_Air:  28.65,28.65
+      @brief Get attribute data values named keys of all sensors connected to all ports. Separate attribute values using ","
+      @param keys  Sensor attribute name
+      @return Attribute data values named keys of all sensors connected to all ports. Separate attribute values using ","
+      @n For example, Temp_Air:  28.65,28.65
     '''
     rslt = ""
     length = len(keys)
@@ -971,15 +973,15 @@ class DFRobot_SCI:
 
   def get_value1(self, inf, keys):
     '''!
-      @brief 获取指定接口所连接的传感器中属性名称为 keys 的数据值，多个属性值之间用','号隔开
-      @param inf    接口选择，及参数查找范围
-      @n     ePort1                                    选中Port1接口，获取Port1接口所连接的传感器中查找属性名称为keys的属性值
-      @n     ePort2                                    选中Port2接口，获取Port2接口所连接的传感器中查找属性名称为keys的属性值
-      @n     ePort3                                    选中Port3接口，获取Port3接口所连接的传感器中查找属性名称为keys的属性值
-      @n     eALL  or  (ePort1 | ePort2 | ePort3)      选中Port1, Port2和Port3接口，获取所有接口上在所有接口接口所连接的传感器中查找属性名称为keys的属性值
-      @param keys  传感器属性名称
-      @return 指定接口所连接的传感器中属性名称为 keys 的数据值，多个属性值之间用','号隔开
-      @n 例Temp_Air:  28.65,28.65
+      @brief Get attribute data values named keys of all sensors connected to the designated port. Separate attribute values using ","
+      @param inf    Port select, and parameter search range
+      @n     ePort1                                    Select port1, get attribute values named keys of all sensors connected to port1
+      @n     ePort2                                    Select port2, get attribute values named keys of all sensors connected to port2
+      @n     ePort3                                    Select port3, get attribute values named keys of all sensors connected to port3
+      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select port1, port2 and port3, get attribute values named keys of all sensors
+      @param keys  Sensor attribute name
+      @return The attribute values named keys of all sensors connected to the designated port. Separate attribute values using ","
+      @n For example, Temp_Air:  28.65,28.65
     '''
     length = len(keys) + 1
     pkt = [0] * (3 + length)
@@ -1006,16 +1008,16 @@ class DFRobot_SCI:
 
   def get_value2(self, inf, sku, keys):
     '''!
-      @brief 获取指定接口所连接的传感器中SKU为sku的传感器中属性名称为 keys 的数据值，多个属性值之间用','号隔开
-      @param inf    接口选择，及参数查找范围
-      @n     ePort1                                    选中Port1接口，获取Port1接口中查找SKU为sku的传感器，并读出属性名称为keys的属性值
-      @n     ePort2                                    选中Port2接口，获取Port2接口中查找SKU为sku的传感器，并读出属性名称为keys的属性值
-      @n     ePort3                                    选中Port3接口，获取Port3接口中查找SKU为sku的传感器，并读出属性名称为keys的属性值
-      @n     eALL  or  (ePort1 | ePort2 | ePort3)      选中Port1, Port2和Port3接口，在所有接口接口中查找SKU为sku的传感器，并读出属性名称为keys的属性值
-      @param sku 传感器SKU
-      @param keys  传感器属性名称
-      @return 指定接口所连接的传感器中SKU为sku的传感器中属性名称为 keys 的数据值，多个属性值之间用','号隔开
-      @n 例Temp_Air:  28.65,28.65
+      @brief Get attribute data values named keys of the sensor whose SKU is sku connected to the designated port. Separate attribute values using ","
+      @param inf    Port select, and parameter search range
+      @n     ePort1                                    Select port1, get the sensor whose SKU is sku connected to port1, and read attribute values named keys  
+      @n     ePort2                                    Select port2, get the sensor whose SKU is sku connected to port2, and read attribute values named keys
+      @n     ePort3                                    Select port3, get the sensor whose SKU is sku connected to port3, and read attribute values named keys
+      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select port1, port2 and port3, get all the sensors whose SKU is sku, and read attribute values named keys
+      @param sku Sensor SKU
+      @param keys  Sensor attribute name
+      @return The attribute data values named keys of the sensor whose SKU is sku connected to the designated port. Separate attribute values using ","
+      @n For example, Temp_Air:  28.65,28.65
     '''
     length = len(keys) + 1 + len(sku)
     pkt = [0] * (3 + length)
@@ -1045,10 +1047,10 @@ class DFRobot_SCI:
 
   def get_unit0(self, keys):
     '''!
-      @brief 获取所有接口所连接的传感器中属性名称为 keys 的数据单位，多个属性单位之间用','号隔开
-      @param keys  传感器属性名称
-      @return 所有接口所连接的传感器中属性名称为 keys 的数据单位，多个属性单位之间用','号隔开
-      @n 例Temp_Air:  C,C
+      @brief Get attribute data units named keys of all sensors. Separate attribute units using ","
+      @param keys  Sensor attribute name
+      @return Attribute data units named keys of all sensors. Separate attribute units using ","
+      @n For example, Temp_Air:  C,C
     '''
     length = len(keys)
     pkt = [0] * (3 + length)
@@ -1074,15 +1076,15 @@ class DFRobot_SCI:
 
   def get_unit1(self, inf, keys):
     '''!
-      @brief 获取指定接口所连接的传感器中属性名称为 keys 的数据单位，多个属性单位之间用','号隔开
-      @param inf    接口选择，及参数查找范围
-      @n     ePort1                                    选中Port1接口，获取Port1接口所连接的传感器中查找属性名称为keys的属性单位
-      @n     ePort2                                    选中Port2接口，获取Port2接口所连接的传感器中查找属性名称为keys的属性单位
-      @n     ePort3                                    选中Port3接口，获取Port3接口所连接的传感器中查找属性名称为keys的属性单位
-      @n     eALL  or  (ePort1 | ePort2 | ePort3)      选中Port1, Port2和Port3接口，在所有接口接口所连接的传感器中查找属性名称为keys的属性单位
-      @param keys  传感器属性名称
-      @return 指定接口所连接的传感器中属性名称为 keys 的数据单位，多个属性单位之间用','号隔开
-      @n 例Temp_Air:  C,C
+      @brief Get attribute data units named keys of the sensor connected to the designated port. Separate attribute units using ","
+      @param inf    Port select, and parameter search range
+      @n     ePort1                                    Select port1, get attribute units named keys of the sensor connected to port1
+      @n     ePort2                                    Select port2, get attribute units named keys of the sensor connected to port2
+      @n     ePort3                                    Select port3, get attribute units named keys of the sensor connected to port3
+      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select port1, port2 and port3, get attribute units named keys of all sensors
+      @param keys  Sensor attribute name
+      @return The attribute data units named keys of the sensor connected to the designated port. Separate attribute units using ","
+      @n For example, Temp_Air:  C,C
     '''
     length = len(keys) + 1
     pkt = [0] * (3 + length)
@@ -1109,16 +1111,16 @@ class DFRobot_SCI:
 
   def get_unit2(self, inf, sku, keys):
     '''!
-      @brief 获取指定接口所连接的传感器中SKU为sku的传感器中属性名称为 keys 的数据单位，多个属性单位之间用','号隔开
-      @param inf    接口选择，及参数查找范围
-      @n     ePort1                                    选中Port1接口，获取ePort1接口中查找SKU为sku的传感器，并读出属性名称为keys的属性单位
-      @n     ePort2                                    选中Port2接口，获取ePort2接口中查找SKU为sku的传感器，并读出属性名称为keys的属性单位
-      @n     ePort3                                    选中Port3接口，获取ePort3接口中查找SKU为sku的传感器，并读出属性名称为keys的属性单位
-      @n     eALL  or  (ePort1 | ePort2 | ePort3)      选中Port1, Port2和Port3接口，在所有接口接口中查找SKU为sku的传感器，并读出属性名称为keys的属性单位
-      @param sku 传感器SKU
-      @param keys  传感器属性名称
-      @return 指定接口所连接的传感器中SKU为sku的传感器中属性名称为 keys 的数据单位，多个属性单位之间用','号隔开
-      @n 例Temp_Air:  C,C
+      @brief Get attribute data units named keys of the sensor whose SKU is sku connected to the designated port. Separate attribute units using ","
+      @param inf    Port select, and parameter search range
+      @n     ePort1                                    Select port1, get the sensor whose SKU is sku connected to ePort1, and read attribute units named keys  
+      @n     ePort2                                    Select port2, get the sensor whose SKU is sku connected to ePort2, and read attribute units named keys
+      @n     ePort3                                    Select port3, get the sensor whose SKU is sku connected to ePort3, and read attribute units named keys
+      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select port1, port2 and port3, get all the sensors whose SKU is sku, and read attribute units named keys
+      @param sku Sensor SKU
+      @param keys  Sensor attribute name
+      @return The attribute data units named keys of the sensor whose SKU is sku connected to the designated port. Separate attribute units using ","
+      @n For example, Temp_Air:  C,C
     '''
     length = len(keys) + 1 + len(sku)
     pkt = [0] * (3 + length)
@@ -1148,8 +1150,8 @@ class DFRobot_SCI:
 
   def get_analog_sensor_sku(self):
     '''!
-      @brief 获取SCI采集模块(SCI Acquisition Module)Analog系列传感器的SKU支持列表
-      @return SCI采集模块(SCI Acquisition Module)Analog系列传感器的SKU支持列表，如果没有则返回NULL
+      @brief Get the SKU list of analog sensors supported by SCI Acquisition Module
+      @return SKU list of supported analog sensors, return NULL if there is not
     '''
     rslt = ""
     length = 0
@@ -1169,8 +1171,8 @@ class DFRobot_SCI:
   
   def get_digital_sensor_sku(self):
     '''!
-      @brief 获取SCI采集模块(SCI Acquisition Module)Digital系列传感器的SKU支持列表
-      @return SCI采集模块(SCI Acquisition Module)Digital系列传感器的SKU支持列表，如果没有则返回NULL
+      @brief Get the SKU list of digital sensors supported by SCI Acquisition Module
+      @return SKU list of supported digital sensors, return NULL if there is not
     '''
     rslt = ""
     length = 0
@@ -1190,8 +1192,8 @@ class DFRobot_SCI:
 
   def get_i2c_sensor_sku(self):
     '''!
-      @brief 获取SCI采集模块(SCI Acquisition Module)I2C系列传感器的SKU支持列表
-      @return SCI采集模块(SCI Acquisition Module)I2C系列传感器的SKU支持列表，如果没有则返回NULL
+      @brief Get the SKU list of I2C sensors supported by SCI Acquisition Module
+      @return SKU list of supported I2C sensors, return NULL if there is not
     '''
     rslt = ""
     length = 0
@@ -1211,8 +1213,8 @@ class DFRobot_SCI:
 
   def get_uart_sensor_sku(self):
     '''!
-      @brief 获取SCI采集模块(SCI Acquisition Module)UART系列传感器的SKU支持列表
-      @return SCI采集模块(SCI Acquisition Module)UART系列传感器的SKU支持列表，如果没有则返回NULL
+      @brief Get the SKU list of UART sensors supported by SCI Acquisition Module
+      @return SKU list of supported UART sensors, return NULL if there is not
     '''
     rslt = ""
     length = 0
@@ -1232,15 +1234,15 @@ class DFRobot_SCI:
 
   def _recv_packet(self, cmd):
     '''!
-      @brief 接收并解析响应的数据包
-      @param cmd 要接收包的命令
-      @return 错误代码以及响应包列表
-      @n      列表中第0个元素    ： 错误代码，当错误代码为ERR_CODE_NONE时，才会有其他的元素
-      @n      列表中第1个元素    ： 响应包状态码，0x53-正确响应包 0x63-错误响应包
-      @n      列表中第2个元素    ： 响应包命令，即该响应包属于那个通信命令
-      @n      列表中第3个元素    ： 响应包后面有效数据长度低字节
-      @n      列表中第4个元素    ： 响应包后面有效数据长度高字节
-      @n      列表中第5及以上元素： 有效数据
+      @brief Receive and parse the response data packet
+      @param cmd Command to receive the packet
+      @return Error code and response packet list
+      @n      The zeroth element: error code: error code, when the error code is ERR_CODE_NONE, there can be other elements
+      @n      The first element: response packet status code, 0x53-correct response packet 0x63-wrong response packet
+      @n      The second element: response packet command, which indicates the response packet belongs to which communication command
+      @n      The third element: low byte of the valid data length after the response packet
+      @n      The fourth element: high byte of the valid data length after the response packet
+      @n      The 5th element and more: valid data
     '''
     rslt = [0] * 1
     t = time.time()
@@ -1272,8 +1274,8 @@ class DFRobot_SCI:
 
   def _reset(self, cmd):
     '''!
-      @brief 复位SCI采集模块(SCI Acquisition Module)的发送缓存
-      @param cmd 通信命令
+      @brief Reset the cache sending of SCI Acquisition Module
+      @param cmd Communication command
     '''
     len = 1
     pkt = [0] * (3 + len)
@@ -1286,18 +1288,18 @@ class DFRobot_SCI:
   
   def _day_of_week(self, year, month, day):
     '''!
-      @brief 根据年/月/日计算星期数
-      @param year   年
-      @param month  月
-      @param day    日
-      @return uint8_t 0~6星期数
-      @n 0   星期天
-      @n 1   星期一
-      @n 2   星期二
-      @n 3   星期三
-      @n 4   星期四
-      @n 5   星期五
-      @n 6   星期六
+      @brief Calculate the day of a week according to year/month/day
+      @param year   Year
+      @param month  Month
+      @param day    Day
+      @return uint8_t The day of a week(0~6)
+      @n 0   Sunday
+      @n 1   Monday
+      @n 2   Tuesday
+      @n 3   Wednesday
+      @n 4   Thursday
+      @n 5   Friday
+      @n 6   Saturday
     '''
     days = day
     if(year > 2000):
@@ -1327,9 +1329,9 @@ class DFRobot_SCI:
 class DFRobot_RP2040_SCI_IIC(DFRobot_SCI):
   def __init__(self,addr):
     '''!
-      @brief DFRobot_SCI_IIC 构造函数
-      @param addr:  7-bit IIC address，支持以下地址设置
-      @n RP2040_SCI_ADDR_0X21      0x21 转换板默认I2C地址
+      @brief DFRobot_SCI_IIC Constructor
+      @param addr:  7-bit IIC address, support the following address settings
+      @n RP2040_SCI_ADDR_0X21      0x21 default I2C address
       @n RP2040_SCI_ADDR_0X22      0x22
       @n RP2040_SCI_ADDR_0X23      0x23
     '''
@@ -1339,8 +1341,8 @@ class DFRobot_RP2040_SCI_IIC(DFRobot_SCI):
     
   def get_i2c_address(self):
     '''!
-      @brief 获取SCI采集模块(SCI Acquisition Module)的I2C通信地址
-      @return I2C通信地址
+      @brief Get SCI Acquisition Module I2C address
+      @return I2C address
     '''
     length = 0
     addr = 0
@@ -1359,19 +1361,19 @@ class DFRobot_RP2040_SCI_IIC(DFRobot_SCI):
   
   def set_i2c_address(self, addr):
     '''!
-      @brief 设置SCI采集模块(SCI Acquisition Module)的I2C通信地址 
-      @param addr SCI采集模块(SCI Acquisition Module)的I2C通信地址，支持以下地址设置
-      @n RP2040_SCI_ADDR_0X21      0x21 转换板默认I2C地址
+      @brief Set SCI Acquisition Module I2C address 
+      @param addr SCI Acquisition Module I2C address, support the following address settings
+      @n RP2040_SCI_ADDR_0X21      0x21 default I2C address
       @n RP2040_SCI_ADDR_0X22      0x22
       @n RP2040_SCI_ADDR_0X23      0x23
-      @return 错误代码
-      @n      ERR_CODE_NONE         or 0x00  设置成功
-      @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-      @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-      @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-      @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-      @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配 
-      @n      ERR_CODE_I2C_ADRESS   or 0x0A  I2C地址无效
+      @return Error code
+      @n      ERR_CODE_NONE         or 0x00  Setting succeed 
+      @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command 
+      @n      ERR_CODE_RES_PKT      or 0x02  Response package error 
+      @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller(master) 
+      @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout 
+      @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command 
+      @n      ERR_CODE_I2C_ADRESS   or 0x0A  Invalid I2C address
     '''
     length = 1
     pkt = [0] * (3 + length)
@@ -1388,8 +1390,8 @@ class DFRobot_RP2040_SCI_IIC(DFRobot_SCI):
 
   def _send_packet(self, pkt):
     '''!
-      @brief 发送数据
-      @param pkt 要发送的数据列表
+      @brief Send data
+      @param pkt List of data to be sent
       @return None
     '''
     for data in pkt:
@@ -1400,9 +1402,9 @@ class DFRobot_RP2040_SCI_IIC(DFRobot_SCI):
     
   def _recv_data(self, len):
     '''!
-      @brief 读取数据
-      @param len 要读取得字节数
-      @return 读取的数据列表
+      @brief Read data
+      @param len Number of bytes to be read
+      @return The read data list
     '''
     rslt = [0]*len
     i = 0
