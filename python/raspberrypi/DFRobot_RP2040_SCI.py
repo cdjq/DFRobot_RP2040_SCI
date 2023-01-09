@@ -1,22 +1,22 @@
 # -*- coding:utf-8 -*-
 '''!
   @file DFRobot_RP2040_SCI.py
-  @brief 这是基于Arduino平台的一个SCI采集模块(SCI Acquisition Module)驱动库，用户可以通过I2C接口读取或设置SCI采集模块的相关配置和数据，具体功能如下所述：
-  @n 1. 设置或读取SCI采集模块的I2C通信地址为0x21、0x22或0x23，出厂默认为0x21，I2C地址修改后，掉电重启后生效；
-  @n 2. 设置或读取Port1、Port2或Port3接口的配置：
-  @n    Port1: 可配置为模拟传感器模式或数字传感器模式，模拟传感器模式下，支持NULL、Analog、模拟传感器SKU，数字传感器模式下，支持数字传感器SKU
-  @n    Port2: 可配置为I2C传感器模式或UART传感器模式，I2C传感器模式下：支持NULL或I2C传感器，在此模式下，I2C传感器上电将被模块自动识别，UART传感器模式下，支持UART传感器SKU
-  @n    Port3: 可配置为I2C传感器模式或UART传感器模式，I2C传感器模式下：支持NULL或I2C传感器，在此模式下，I2C传感器上电将被模块自动识别，UART传感器模式下，支持UART传感器SKU
-  @n 3. 开启/关闭数据CSV文件记录
-  @n 4. 开启/关闭OLED屏显示
-  @n 5. 读取适配器板上各传感器的参数：
-  @n      a. 获取传感器数据的"名称"，各名称之间用逗号(,)隔开;;
-  @n      b. 获取传感器数据的"值"，各值之间用逗号(,)隔开;
-  @n      c. 获取传感器数据值的单位，各单位之间用逗号(,)隔开;；
-  @n      d. 获取接入传感器的SKU；
-  @n      e. 以名称:值 单位的方式获取完整的传感器信息，各信息之间用逗号（,）隔开
-  @n 6.设置和读取数据刷新时间
-  @n 7.获取数据刷新时间戳
+  @brief This is an Arduino drive library for the DFRobot SCI Acquisition module. Users can read or set its relevant config and data through the I2C interface. The following demonstrates its detailed functions:
+  @n 1. Set or read the I2C communication address of SCI acquisition module as 0x21, 0x22 or 0x23, the factory default is 0x21, after the I2C address is changed, it takes effect after power-off and reboot;
+  @n 2. Set or read the config of Port1, Port2 or Port3:
+  @n    Port1: can be configured as analog or digital sensor mode, supporting NULL, Analog, and analog sensor SKU in analog sensor mode, and supporting digital sensor SKU in digital sensor mode
+  @n    Port2: can be configured as I2C or UART sensor mode, supporting NULL or I2C sensor in I2C sensor mode, in which I2C sensor will be automatically recognized by the module when powered on, and supporting UART sensor SKU in UART sensor mode
+  @n    Port3: can be configured as I2C or UART sensor mode, supporting NULL or I2C sensor in I2C sensor mode, in which I2C sensor will be automatically recognized by the module when powered on, and supporting UART sensor SKU in UART sensor mode
+  @n 3. Enable/disable data record of CSV file
+  @n 4. Enable/disable OLED display
+  @n 5. Read the parameters of the sensors on the board：
+  @n      a. Get the "name" of sensor data, the names are separated by a comma(,);
+  @n      b. Get the "value" of sensor data, the values are separated by a comma(,);
+  @n      c. Get the unit of sensor data, the units are separated by a comma(,);
+  @n      d. Get the SKU of the connected sensor;
+  @n      e. Get the complete sensor information in the format of name:value unit, multiple pieces of information are separated by a comma (,)
+  @n 6. Set and read data refresh time
+  @n 7. Get data refresh timestamp
   @copyright   Copyright (c) 2022 DFRobot Co.Ltd (http://www.dfrobot.com)
   @license     The MIT License (MIT)
   @author [Arya](xue.peng@dfrobot.com)
@@ -30,152 +30,152 @@ import time
 import datetime
 
 class DFRobot_SCI:
-  ## 转换板默认I2C地址
+  ## Default I2C address
   RP2040_SCI_ADDR_0X21        =    0x21
   RP2040_SCI_ADDR_0X22        =    0x22
   RP2040_SCI_ADDR_0X23        =    0x23
 
-  '''enum 将要设置或者读取的接口'''
-  ## 设置或读取Port1接口   
+  '''enum The port to be set or read'''
+  ## Set or read Port1   
   ePort1        =  1 << 0
-  ## 设置或读取Port2接口 
+  ## Set or read Port2 
   ePort2        =  1 << 1 
-  ## 设置或读取Port3接口  
+  ## Set or read Port3  
   ePort3        =  1 << 2
-  ## 设置或读取Port1/2/3接口 
+  ## Set or read Port1/2/3 
   eALL          =  0x07
 
-  '''enum A&D接口模式选择'''
-  ## 模拟传感器模式  
+  '''enum A&D port mode select'''
+  ## Analog sensor mode  
   eAnalogMode  =  0
-  ## 数字传感器模式 
+  ## Digital sensor mode 
   eDigitalMode =  1
 
-  '''enum  I2C&UART接口模式选择'''
-  ## I2C传感器模式   
+  '''enum  I2C&UART port mode select'''
+  ## I2C sensor mode   
   eI2CMode  =  0
-  ## UART传感器模式
+  ## UART sensor mode
   eUARTMode =  1  
 
-  '''enum  刷新率设置'''
-  ## ms级刷新率，按数据的实际刷新率刷新
+  '''enum  Set data refresh rate'''
+  ## ms-level, refresh at the actual refresh rate
   eRefreshRateMs     = 0
-  ## 刷新率1s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
+  ## 1s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
   eRefreshRate1s    = 1   
-  ## 刷新率3s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
+  ## 3s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
   eRefreshRate3s     = 2  
-  ## 刷新率5s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新 
+  ## 5s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
   eRefreshRate5s     = 3   
-  ## 刷新率10s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
+  ## 10s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
   eRefreshRate10s    = 4   
-  ## 刷新率30s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
+  ## 30s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
   eRefreshRate30s    = 5   
-  ## 刷新率1min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
+  ## 1min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
   eRefreshRate1min   = 6   
-  ## 刷新率5min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
+  ## 5min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
   eRefreshRate5min   = 7   
-  ## 刷新率10min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
+  ## 10min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
   eRefreshRate10min  = 8   
 
-  ## 设置接口0命令，可以用此命令配置A&D接口的功能和SKU
+  ## Set port 0 command, which can be used to configure the function and SKU on A&D ports
   CMD_START   =  0x00
-  ## 设置接口0命令，可以用此命令配置A&D接口的功能和SKU
+  ## Set port 0 command, which can be used to configure the function and SKU on A&D ports
   CMD_SET_IF0    =   0x00  
-  ## 设置接口1命令，可以用此命令配置I2C1&UART1接口的功能和SKU
+  ## Set port 1 command, which can be used to configure the function and SKU on I2C1&UART1 ports
   CMD_SET_IF1    =   0x01  
-  ## 设置接口2命令，可以用此命令配置I2C2&UART2接口的功能和SKU
+  ## Set port 2 command, which can be used to configure the function and SKU on I2C2 & UART2 ports
   CMD_SET_IF2    =   0x02  
-  ## 读取接口0的功能和SKU
+  ## Read the function and SKU on port 0
   CMD_READ_IF0   =   0x00  
-  ## 读取接口1的功能和SKU
+  ## Read the function and SKU on port 1
   CMD_READ_IF1   =   0x01  
-  ## 读取接口2的功能和SKU
+  ## Read the function and SKU on port 2
   CMD_READ_IF2   =   0x02  
-  ## 设置I2C地址命令（此命令，设置成功后，立即生效）
+  ## Set I2C address command (the command will take effect immediately when it's set successfully)
   CMD_SET_ADDR   =   0x03 
-  ## 读取I2C地址命令（此命令，设置成功后，立即生效）
+  ## Read I2C address command (the command will take effect immediately when it's set successfully)
   CMD_READ_ADDR  =   0x03 
-  ## 设置时间的年，月，日，时，分，秒
+  ## Set the time information of year, month, day, hour, minute, second
   CMD_SET_TIME   =   0x04 
-  ## 获取时间的年，月，日，时，分，秒
+  ## Get the time information of year, month, day, hour, minute, second
   CMD_GET_TIME   =   0x04 
-  ## 启动csv记录
+  ## Enable CSV record
   CMD_RECORD_ON  =   0x05 
-  ## 停止CSV记录
+  ## Disable CSV record
   CMD_RECORD_OFF =   0x06 
-  ## 开启oled显示
+  ## Enable OLED display
   CMD_SCREEN_ON  =   0x07  
-  ## 关闭oled显示
+  ## Disable OLED display
   CMD_SCREEN_OFF =   0x08  
-  ## 获取传感器数据名
+  ## Get sensor data name
   CMD_GET_NAME   =   0x09  
-  ## 获取传感器数据值
+  ## Get sensor data value
   CMD_GET_VALUE  =   0x0A  
-  ## 获取传感器数据单位
+  ## Get sensor data unit
   CMD_GET_UNIT   =   0x0B  
-  ## 获取传感器的SKU, SKU之间用逗号(,)分开
+  ## Get sensor SKU, SKUs are separated by a comma(,)
   CMD_GET_SKU    =   0x0C  
-  ## 获取传感器的数据名，值和单位名，值和单位名之间空一格，其他用逗号(,)分开
+  ## Get the sensor data name, value and unit name, the value and unit name are separated by space, and others are separated by comma(,)
   CMD_GET_INFO   =   0x0D  
-  ## 根据数据名获取对应的数据的值
+  ## Get the corresponding data value according to the data name
   CMD_GET_KEY_VALUE0  =  0x0E  
-  ## 根据数据名获取对应的数据的值
+  ## Get the corresponding data value according to the data name
   CMD_GET_KEY_VALUE1  =  0x0F
-  ## 根据数据名获取对应的数据的值  
+  ## Get the corresponding data value according to the data name  
   CMD_GET_KEY_VALUE2  =  0x10  
-  ## 根据数据名获取对应的数据的单位
+  ## Get the corresponding data unit according to the data name
   CMD_GET_KEY_UINT0   =  0x11  
-   ## 根据数据名获取对应的数据的单位
+   ## Get the corresponding data unit according to the data name
   CMD_GET_KEY_UINT1   =  0x12 
-  ## 根据数据名获取对应的数据的单位
+  ## Get the corresponding data unit according to the data name
   CMD_GET_KEY_UINT2   =  0x13  
-  ## 复位I2C从机发送缓存命令
+  ## Command to copy I2C peripheral(slave) and send cache
   CMD_RESET           =  0x14 
-  ## 获取传感器转接板支持的Analog传感器SKU命令 
+  ## Command to get the supported Analog sensor SKU 
   CMD_SKU_A           =  0x15  
-  ## 获取传感器转接板支持的Digital传感器SKU命令
+  ## Command to get the supported Digital sensor SKU
   CMD_SKU_D           =  0x16  
-  ## 获取传感器转接板支持的I2C传感器SKU命令
+  ## Command to get the supported I2C sensor SKU
   CMD_SKU_IIC         =  0x17  
-  ## 获取传感器转接板支持的UART传感器SKU命令
+  ## Command to get the supported UART sensor SKU
   CMD_SKU_UART        =  0x18  
-  ## 获取时间戳
+  ## Get timestamp
   CMD_GET_TIMESTAMP     = 0x19  
-  ## 设置刷新率
+  ## Set refresh rate
   CMD_SET_REFRESH_TIME  = 0x20  
-  ## 获取刷新率
+  ## Get refresh rate
   CMD_GET_REFRESH_TIME  = 0x20  
-  CMD_GET_VERSION       = 0x21  ## 获取版本号
+  CMD_GET_VERSION       = 0x21  ## Get version number
 
   CMD_END             = CMD_GET_VERSION
-  ## 响应成功状态   
+  ## Status of successful response   
   STATUS_SUCCESS      = 0x53  
-  ## 响应失败状态 
+  ## Status of failed response 
   STATUS_FAILED       = 0x63  
 
   DEBUG_TIMEOUT_MS    = 2 #2s
 
-  ## 通信正常
+  ## Normal communication
   ERR_CODE_NONE            =   0x00 
-  ## 无效命令
+  ## Invalid command
   ERR_CODE_CMD_INVAILED    =   0x01 
-  ## 响应包错误
+  ## Response packet error
   ERR_CODE_RES_PKT         =   0x02 
-  ## I2C主机内存不够
+  ## Insufficient memory of I2C controller(master)
   ERR_CODE_M_NO_SPACE      =   0x03 
-  ## 响应包接收超时
+  ## Response packet reception timeout
   ERR_CODE_RES_TIMEOUT     =   0x04 
-  ## 无效的命令包或者命令不匹配
+  ## Invalid command packet or unmatched command
   ERR_CODE_CMD_PKT         =   0x05 
-  ## 从机故障
+  ## Peripheral(slave) fault
   ERR_CODE_SLAVE_BREAK     =   0x06
-  ## 设置的参数错误 
+  ## Set wrong parameters 
   ERR_CODE_ARGS            =   0x07 
-  ## 该SKU为无效SKU，或者SCI采集模块(SCI Acquisition Module)不支持
+  ## The SKU is an invalid SKU, or the one unsupported by SCI Acquisition Module
   ERR_CODE_SKU             =   0x08 
-  ## I2C从机内存不够
+  ## Insufficient memory of I2C peripheral
   ERR_CODE_S_NO_SPACE      =   0x09 
-  ## I2C地址无效
+  ## Invalid I2C address
   ERR_CODE_I2C_ADRESS      =   0x0A 
 
   INDEX_CMD        = 0
