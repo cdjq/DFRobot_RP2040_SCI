@@ -27,7 +27,7 @@ if __name__ == "__main__":
     time.sleep(1)
   print("Initialization SCI Acquisition Module done.")
   
-  # Set the local time of Raspberry Pi as the time of the module
+  # Set the date and time of the SCI Acquisition Module as the current time of Raspberry Pi
   sci.adjust_rtc_datetime()
   #Set the RTC time manually
   #sci.adjust_rtc(2022,8,17,3,12,0,0);  #Set time: 2022/08/17, Wednesday, 12:00:00
@@ -47,9 +47,9 @@ if __name__ == "__main__":
     @n      ERR_CODE_NONE         or 0x00  Set successful
     @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
     @n      ERR_CODE_RES_PKT      or 0x02  Response packet error
-    @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C master 
+    @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller(master) 
     @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response packet reception timeout
-    @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command packet or command mismatch 
+    @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command packet or unmatched command
     @n      ERR_CODE_I2C_ADRESS   or 0x0A  Invalid I2C address
   '''
   err_code = sci.set_i2c_address(sci.RP2040_SCI_ADDR_0X23)
