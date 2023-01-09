@@ -164,7 +164,7 @@ class DFRobot_SCI:
       @param sku  Parameter for port1. The supported SKU list can be viewed on the OLED or by getAnalogSensorSKU()/getDigitalSensorSKU()
       @n     "NULL"             Clear sensor settings for Port1 and configure mode as analog sensor mode
       @n     "Analog"           Select analog voltage data acquisition, unit mV 
-      @n     Analog sensor SKU  Select the SKU of a analog sensor and configure mode as analog sensor mode
+      @n     Analog sensor SKU  Select the SKU of an analog sensor and configure mode as analog sensor mode
       @n     Digital sensor SKU Select the SKU of a digital sensor and configure mode as digital sensor mode
       @return  Error code 
       @n      ERR_CODE_NONE         or 0x00  Setting succeed
@@ -217,7 +217,7 @@ class DFRobot_SCI:
 
   def set_port3(self, sku):
     '''!
-      @brief Set SKU on Port2, which can be connected to I2C or UART sensor. I2C sensors can be auto selected when connected,
+      @brief Set SKU on Port3, which can be connected to I2C or UART sensor. I2C sensors can be auto selected when connected,
       @ you just need to configure the mode as I2C mode for port2. But for UART sensors, please select by SKU. 
       @param sku  The 7-bit SKU code for I2C or UART Sensor
       @return Error code 
@@ -253,8 +253,8 @@ class DFRobot_SCI:
     
   def adjust_rtc_datetime(self):
     '''!
-      @brief Set the date and time of the SCI Acquisition Module as the current time of Raspbbery Pi 
-      @return  rror code
+      @brief Set the date and time of the SCI Acquisition Module as the current time of Raspberry Pi 
+      @return  Error code
       @n      ERR_CODE_NONE         or 0x00  Setting succeed 
       @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
       @n      ERR_CODE_RES_PKT      or 0x02  Response package error 
@@ -371,7 +371,7 @@ class DFRobot_SCI:
       @return Sensor mode description char string
       @n      "I2C"         I2C sensor mode 
       @n      "UART"        UART sensor mode 
-      @n      "UNKNOWN"     Unknown
+      @n      "UNKNOWN"     Unknown mode
     '''
   def enable_record(self):
     '''!
@@ -435,158 +435,158 @@ class DFRobot_SCI:
 
   def get_sku(self, inf):
     '''!
-      @brief 获取SCI采集模块(SCI Acquisition Module)上指定的一个或多个接口上所连接的所有传感器的SKU，SKU与SKU之间用','号隔开
-      @param inf 指定一个或多个接口参数
-      @n     ePort1                                    指定Port1接口，获取Port1接口上所连接的所有传感器的SKU
-      @n     ePort2                                    指定Port2接口，获取Port2接口上所连接的所有传感器的SKU
-      @n     ePort3                                    指定Port3接口，获取Port3接口上所连接的所有传感器的SKU
-      @n     eALL  or  (ePort1 | ePort2 | ePort3)      选中Port1, Port2和Port3接口，获取所有接口上所连接的所有传感器的SKU
-      @return SCI采集模块(SCI Acquisition Module)上指定的一个或多个接口上所连接的所有传感器的SKU
-      @n 例:  SEN0161,SEN0334
+      @brief Get the SKU of all sensors connected to the designated one or more ports. Separate SKUs using ","
+      @param inf Designate one or more ports
+      @n     ePort1                                    Designate port1, get SKUs of all sensors connected to port1
+      @n     ePort2                                    Designate port2, get SKUs of all sensors connected to port2
+      @n     ePort3                                    Designate port3, get SKUs of all sensors connected to port3
+      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Designate port1, port2 and port3, get SKUs of all sensors
+      @return The SKU of all sensors connected to the designated one or more ports of the SCI Acquisition Module
+      @n For example:  SEN0161,SEN0334
     '''
 
   def get_keys(self, inf):
     '''!
-      @brief 获取SCI采集模块(SCI Acquisition Module)上指定的一个或多个接口上所连接的所有传感器的所有属性名，属性名与属性名之间用','号隔开
-      @param inf 指定一个或多个接口参数
-      @n     ePort1                                    选中Port1接口，获取Port1接口上所连接的所有传感器的所有属性名
-      @n     ePort2                                    选中Port2接口，获取Port2接口上所连接的所有传感器的所有属性名
-      @n     ePort3                                    选中Port3接口，获取Port3接口上所连接的所有传感器的所有属性名
-      @n     eALL  or  (ePort1 | ePort2 | ePort3)      选中Port1, Port2和Port3接口，获取所有接口上所连接的所有传感器的所有属性名
-      @return SCI采集模块(SCI Acquisition Module)上指定的一个或多个接口上所连接的所有传感器的所有属性名
-      @n 例:  Temp_Air,Humi_Air
+      @brief Get attribute names of all sensors connected to the designated one or more ports. Separate attribute names using ","
+      @param inf Designate one or more ports
+      @n     ePort1                                    Select port1, get attribute names of all sensors connected to port1
+      @n     ePort2                                    Select port2, get attribute names of all sensors connected to port2
+      @n     ePort3                                    Select port3, get attribute names of all sensors connected to port3
+      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select port1, port2 and port3, get attribute names of all sensors
+      @return The attribute names of all sensors connected to the designated one or more ports of the SCI Acquisition Module
+      @n For example:  Temp_Air,Humi_Air
     '''
 
   def get_values(self, inf):
     '''!
-      @brief 获取SCI采集模块(SCI Acquisition Module)上指定的一个或多个接口上所连接的所有传感器的所有属性数据值，数据值与数据值之间用','号隔开
-      @param inf 指定一个或多个接口参数
-      @n     ePort1                                    选中Port1接口，获取Port1接口上所连接的所有传感器的所有属性数据值
-      @n     ePort2                                    选中Port2接口，获取Port2接口上所连接的所有传感器的所有属性数据值
-      @n     ePort3                                    选中Port3接口，获取Port3接口上所连接的所有传感器的所有属性数据值
-      @n     eALL  or  (ePort1 | ePort2 | ePort3)      选中Port1, Port2和Port3接口，获取所有接口上所连接的所有传感器的所有属性数据值
-      @return SCI采集模块(SCI Acquisition Module)上指定的一个或多个接口上所连接的所有传感器的所有属性数据值
-      @n 例:  28.65,30.12
+      @brief Get attribute data values of all sensors connected to the designated one or more ports. Separate attribute data values using ","
+      @param inf Designate one or more ports
+      @n     ePort1                                    Select port1, get attribute data values of all sensors connected to port1
+      @n     ePort2                                    Select port2, get attribute data values of all sensors connected to port2
+      @n     ePort3                                    Select port3, get attribute data values of all sensors connected to port3
+      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select port1, port2 and port3, get attribute data values of all sensors
+      @return The attribute data values of all sensors connected to the designated one or more ports of the SCI Acquisition Module
+      @n For example:  28.65,30.12
     '''
 
   def get_units(self, inf):
     '''!
-      @brief 获取SCI采集模块(SCI Acquisition Module)上指定的一个或多个接口上所连接的所有传感器的所有属性单位，单位与单位之间用','号隔开
-      @param inf 指定一个或多个接口参数
-      @n     ePort1                                    选中Port1接口，获取Port1接口上所连接的所有传感器的所有属性单位
-      @n     ePort2                                    选中Port2接口，获取Port2接口上所连接的所有传感器的所有属性单位
-      @n     ePort3                                    选中Port3接口，获取Port3接口上所连接的所有传感器的所有属性单位
-      @n     eALL  or  (ePort1 | ePort2 | ePort3)      选中Port1, Port2和Port3接口，获取所有接口上所连接的所有传感器的所有属性单位
-      @return SCI采集模块(SCI Acquisition Module)上指定的一个或多个接口上所连接的所有传感器的所有属性单位
-      @n 例:  C,%RH
+      @brief Get attribute units of all sensors connected to the designated one or more ports. Separate attribute units using ","
+      @param inf Designate one or more ports
+      @n     ePort1                                    Select port1, get attribute units of all sensors connected to port1
+      @n     ePort2                                    Select port2, get attribute units of all sensors connected to port2
+      @n     ePort3                                    Select port3, get attribute units of all sensors connected to port3
+      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select port1, port2 and port3, get attribute units of all sensors
+      @return The attribute units of all sensors connected to the designated one or more ports of the SCI Acquisition Module
+      @n For example:  C,%RH
     '''
 
   def get_value0(self, keys):
     '''!
-      @brief 获取所有接口所连接的传感器中属性名称为 keys 的数据值，多个属性值之间用','号隔开
-      @param keys  传感器属性名称
-      @return 所有接口所连接的传感器中属性名称为 keys 的数据值，多个属性值之间用','号隔开
-      @n 例Temp_Air:  28.65,28.65
+      @brief Get attribute data values named keys of all sensors connected to all ports. Separate attribute values using ","
+      @param keys  Sensor attribute name
+      @return Attribute data values named keys of all sensors connected to all ports. Separate attribute values using ","
+      @n For example, Temp_Air:  28.65,28.65
     '''
 
   def get_value1(self, inf, keys):
     '''!
-      @brief 获取指定接口所连接的传感器中属性名称为 keys 的数据值，多个属性值之间用','号隔开
-      @param inf    接口选择，及参数查找范围
-      @n     ePort1                                    选中Port1接口，获取Port1接口所连接的传感器中查找属性名称为keys的属性值
-      @n     ePort2                                    选中Port2接口，获取Port2接口所连接的传感器中查找属性名称为keys的属性值
-      @n     ePort3                                    选中Port3接口，获取Port3接口所连接的传感器中查找属性名称为keys的属性值
-      @n     eALL  or  (ePort1 | ePort2 | ePort3)      选中Port1, Port2和Port3接口，获取所有接口上在所有接口接口所连接的传感器中查找属性名称为keys的属性值
-      @param keys  传感器属性名称
-      @return 指定接口所连接的传感器中属性名称为 keys 的数据值，多个属性值之间用','号隔开
-      @n 例Temp_Air:  28.65,28.65
+      @brief Get attribute data values named keys of all sensors connected to the designated port. Separate attribute values using ","
+      @param inf    Port select, and parameter search range
+      @n     ePort1                                    Select port1, get attribute values named keys of all sensors connected to port1
+      @n     ePort2                                    Select port2, get attribute values named keys of all sensors connected to port2
+      @n     ePort3                                    Select port3, get attribute values named keys of all sensors connected to port3
+      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select port1, port2 and port3, get attribute values named keys of all sensors
+      @param keys  Sensor attribute name
+      @return The attribute values named keys of all sensors connected to the designated port. Separate attribute values using ","
+      @n For example, Temp_Air:  28.65,28.65
     '''
 
   def get_value2(self, inf, sku, keys):
     '''!
-      @brief 获取指定接口所连接的传感器中SKU为sku的传感器中属性名称为 keys 的数据值，多个属性值之间用','号隔开
-      @param inf    接口选择，及参数查找范围
-      @n     ePort1                                    选中Port1接口，获取Port1接口中查找SKU为sku的传感器，并读出属性名称为keys的属性值
-      @n     ePort2                                    选中Port2接口，获取Port2接口中查找SKU为sku的传感器，并读出属性名称为keys的属性值
-      @n     ePort3                                    选中Port3接口，获取Port3接口中查找SKU为sku的传感器，并读出属性名称为keys的属性值
-      @n     eALL  or  (ePort1 | ePort2 | ePort3)      选中Port1, Port2和Port3接口，在所有接口接口中查找SKU为sku的传感器，并读出属性名称为keys的属性值
-      @param sku 传感器SKU
-      @param keys  传感器属性名称
-      @return 指定接口所连接的传感器中SKU为sku的传感器中属性名称为 keys 的数据值，多个属性值之间用','号隔开
-      @n 例Temp_Air:  28.65,28.65
+      @brief Get attribute data values named keys of the sensor whose SKU is sku connected to the designated port. Separate attribute values using ","
+      @param inf    Port select, and parameter search range
+      @n     ePort1                                    Select port1, get the sensor whose SKU is sku connected to port1, and read attribute values named keys
+      @n     ePort2                                    Select port2, get the sensor whose SKU is sku connected to port2, and read attribute values named keys
+      @n     ePort3                                    Select port3, get the sensor whose SKU is sku connected to port3, and read attribute values named keys
+      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select port1, port2 and port3, get all the sensors whose SKU is sku, and read attribute values named keys
+      @param sku Sensor SKU
+      @param keys  Sensor attribute name
+      @return The attribute data values named keys of the sensor whose SKU is sku connected to the designated port. Separate attribute values using ","
+      @n For example, Temp_Air:  28.65,28.65
     '''
 
   def get_unit0(self, keys):
     '''!
-      @brief 获取所有接口所连接的传感器中属性名称为 keys 的数据单位，多个属性单位之间用','号隔开
-      @param keys  传感器属性名称
-      @return 所有接口所连接的传感器中属性名称为 keys 的数据单位，多个属性单位之间用','号隔开
+      @brief Get attribute data units named keys of all sensors. Separate attribute units using ","
+      @param keys  Sensor attribute name
+      @return Attribute data units named keys of all sensors. Separate attribute units using ","
       @n 例Temp_Air:  C,C
     '''
 
   def get_unit1(self, inf, keys):
     '''!
-      @brief 获取指定接口所连接的传感器中属性名称为 keys 的数据单位，多个属性单位之间用','号隔开
-      @param inf    接口选择，及参数查找范围
-      @n     ePort1                                    选中Port1接口，获取Port1接口所连接的传感器中查找属性名称为keys的属性单位
-      @n     ePort2                                    选中Port2接口，获取Port2接口所连接的传感器中查找属性名称为keys的属性单位
-      @n     ePort3                                    选中Port3接口，获取Port3接口所连接的传感器中查找属性名称为keys的属性单位
-      @n     eALL  or  (ePort1 | ePort2 | ePort3)      选中Port1, Port2和Port3接口，在所有接口接口所连接的传感器中查找属性名称为keys的属性单位
-      @param keys  传感器属性名称
-      @return 指定接口所连接的传感器中属性名称为 keys 的数据单位，多个属性单位之间用','号隔开
-      @n 例Temp_Air:  C,C
+      @brief Get attribute data units named keys of the sensor connected to the designated port. Separate attribute units using ","
+      @param inf    Port select, and parameter search range
+      @n     ePort1                                    Select port1, get attribute units named keys of the sensor connected to port1
+      @n     ePort2                                    Select port2, get attribute units named keys of the sensor connected to port2
+      @n     ePort3                                    Select port3, get attribute units named keys of the sensor connected to port3
+      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select port1, port2 and port3, get attribute units named keys of all sensors 
+      @param keys  Sensor attribute name
+      @return The attribute data units named keys of the sensor connected to the designated port. Separate attribute units using ","
+      @n For example, Temp_Air:  C,C
     '''
 
   def get_unit2(self, inf, sku, keys):
     '''!
-      @brief 获取指定接口所连接的传感器中SKU为sku的传感器中属性名称为 keys 的数据单位，多个属性单位之间用','号隔开
-      @param inf    接口选择，及参数查找范围
-      @n     ePort1                                    选中Port1接口，获取ePort1接口中查找SKU为sku的传感器，并读出属性名称为keys的属性单位
-      @n     ePort2                                    选中Port2接口，获取ePort2接口中查找SKU为sku的传感器，并读出属性名称为keys的属性单位
-      @n     ePort3                                    选中Port3接口，获取ePort3接口中查找SKU为sku的传感器，并读出属性名称为keys的属性单位
-      @n     eALL  or  (ePort1 | ePort2 | ePort3)      选中Port1, Port2和Port3接口，在所有接口接口中查找SKU为sku的传感器，并读出属性名称为keys的属性单位
-      @param sku 传感器SKU
-      @param keys  传感器属性名称
-      @return 指定接口所连接的传感器中SKU为sku的传感器中属性名称为 keys 的数据单位，多个属性单位之间用','号隔开
-      @n 例Temp_Air:  C,C
+      @brief Get attribute data units named keys of the sensor whose SKU is sku connected to the designated port. Separate attribute units using ","
+      @param inf    Port select, and parameter search range
+      @n     ePort1                                    Select port1, get the sensor whose SKU is sku connected to ePort1, and read attribute units named keys
+      @n     ePort2                                    Select port2, get the sensor whose SKU is sku connected to ePort2, and read attribute units named keys
+      @n     ePort3                                    Select port3, get the sensor whose SKU is sku connected to ePort3, and read attribute units named keys
+      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select port1, port2 and port3, get all the sensors whose SKU is sku, and read attribute units named keys
+      @param sku Sensor SKU
+      @param keys  Sensor attribute name
+      @return The attribute data units named keys of the sensor whose SKU is sku connected to the designated port. Separate attribute units using ","
+      @n For example, Temp_Air:  C,C
     '''
 
   def get_analog_sensor_sku(self):
     '''!
-      @brief 获取SCI采集模块(SCI Acquisition Module)Analog系列传感器的SKU支持列表
-      @return SCI采集模块(SCI Acquisition Module)Analog系列传感器的SKU支持列表，如果没有则返回NULL
+      @brief Get the SKU list of analog sensors supported by SCI Acquisition Module
+      @return SKU list of supported analog sensors, return NULL if there is not
     '''
   
   def get_digital_sensor_sku(self):
     '''!
-      @brief 获取SCI采集模块(SCI Acquisition Module)Digital系列传感器的SKU支持列表
-      @return SCI采集模块(SCI Acquisition Module)Digital系列传感器的SKU支持列表，如果没有则返回NULL
+      @brief Get the SKU list of digital sensors supported by SCI Acquisition Module
+      @return SKU list of supported digital sensors, return NULL if there is not
     '''
 
   def get_i2c_sensor_sku(self):
     '''!
-      @brief 获取SCI采集模块(SCI Acquisition Module)I2C系列传感器的SKU支持列表
-      @return SCI采集模块(SCI Acquisition Module)I2C系列传感器的SKU支持列表，如果没有则返回NULL
+      @brief Get the SKU list of I2C sensors supported by SCI Acquisition Module
+      @return SKU list of supported I2C sensors, return NULL if there is not
     '''
 
   def get_uart_sensor_sku(self):
     '''!
-      @brief 获取SCI采集模块(SCI Acquisition Module)UART系列传感器的SKU支持列表
-      @return SCI采集模块(SCI Acquisition Module)UART系列传感器的SKU支持列表，如果没有则返回NULL
+      @brief Get the SKU list of UART sensors supported by SCI Acquisition Module
+      @return SKU list of supported UART sensors, return NULL if there is not
     '''
 ```
 
 ## Compatibility
 
-| 主板         | 通过 | 未通过 | 未测试 | 备注 |
+| MCU         | Work Well | Work Wrong | Untested | Remarks |
 | ------------ | :--: | :----: | :----: | :--: |
 | RaspberryPi2 |      |        |   √    |      |
 | RaspberryPi3 |      |        |   √    |      |
 | RaspberryPi4 |  √   |        |        |      |
 
-* Python 版本
+* Python Version
 
-| Python  | 通过 | 未通过 | 未测试 | 备注 |
+| Python  | Work Well | Work Wrong | Untested | Remarks |
 | ------- | :--: | :----: | :----: | ---- |
 | Python2 |  √   |        |        |      |
 | Python3 |  √   |        |        |      |
