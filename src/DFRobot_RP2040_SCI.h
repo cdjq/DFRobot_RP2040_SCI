@@ -1,21 +1,24 @@
 /*!
  * @file DFRobot_RP2040_SCI.h
- * @brief This is an Arduino drive library for the DFRobot SCI Acquisition module. Users can read or set its relevant config and data through the I2C interface. The following demonstrates its detailed functions:
- * @n 1. Set or read the I2C communication address of the SCI acquisition module as 0x21, 0x22 or 0x23, the factory default is 0x21, after the I2C address is changed, it takes effect after power-off and reboot;
+ * @brief This is an Arduino drive library for the DFRobot SCI Acquisition module. Users can read or set its config and data via I2C. The following demonstrates its detailed functions:
+ * @n 1. Set or read the I2C address of the module as 0x21, 0x22 or 0x23, the factory default is 0x21, 
+ * @n after the I2C address is changed, it will take effect after power-off and reboot;
  * @n 2. Set or read the config of Port1, Port2 or Port3:
- * @n    Port1: can be configured as analog or digital sensor mode, supporting NULL, Analog, and analog sensor SKU in analog sensor mode, and supporting digital sensor SKU in digital sensor mode
- * @n    Port2: can be configured as I2C or UART sensor mode, supporting NULL or I2C sensor in I2C sensor mode, in which I2C sensor will be automatically recognized by the module when powered on, and supporting UART sensor SKU in UART sensor mode
- * @n    Port3: can be configured as I2C or UART sensor mode, supporting NULL or I2C sensor in I2C sensor mode, in which I2C sensor will be automatically recognized by the module when powered on, and supporting UART sensor SKU in UART sensor mode
+ * @n    Port1: can be configured as analog or digital sensor mode, support NULL, Analog, and analog sensor SKU in analog sensor mode, and support digital sensor SKU in digital sensor mode
+ * @n    Port2: can be configured as I2C or UART sensor mode, support NULL or I2C sensor in I2C sensor mode, 
+ * @n    in which I2C sensor will be automatically recognized by the module when powered on, and support UART sensor SKU in UART sensor mode
+ * @n    Port3: can be configured as I2C or UART sensor mode, support NULL or I2C sensor in I2C sensor mode, 
+ * @n    in which I2C sensor will be automatically recognized by the module when powered on, and support UART sensor SKU in UART sensor mode
  * @n 3. Enable/disable data record of CSV file
  * @n 4. Enable/disable OLED display
  * @n 5. Read the parameters of the sensors on the board:
- * @n      a. 获取传感器数据的"名称"，各名称之间用逗号(,)隔开;;
- * @n      b. 获取传感器数据的"值"，各值之间用逗号(,)隔开;
- * @n      c. 获取传感器数据值的单位，各单位之间用逗号(,)隔开;；
- * @n      d. 获取接入传感器的SKU；
- * @n      e. 以名称:值 单位的方式获取完整的传感器信息，各信息之间用逗号（,）隔开
- * @n 6.设置和读取数据刷新时间
- * @n 7.获取数据刷新时间戳
+ * @n      a. Get sensor data "name", separate names by a comma(,);
+ * @n      b. Get sensor data "value", separate values by a comma(,);
+ * @n      c. Get sensor data unit, separate units by a comma(,);
+ * @n      d. Get the SKU of the connected sensor;
+ * @n      e. Get the complete sensor information in the format of name:value unit, separate multiple pieces of information by a comma (,)
+ * @n 6. Set and read the data refresh rate
+ * @n 7. Get data refresh timestamp
  *
  * @copyright   Copyright (c) 2022 DFRobot Co.Ltd (http://www.dfrobot.com)
  * @license     The MIT License (MIT)
@@ -35,8 +38,8 @@
 #include <Wire.h>
 
 
-/* SCI支持的I2C地址 */
-#define RP2040_SCI_ADDR_0X21      0x21 ///< 转换板默认I2C地址
+/* I2C address supported by SCI Acquisition Module */
+#define RP2040_SCI_ADDR_0X21      0x21 ///< default I2C address
 #define RP2040_SCI_ADDR_0X22      0x22
 #define RP2040_SCI_ADDR_0X23      0x23
 
@@ -44,293 +47,295 @@ class DFRobot_SCI{
 public:
   /**
    * @enum eInterfaceList_t
-   * @brief 将要设置或者读取的接口
+   * @brief The port to be set or read
    */
   typedef enum{
-    ePort1         = 1 << 0, /**< Port1接口，模拟或数字传感器接口*/
-    ePort2         = 1 << 1, /**< Port2接口，I2C或UART传感器接口*/
-    ePort3         = 1 << 2, /**< Port3接口，I2C或UART传感器接口*/
-    eALL           = 0x07    /**< Port1，Port2，Port3接口*/
+    ePort1         = 1 << 0, /**< Port1, analog or digital sensor port*/
+    ePort2         = 1 << 1, /**< Port2, I2C or UART sensor port*/
+    ePort3         = 1 << 2, /**< Port3, I2C or UART sensor port*/
+    eALL           = 0x07    /**< Port1, Port2, and Port3*/
   }eInterfaceList_t;
 
   /**
    * @enum ePort1IFMode_t
-   * @brief Port1接口模式选择
+   * @brief Port1 mode select
    */
   typedef enum{
-    eAnalogMode = 0,  /**< 模拟传感器模式*/
-    eDigitalMode      /**< 数字传感器模式*/
+    eAnalogMode = 0,  /**< Analog sensor mode*/
+    eDigitalMode      /**< Digital sensor mode*/
   }ePort1IFMode_t;
 
   /**
    * @enum ePort23Mode_t
-   * @brief Port2或Port3接口模式选择
+   * @brief Port2 or Port3 mode select
    */
   typedef enum{
-    eI2CMode  = 0,   /**< I2C传感器模式*/
-    eUARTMode        /**< UART传感器模式*/
+    eI2CMode  = 0,   /**< I2C sensor mode*/
+    eUARTMode        /**< UART sensor mode*/
   }ePort23Mode_t;
 
   typedef enum{
-    eRefreshRateMs = 0,  /**< ms级刷新率，按数据的实际刷新率刷新*/
-    eRefreshRate1s,      /**< 刷新率1s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新*/
-    eRefreshRate3s,      /**< 刷新率3s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新*/
-    eRefreshRate5s,      /**< 刷新率5s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新*/
-    eRefreshRate10s,     /**< 刷新率10s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新*/
-    eRefreshRate30s,     /**< 刷新率30s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新*/
-    eRefreshRate1min,    /**< 刷新率1min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新*/
-    eRefreshRate5min,    /**< 刷新率5min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新*/
-    eRefreshRate10min    /**< 刷新率10min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新*/
+    eRefreshRateMs = 0,  /**< ms-level, refresh at the actual refresh rate*/
+    eRefreshRate1s,      /**< 1s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate*/ 
+    eRefreshRate3s,      /**< 3s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate*/
+    eRefreshRate5s,      /**< 5s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate*/
+    eRefreshRate10s,     /**< 10s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate*/
+    eRefreshRate30s,     /**< 30s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate*/
+    eRefreshRate1min,    /**< 1min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate*/
+    eRefreshRate5min,    /**< 5min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate*/
+    eRefreshRate10min    /**< 10min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate*/
   }eRefreshRate_t;
 
   /**
    * @fn DFRobot_RP2040_SCI
-   * @brief DFRobot_RP2040_SCI类的构造函数.
+   * @brief DFRobot_RP2040_SCI Class Constructor.
    */
   DFRobot_SCI();
 
   /**
    * @fn  ~DFRobot_RP2040_SCI
-   * @brief DFRobot_RP2040_SCI类的析构函数. 
+   * @brief DFRobot_RP2040_SCI Class Destructor. 
    */
   ~DFRobot_SCI();
   
   /**
    * @fn begin
-   * @brief SCI采集模块(SCI Acquisition Module)初始化，旨在初始化通信接口
+   * @brief Initalize the SCI Acquisition Module, mainly for initializing communication interface
    * 
-   * @param freq 设置通信频率,不能超过100kHz
-   * @return int 初始化状态
-   * @n       0  初始化成功
-   * @n      -1  通信接口类对象未传入
-   * @n      -2  请检测硬件连接是否正确
+   * @param freq Set communication frequency, no more than 100kHz
+   * @return int Init status
+   * @n       0  Init successful
+   * @n      -1  The communication interface class & object are not passed in
+   * @n      -2  Check if the hardware connection is correct
    */
   int begin(uint32_t freq = 100000);
   /**
    * @fn getVersion
-   * @brief 获取SCI采集模块(SCI Acquisition Module)的固件版本号
-   * @n 版本号是一个16位数据，高8位(b15~b9): 代表最高版本位
-   * @n 中4位(b8~b4):表示中间版本位
-   * @n 低4位：表示低版本位
-   * @n 例0x0123对应的版本号为 V1.2.3
+   * @brief Get firmware version number of SCI Acquisition Module
+   * @n The version number is 16-bit data, the high 8bits(b15-b9) represent the leftmost number
+   * @n The middle 4bits (b8-b4) represent the middle number
+   * @n The low 4bits represent the rightmost number 
+   * @n For example, 0x0123 corresponds to V1.2.3
    * 
-   * @return 16位版本号
+   * @return 16-bit version number
    */
   uint16_t getVersion();
   /**
    * @fn getVersionDescription
-   * @brief 获取版本描述字符串
+   * @brief Get version description char string
    * 
-   * @return 返回版本描述字符串，例版本id：0x0123返回的版本描述字符串为 V1.2.3
+   * @return Return version description char string, e.g. id：0x0123 The returned version decription char string is V1.2.3
    */
   String getVersionDescription(uint16_t version);
 
   /**
    * @fn setPort1(char *sku)
-   * @brief 设置Port1的SKU，此接口可连接模拟传感器和数字传感器，通过SKU选择Port1上连接的传感器
+   * @brief SKU on Port1, which can be connected to analog & digital sensors, select the sensor connected to Port1 by SKU
    * 
-   * @param sku  Port1接口的参数，支持的SKU列表可以通过OLED显示或者 getAnalogSensorSKU()/getDigitalSensorSKU()查看
-   * @n     "NULL"       表示清除Port1接口的传感器设置,并将传感器模式配置为模拟传感器配置
-   * @n     "Analog"     表示选择Analog电压数据采集，单位mV
-   * @n     模拟传感器SKU 表示选择了某个模拟传感器的SKU，并将模式配置为模拟传感器模式
-   * @n     数字传感器SKU 表示选择了某个数字传感器的SKU，并将模式配置为数字传感器模式
-   * @return uint8_t 错误代码
-   * @n      ERR_CODE_NONE         or 0x00  设置成功
-   * @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-   * @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-   * @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-   * @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
-   * @n      ERR_CODE_SLAVE_BREAK  or 0x06  从机故障
-   * @n      ERR_CODE_ARGS         or 0x07  设置的参数错误
+   * @param sku  Parameters for Port1, the supported SKU list can be viewed on OLED display or by getAnalogSensorSKU()/getDigitalSensorSKU()
+   * @n     "NULL"       Clear sensor settings for Port1 and configure mode as analog sensor mode
+   * @n     "Analog"     Select analog voltage data acquisition, unit mV
+   * @n     Analog sensor SKU  Select the SKU of an analog sensor and configure mode as analog sensor mode
+   * @n     Digital sensor SKU Select the SKU of a digital sensor and configure mode as digital sensor mode
+   * @return uint8_t Error Code
+   * @n      ERR_CODE_NONE         or 0x00  Setting succeed
+   * @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
+   * @n      ERR_CODE_RES_PKT      or 0x02  Response package error
+   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller(master)
+   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout
+   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command 
+   * @n      ERR_CODE_SLAVE_BREAK  or 0x06  Peripheral(slave) fault
+   * @n      ERR_CODE_ARGS         or 0x07  Set wrong parameters 
    */
   uint8_t setPort1(char *sku);
 
   /**
    * @fn getPort1(ePort1IFMode_t mode)
-   * @brief 获取Port1接口的传感器模式，及SKU配置
+   * @brief Get the sensor mode on port1 and SKU config
    * 
-   * @param mode  eADIFMode_t枚举变量指针
-   * @n     eAnalogMode    模拟传感器模式
-   * @n     eDigitalMode   数字传感器模式
-   * @return 接口0连接的传感器的SKU
-   * @n      "NULL"        表示Port1接口没有配置或连接传感器
-   * @n      "Analog"      表示Port1接口被配置为读取Port1接口两端的电压数据
-   * @n      7位SKU        表示Port1接口被配置为读数字或模拟传感器的数据
+   * @param mode  eADIFMode_t enum variable pointer
+   * @n     eAnalogMode    Analog sensor mode
+   * @n     eDigitalMode   Digital sensor mode
+   * @return SKU of the sensor connected to port1
+   * @n      "NULL"        Port1 is configured or connected to no sensor 
+   * @n      "Analog"      Port1 is configured as reading its voltage data
+   * @n       7-bit SKU        Port1 is configured as reading data from a digital or analog sensor
    */
   String getPort1(ePort1IFMode_t *mode);
 
   /**
    * @fn setPort2(char *sku)
-   * @brief 设置Port2的SKU，此接口可连接I2C传感器和UART传感器，其中UART传感器需通过SKU选择，I2C是连接后，自动选择，只需将Port2配置为I2C模式即可
+   * @brief Set SKU on Port2, which can be connected to I2C & UART sensors. I2C sensors can be auto selected when connected, 
+     @ you just need to configure the mode as I2C mode for port2. But for UART sensors, please select by SKU. 
    * 
-   * @param sku  Port2接口的参数，支持的SKU列表可以通过OLED显示或者 getUARTSensorSKU()查看
-   * @n     "NULL"       将Port配置为I2C模式，并清除Port2上关于UART传感器的配置
-   * @n     UART传感器SKU 表示选择了某个UART传感器的SKU，并将模式配置为UART传感器模式
-   * @return uint8_t 错误代码
-   * @n      ERR_CODE_NONE         or 0x00  设置成功
-   * @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-   * @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-   * @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-   * @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
-   * @n      ERR_CODE_SLAVE_BREAK  or 0x06  从机故障
-   * @n      ERR_CODE_ARGS         or 0x07  设置的参数错误
+   * @param sku  Parameters for Port2, the supported SKU list can be viewed on the OLED display or by getUARTSensorSKU()
+   * @n     "NULL"       Configure Port2 as I2C mode and clear the config related to UART sensor on Port2
+   * @n     UART sensor SKU indicates a UART sensor SKU is selected and the mode is configured as UART sensor mode
+   * @return uint8_t Error code
+   * @n      ERR_CODE_NONE         or 0x00  Setting succeed
+   * @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
+   * @n      ERR_CODE_RES_PKT      or 0x02  Response package error
+   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout
+   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command
+   * @n      ERR_CODE_SLAVE_BREAK  or 0x06  Peripheral fault
+   * @n      ERR_CODE_ARGS         or 0x07  Set wrong parameters 
    */
   uint8_t setPort2(char *sku);
 
   /**
    * @fn getPort2(ePort23Mode_t mode)
-   * @brief 获取Port2的传感器模式，及SKU配置
+   * @brief Get the sensor mode on port2 and SKU config
    * 
-   * @param mode  eI2CUARTMode_t 枚举变量指针
-   * @n     eI2CMode    I2C传感器模式
-   * @n     eUARTMode   UART传感器模式
-   * @return 接口0连接的传感器的SKU
-   * @n      "NULL"        表示接口0没有配置或连接传感器
-   * @n      7位SKU集合     I2C或UART传感器对应的SKU
+   * @param mode  eI2CUARTMode_t enum variable pointer
+   * @n     eI2CMode    I2C sensor mode
+   * @n     eUARTMode   UART sensor mode
+   * @return SKU of the sensor connected to Port2
+   * @n      "NULL"        Port2 is configured or connected to no sensor
+   * @n      7-bit SKU set     The SKU corresponding to I2C or UART sensor
    */
   String getPort2(ePort23Mode_t *mode);
 
   /**
    * @fn setPort3(char *sku)
-   * @brief 设置Port3的SKU，此接口可连接I2C传感器和UART传感器，其中UART传感器需通过SKU选择，I2C是连接后，自动选择，只需将Port2配置为I2C模式即可
+   * @brief Set SKU on Port3, which can be connected to I2C & UART sensors. I2C sensors can be auto selected when connected,
+     @ you just need to configure the mode as I2C mode for port2. But for UART sensors, please select by SKU.
    * 
-   * @param sku  Port3接口的参数，支持的SKU列表可以通过OLED显示或者 getUARTSensorSKU()查看
-   * @n     "NULL"       将Port配置为I2C模式，并清除Port3上关于UART传感器的配置
-   * @n     UART传感器SKU 表示选择了某个UART传感器的SKU，并将模式配置为UART传感器模式
-   * @return uint8_t 错误代码
-   * @n      ERR_CODE_NONE         or 0x00  设置成功
-   * @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-   * @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-   * @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-   * @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
-   * @n      ERR_CODE_SLAVE_BREAK  or 0x06  从机故障
-   * @n      ERR_CODE_ARGS         or 0x07  设置的参数错误
+   * @param sku  Parameters for Port3, the supported SKU list can be viewed on the OLED display or by getUARTSensorSKU()
+   * @n     "NULL"       Configure Port3 as I2C mode and clear the config related to UART sensors on Port3
+   * @n     UART sensor SKU indicates a UART sensor SKU is selected and the mode is configured as UART sensor mode
+   * @return uint8_t Error code
+   * @n      ERR_CODE_NONE         or 0x00  Setting succeed
+   * @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
+   * @n      ERR_CODE_RES_PKT      or 0x02  Response package error
+   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout
+   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command 
+   * @n      ERR_CODE_SLAVE_BREAK  or 0x06  Peripheral fault
+   * @n      ERR_CODE_ARGS         or 0x07  Set wrong parameters 
    */
   uint8_t setPort3(char *sku);
 
   /**
    * @fn getPort3(ePort23Mode_t mode)
-   * @brief 获取Port3的传感器模式，及SKU配置
+   * @brief Get the sensor mode on port3 and SKU config
    * 
-   * @param mode  eI2CUARTMode_t 枚举变量指针
-   * @n     eI2CMode    I2C传感器模式
-   * @n     eUARTMode   UART传感器模式
-   * @return 接口0连接的传感器的SKU
-   * @n      "NULL"        表示接口0没有配置或连接传感器
-   * @n      7位SKU集合     I2C或UART传感器对应的SKU
+   * @param mode  eI2CUARTMode_t enum variable pointer
+   * @n     eI2CMode    I2C sensor mode
+   * @n     eUARTMode   UART sensor mode
+   * @return SKU of the sensor connected to Port3
+   * @n      "NULL"        Port3 is configured or connected to no sensor 
+   * @n      7-bit SKU set     The SKU corresponding to I2C or UART sensor
    */
   String getPort3(ePort23Mode_t *mode);
 
   /**
    * @fn setRecvTimeout
-   * @brief 设置接收超时时间
+   * @brief Set receive timeout
    * 
-   * @param timeout 当SCI采集模块连接的传感器较多时，在读取大量数据时需要适当提高接收超时时间，默认2s
+   * @param timeout When there are many sensors connected to SCI Acquisition Module, you need to increase the receive timeout value appropriately when reading a large amount of data, default is 2s
    */
   void setRecvTimeout(uint32_t timeout = 2000);
   /**
    * @fn adjustRtc(const __FlashStringHelper* date, const __FlashStringHelper* time)
-   * @brief 设置SCI采集模块(SCI Acquisition Module)的时间
+   * @brief Set time of SCI Acquisition Module
    * 
-   * @param date 年月日
-   * @param time 时分秒
-   * @return 错误代码
-   * @n      ERR_CODE_NONE         or 0x00  设置成功
-   * @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-   * @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-   * @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-   * @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
+   * @param date Year, month & day
+   * @param time Hour, minute & second
+   * @return Error code
+   * @n      ERR_CODE_NONE         or 0x00  Setting succeed 
+   * @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
+   * @n      ERR_CODE_RES_PKT      or 0x02  Response package error 
+   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout 
+   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command 
    */
   uint8_t adjustRtc(const __FlashStringHelper* date, const __FlashStringHelper* time);
 	/**
    * @fn adjustRtc(uint16_t year, uint8_t month, uint8_t day, uint8_t week, uint8_t hour, uint8_t minute, uint8_t second)
-   * @brief 设置SCI采集模块(SCI Acquisition Module)的时间
+   * @brief Set time of SCI Acquisition Module
    * 
-   * @param year   年
-   * @param month  月
-   * @param day    日
-   * @param week   周
-   * @param hour   时
-   * @param minute 分
-   * @param second 秒
-   * @return uint8_t 错误代码
-   * @n      ERR_CODE_NONE         or 0x00  设置成功
-   * @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-   * @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-   * @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-   * @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
+   * @param year   Year
+   * @param month  Month
+   * @param day    Day
+   * @param week   Week
+   * @param hour   Hour
+   * @param minute Minute
+   * @param second Second
+   * @return uint8_t Error code
+   * @n      ERR_CODE_NONE         or 0x00  Setting succeed 
+   * @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command 
+   * @n      ERR_CODE_RES_PKT      or 0x02  Response package error 
+   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout 
+   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command
    */
   uint8_t adjustRtc(uint16_t year, uint8_t month, uint8_t day, uint8_t week, uint8_t hour, uint8_t minute, uint8_t second);
   /**
    * @fn getRtcTime(uint16_t *year, uint8_t *month, uint8_t *day, uint8_t *week, uint8_t *hour, uint8_t *minute, uint8_t *second)
-   * @brief 获取SCI采集模块(SCI Acquisition Module)的年月日时分秒周等日期
+   * @brief Get year, month, day, week, hour, minute, second of SCI Acquisition Module
    * 
-   * @param year   年
-   * @param month  月
-   * @param day    日
-   * @param week   周
-   * @param hour   时
-   * @param minute 分
-   * @param second 秒
-   * @return uint8_t 错误代码
-   * @n      ERR_CODE_NONE         or 0x00  设置成功
-   * @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-   * @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-   * @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-   * @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
+   * @param year   Year
+   * @param month  Month
+   * @param day    Day
+   * @param week   Week
+   * @param hour   Hour
+   * @param minute Minute
+   * @param second Second
+   * @return uint8_t Error code
+   * @n      ERR_CODE_NONE         or 0x00  Setting succeed 
+   * @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command 
+   * @n      ERR_CODE_RES_PKT      or 0x02  Response package error 
+   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout 
+   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command
    */
   uint8_t getRtcTime(uint16_t *year, uint8_t *month, uint8_t *day, uint8_t *week, uint8_t *hour, uint8_t *minute, uint8_t *second);
   /**
    * @fn getRtcTime()
-   * @brief 获取SCI采集模块(SCI Acquisition Module)的年月日时分秒周等日期
+   * @brief Get the year, month, day, week, hour, minute, second of the SCI Acquisition Module
    * 
-   * @return 年/月/日 周 时:分:秒表示的字符串，例 2022/08/09 2 09:08:00 2022年8月9日，星期二 9点8分0秒
+   * @return The char string for year/month/day week hour:minute:second, for example, 2022/08/09 2 09:08:00 represents Tuesday, August 9, 2022, at 9:08:0 
    */
   String getRtcTime();
   /**
    * @fn setRefreshRate
-   * @brief 设置数据刷新时间
+   * @brief Set data refresh rate
    * 
-   * @param refreshRate eRefreshRate_t枚举变量
-   * @n eRefreshRateMs     ms级刷新率，按数据的实际刷新率刷新
-   * @n eRefreshRate1s     刷新率1s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-   * @n eRefreshRate3s     刷新率3s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-   * @n eRefreshRate5s     刷新率5s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-   * @n eRefreshRate10s    刷新率10s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-   * @n eRefreshRate30s    刷新率30s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-   * @n eRefreshRate1min   刷新率1min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-   * @n eRefreshRate5min   刷新率5min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-   * @n eRefreshRate10min  刷新率10min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-   * @return uint8_t 错误代码
-   * @n      ERR_CODE_NONE         or 0x00  设置成功
-   * @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-   * @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-   * @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-   * @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
+   * @param refreshRate eRefreshRate_t enum variable
+   * @n eRefreshRateMs     ms-level, refresh at the actual refresh rate
+   * @n eRefreshRate1s     1s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+   * @n eRefreshRate3s     3s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+   * @n eRefreshRate5s     5s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+   * @n eRefreshRate10s    10s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+   * @n eRefreshRate30s    30s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+   * @n eRefreshRate1min   1min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+   * @n eRefreshRate5min   5min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+   * @n eRefreshRate10min  10min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+   * @return uint8_t Error code
+   * @n      ERR_CODE_NONE         or 0x00  Setting succeed
+   * @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
+   * @n      ERR_CODE_RES_PKT      or 0x02  Response package error
+   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout
+   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command
    */
   uint8_t setRefreshRate(eRefreshRate_t refreshRate);
   /**
    * @fn getRefreshRate
-   * @brief 获取设置的刷新时间，注意此刷新时间可能不是数据实际刷新时间，它们之间满足这样的关系: 设置的刷新时间 <= 数据实际刷新时间
+   * @brief Get the set refresh rate, which may not be the actual rate, the relationship between them is: the set refresh rate <= the actual refresh rate
    * 
-   * @param refreshRate eRefreshRate_t枚举变量，获取等级
-   * @n eRefreshRateMs     ms级刷新率，按数据的实际刷新率刷新
-   * @n eRefreshRate1s     刷新率1s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-   * @n eRefreshRate3s     刷新率3s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-   * @n eRefreshRate5s     刷新率5s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-   * @n eRefreshRate10s    刷新率10s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-   * @n eRefreshRate30s    刷新率30s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-   * @n eRefreshRate1min   刷新率1min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-   * @n eRefreshRate5min   刷新率5min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-   * @n eRefreshRate10min  刷新率10min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-   * @return uint32_t 返回刷新时间，单位ms
+   * @param refreshRate eRefreshRate_t enum variable, get the level
+   * @n eRefreshRateMs     ms-level, refresh at the actual refresh rate
+   * @n eRefreshRate1s     1s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate 
+   * @n eRefreshRate3s     3s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+   * @n eRefreshRate5s     5s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+   * @n eRefreshRate10s    10s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+   * @n eRefreshRate30s    30s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+   * @n eRefreshRate1min   1min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+   * @n eRefreshRate5min   5min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+   * @n eRefreshRate10min  10min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+   * @return uint32_t Return refresh rate, unit ms
    * @n eRefreshRateMs     0ms
    * @n eRefreshRate1s     1000ms
    * @n eRefreshRate3s     3000ms
@@ -344,269 +349,269 @@ public:
   uint32_t getRefreshRate(eRefreshRate_t *refreshRate = NULL);
   /**
    * @fn getTimeStamp()
-   * @brief 获取时间戳,此时间戳为(SCI Acquisition Module)数据刷新时间
+   * @brief Get time stamp, also the data refresh time of SCI Acquisition Module
    * 
-   * @return 时:分:秒(00:00:00) 或 分:秒.百分之（0~99）秒(00:00.00)
+   * @return Hour:Minute:Second(00:00:00) or Minute:Second. X%(0-99)second(00:00.00)
    */
   String getTimeStamp();
   
   /**
    * @fn getSensorModeDescribe(ePort1IFMode_t mode)
-   * @brief 获取传感器的模式描述
+   * @brief Get sensor mode description
    * 
-   * @param mode  ePort1IFMode_t枚举变量
-   * @n     eAnalogMode    模拟传感器模式
-   * @n     eDigitalMode   数字传感器模式
-   * @return 传感器的模式描述字符串
-   * @n      "ANALOG"         模拟传感器模式
-   * @n      "DIGITAL"        数字传感器模式
-   * @n      "UNKNOWN"        未知模式
+   * @param mode  ePort1IFMode_t enum variable
+   * @n     eAnalogMode    Analog sensor mode
+   * @n     eDigitalMode   Digital sensor mode
+   * @return Sensor mode description char string
+   * @n      "ANALOG"         Analog sensor mode
+   * @n      "DIGITAL"        Digital sensor mode
+   * @n      "UNKNOWN"        Unknown Mode
    */
   String getSensorModeDescribe(ePort1IFMode_t mode);
   /**
    * @fn getSensorModeDescribe(ePort23Mode_t mode)
-   * @brief 获取传感器的模式描述
+   * @brief Get sensor mode description
    * 
-   * @param mode  ePort23Mode_t 枚举变量
-   * @n     eI2CMode    I2C传感器模式
-   * @n     eUARTMode   UART传感器模式
-   * @return 传感器的模式描述字符串
-   * @n      "I2C"         I2C传感器模式
-   * @n      "UART"        UART传感器模式
-   * @n      "UNKNOWN"     未知模式
+   * @param mode  ePort23Mode_t enum variable
+   * @n     eI2CMode    I2C sensor mode
+   * @n     eUARTMode   UART sensor mode
+   * @return Sensor mode description char string
+   * @n      "I2C"         I2C sensor mode
+   * @n      "UART"        UART sensor mode
+   * @n      "UNKNOWN"     Unknown Mode
    */
   String getSensorModeDescribe(ePort23Mode_t mode);
   
   /**
    * @fn enableRecord
-   * @brief 开启CSV文件记录，调用此命令后，会将传感器采集到的数据记录在以年月日时分秒命名的CSV文件中
+   * @brief Enable data recording in CSV file. When enabled, the sensor data will be recorded in the csv file named by date year, month, day, hour, minute, and second.
    * 
-   * @return uint8_t 错误代码
-   * @n      ERR_CODE_NONE         or 0x00  设置成功
-   * @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-   * @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-   * @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-   * @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
+   * @return uint8_t Error code
+   * @n      ERR_CODE_NONE         or 0x00  Setting succeed
+   * @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
+   * @n      ERR_CODE_RES_PKT      or 0x02  Response package error
+   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout
+   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command
    */
   uint8_t enableRecord();
   /**
    * @fn disableRecord
-   * @brief 关闭CSV文件记录，调用此命令后，会停止将传感器采集到的数据记录在以年月日时分秒命名的CSV文件中
+   * @brief Disable data recording in CSV file. When disabled, data recording stops
    * 
-   * @return uint8_t 错误代码
-   * @n      ERR_CODE_NONE         or 0x00  设置成功
-   * @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-   * @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-   * @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-   * @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
+   * @return uint8_t Error code
+   * @n      ERR_CODE_NONE         or 0x00  Setting succeed
+   * @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
+   * @n      ERR_CODE_RES_PKT      or 0x02  Response package error
+   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout
+   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command
    */
   uint8_t disableRecord();
   
   /**
    * @fn oledScreenOn
-   * @brief 开启SCI采集模块(SCI Acquisition Module)屏显示
+   * @brief Switch on SCI Acquisition Module Screen
    * 
-   * @return uint8_t 错误代码
-   * @n      ERR_CODE_NONE         or 0x00  设置成功
-   * @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-   * @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-   * @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-   * @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
+   * @return uint8_t Error code
+   * @n      ERR_CODE_NONE         or 0x00  Setting succeed
+   * @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
+   * @n      ERR_CODE_RES_PKT      or 0x02  Response package error
+   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout
+   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command
    */
   uint8_t oledScreenOn();
   /**
    * @fn oledScreenOff
-   * @brief 关闭SCI采集模块(SCI Acquisition Module)屏显示
+   * @brief Switch off SCI Acquisition Module Screen
    * 
-   * @return uint8_t 错误代码
-   * @n      ERR_CODE_NONE         or 0x00  设置成功
-   * @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-   * @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-   * @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-   * @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
+   * @return uint8_t Error code
+   * @n      ERR_CODE_NONE         or 0x00  Setting succeed
+   * @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
+   * @n      ERR_CODE_RES_PKT      or 0x02  Response package error
+   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout
+   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command
    */
   uint8_t oledScreenOff();
   
   /**
    * @fn getInformation
-   * @brief 获取SCI采集模块(SCI Acquisition Module)上一个或多个接口连接的传感器的信息，名称:数值 单位,多条信息之间
-   * @n 用','号隔开
+   * @brief Get information of the sensor connected to one or more ports of SCI Acquisition Module, name: value unit.
+   * @n Separate multiple pieces of information using ","
    * 
-   * @param inf    接口选择
-   * @n     ePort1                                           选中Port1接口
-   * @n     ePort2                                           选中Port2接口
-   * @n     ePort3                                           选中Port3接口
-   * @n     eALL  or  (ePort1 | ePort2 | ePort3)             选中Port1, Port2和Port3接口
-   * @param timestamp 获取的信息中是否加时间戳
-   * @n     false  不加时间戳
-   * @n     ture   加时间戳   
-   * @return 选中的接口上连接的传感器的属性，每条属性格式为：名称:数值 单位，多条属性之间用','号隔开,单位和数值之间用空格隔开
-   * @n 不加时间戳 例SEN0334:  Temp_Air:28.65 C,Humi_Air:30.12 %RH
-   * @n 加时间戳   例SEN0334:  分:秒.百分之(0~99)秒 Temp_Air:28.65 C,Humi_Air:30.12 %RH 或 时:分:秒 Temp_Air:28.65 C,Humi_Air:30.12 %RH
+   * @param inf    Port select
+   * @n     ePort1                                           Select Port1
+   * @n     ePort2                                           Select Port2
+   * @n     ePort3                                           Select Port3
+   * @n     eALL  or  (ePort1 | ePort2 | ePort3)             Select Port1, Port2 and Port3
+   * @param timestamp Whether the acquired information is timestamped or not
+   * @n     false  Not timestamped
+   * @n     ture   Timestamped   
+   * @return Attributes of the sensor connected to the selected port, each one is in the format of name:value unit, separate attributes using "," and separate unit and value using a space
+   * @n Not timestamped e.g. SEN0334:  Temp_Air:28.65 C,Humi_Air:30.12 %RH
+   * @n Timestamped   e.g.SEN0334:  Minute:Second. X%(0-99)second Temp_Air:28.65 C,Humi_Air:30.12 %RH or Hour:Minute:Second Temp_Air:28.65 C,Humi_Air:30.12 %RH
    */
   String getInformation(eInterfaceList_t inf = eALL, bool timestamp = false);
   String getInformation(uint8_t inf, bool timestamp = false);
 
   /**
    * @fn getSKU
-   * @brief 获取SCI采集模块(SCI Acquisition Module)上一个或多个接口连接的传感器的SKU,多个SKU之间用','号隔开
+   * @brief Get the SKU of the sensor connected to one or more ports of SCI Acquisition Module, separate SKUs using ","
    * 
-   * @param inf    接口选择
-   * @n     ePort1                                           选中Port1接口
-   * @n     ePort2                                           选中Port2接口
-   * @n     ePort3                                           选中Port3接口
-   * @n     eALL  or  (ePort1 | ePort2 | ePort3)             选中Port1, Port2和Port3接口
-   * @return 选中的接口上连接的传感器的SKU，多个SKU之间用','号隔开,
-   * @n 例:  SEN0161,SEN0334
+   * @param inf    Port select
+   * @n     ePort1                                           Select Port1
+   * @n     ePort2                                           Select Port2
+   * @n     ePort3                                           Select Port3
+   * @n     eALL  or  (ePort1 | ePort2 | ePort3)             Select Port1, Port2 and Port3
+   * @return The SKU of the sensor connected to the selected port, separate SKUs using ","
+   * @n For example:  SEN0161,SEN0334
    */
   String getSKU(eInterfaceList_t inf = eALL);
   String getSKU(uint8_t inf);
 
   /**
    * @fn getKeys
-   * @brief 获取传感器SCI采集模块(SCI Acquisition Module)上一个或多个接口连接的传感器的名称，各名称之间用','号隔开
+   * @brief Get the name of the sensor connected to one or more ports, separate names using ","
    * 
-   * @param inf    接口选择
-   * @n     ePort1                                           选中Port1接口
-   * @n     ePort2                                           选中Port2接口
-   * @n     ePort3                                           选中Port3接口
-   * @n     eALL  or  (ePort1 | ePort2 | ePort3)             选中Port1, Port2和Port3接口
-   * @return 选中的接口上连接的传感器的名称，各名称之间用','号隔开
-   * @n 例:  Temp_Air,Humi_Air
+   * @param inf    Port select
+   * @n     ePort1                                           Select Port1
+   * @n     ePort2                                           Select Port2
+   * @n     ePort3                                           Select Port3
+   * @n     eALL  or  (ePort1 | ePort2 | ePort3)             Select Port1, Port2 and Port3
+   * @return The name of the sensor connected to the selected port, separate names using ","
+   * @n For example:  Temp_Air,Humi_Air
    */
   String getKeys(eInterfaceList_t inf = eALL);
   String getKeys(uint8_t inf);
   /**
    * @fn getValues
-   * @brief 获取SCI采集模块(SCI Acquisition Module)上一个或多个接口连接的传感器的属性值，各属性值之间用','号隔开
+   * @brief Get attribute values of the sensor connected to one or more ports, separate attribute values using ","
    * 
-   * @param inf    接口选择
-   * @n     ePort1                                           选中Port1接口
-   * @n     ePort2                                           选中Port2接口
-   * @n     ePort3                                           选中Port3接口
-   * @n     eALL  or  (ePort1 | ePort2 | ePort3)             选中Port1, Port2和Port3接口
-   * @return 选中的接口上连接的传感器的属性值，各属性值之间用','号隔开
-   * @n 例:  28.65,30.12
+   * @param inf    Port select
+   * @n     ePort1                                           Select Port1
+   * @n     ePort2                                           Select Port2
+   * @n     ePort3                                           Select Port3
+   * @n     eALL  or  (ePort1 | ePort2 | ePort3)             Select Port1, Port2 and Port3
+   * @return The attribute values of the sensor connected to the selected port, separate attribute values using ","
+   * @n For example:  28.65,30.12
    */
   String getValues(eInterfaceList_t inf = eALL);
   String getValues(uint8_t inf);
   /**
    * @fn getUnits
-   * @brief 获取传感器SCI采集模块(SCI Acquisition Module)上一个或多个接口连接的传感器的数值的单位，多个单位之间用','号隔开
+   * @brief Get the value unit of the sensor connected to one or more ports, separate units using ","
    * 
-   * @param inf    接口选择
-   * @n     ePort1                                           选中Port1接口
-   * @n     ePort2                                           选中Port2接口
-   * @n     ePort3                                           选中Port3接口
-   * @n     eALL  or  (ePort1 | ePort2 | ePort3)             选中Port1, Port2和Port3接口
-   * @return 选中的接口上连接的传感器的的数值的单位，多个单位之间用','号隔开
-   * @n 例:  C,%RH
+   * @param inf    Port select
+   * @n     ePort1                                           Select Port1
+   * @n     ePort2                                           Select Port2
+   * @n     ePort3                                           Select Port3
+   * @n     eALL  or  (ePort1 | ePort2 | ePort3)             Select Port1, Port2 and Port3
+   * @return The value unit of the sensor connected to the selected port, separate units using ","
+   * @n For example:  C,%RH
    */
   String getUnits(eInterfaceList_t inf = eALL);
   String getUnits(uint8_t inf);
 
   /**
    * @fn getValue(char *keys)
-   * @brief 获取所有接口所连接的传感器中属性名称为 keys 的数据值，多个属性值之间用','号隔开
-   * @param keys  传感器属性名称
-   * @return 所有接口所连接的传感器中属性名称为 keys 的数据值，多个属性值之间用','号隔开
-   * @n 例Temp_Air:  28.65,28.65
+   * @brief Get the attribute data values named keys of all sensors. Separate attribute values using "," 
+   * @param keys  Sensor attribute name
+   * @return The attribute data values named keys of all sensors. Separate attribute values using ","
+   * @n For example, Temp_Air:  28.65,28.65
    */
   String getValue(char *keys);
   /**
    * @fn getValue(eInterfaceList_t inf, char *keys)
-   * @brief 获取指定接口所连接的传感器中属性名称为 keys 的数据值，多个属性值之间用','号隔开
-   * @param inf    接口选择，及参数查找范围
-   * @n     ePort1                                          选中Port1接口，在A&D接口所连接的传感器中查找属性名称为keys的属性值
-   * @n     ePort2                                          选中Port2接口，在I2C&UART1接口所连接的传感器中查找属性名称为keys的属性值
-   * @n     ePort3                                          选中Port3接口，在I2C&UART2接口所连接的传感器中查找属性名称为keys的属性值
-   * @n     eALL  or  (ePort1 | ePort2 | ePort3)            选中(ePort1 | ePort2 | ePort3)  接口，在所有接口接口所连接的传感器中查找属性名称为keys的属性值
-   * @param keys  传感器属性名称
-   * @return 指定接口所连接的传感器中属性名称为 keys 的数据值，多个属性值之间用','号隔开
-   * @n 例Temp_Air:  28.65,28.65
+   * @brief Get the attribute data values named keys of the sensors connected to the designated port. Separate attribute values using ","
+   * @param inf    Port select, and parameter search range
+   * @n     ePort1                                          Select Port1, and find attribute data values named keys of the sensors connected to A&D ports
+   * @n     ePort2                                          Select Port2, and find attribute data values named keys of the sensors connected to I2C&UART1 ports
+   * @n     ePort3                                          Select Port3, and find attribute data values named keys of the sensors connected to I2C&UART2 ports
+   * @n     eALL  or  (ePort1 | ePort2 | ePort3)            Select ePort1, ePort2 & ePort3, and find attribute data values named keys of all sensors
+   * @param keys  Sensor attribute name
+   * @return The attribute data values named keys of the sensors connected to the designated port. Separate attribute values using ","
+   * @n For example, Temp_Air:  28.65,28.65
    */
   String getValue(eInterfaceList_t inf, char *keys);
   String getValue(uint8_t inf, char *keys);
   /**
    * @fn getValue(eInterfaceList_t inf, char sku[7], char *keys)
-   * @brief 获取指定接口所连接的传感器中SKU为sku的传感器中属性名称为 keys 的数据值，多个属性值之间用','号隔开
-   * @param inf    接口选择，及参数查找范围
-   * @n     ePort1                                          选中Port1接口，在Port1接口所连接的传感器中查找SKU为sku的传感器，并读出属性名称为keys的属性值
-   * @n     ePort2                                          选中Port2接口，在Port2接口所连接的传感器中查找SKU为sku的传感器，并读出属性名称为keys的属性值
-   * @n     ePort3                                          选中Port3接口，在Port3接口所连接的传感器中查找SKU为sku的传感器，并读出属性名称为keys的属性值
-   * @n     eALL  or  (ePort1 | ePort2 | ePort3)            选中(ePort1 | ePort2 | ePort3)  接口，在所有接口接口所连接的传感器中查找SKU为sku的传感器，并读出属性名称为keys的属性值
-   * @param sku 传感器SKU
-   * @param keys  传感器属性名称
-   * @return 指定接口所连接的传感器中SKU为sku的传感器中属性名称为 keys 的数据值，多个属性值之间用','号隔开
-   * @n 例Temp_Air:  28.65,28.65
+   * @brief Get the attribute data values named keys of the sensor whose SKU is sku connected to the designated port. Separate attribute values using ","
+   * @param inf    Port select, and parameter search range
+   * @n     ePort1                                          Select port1, find the sensor whose SKU is sku connected to port1, and read attribute values named keys
+   * @n     ePort2                                          Select port2, find the sensor whose SKU is sku connected to port2, and read attribute values named keys
+   * @n     ePort3                                          Select port3, find the sensor whose SKU is sku connected to port3, and read attribute values named keys
+   * @n     eALL  or  (ePort1 | ePort2 | ePort3)            Select ePort1, ePort2 and ePort3, find all the sensors whose SKU is sku, and read attribute values named keys
+   * @param sku Sensor SKU
+   * @param keys  Sensor attribute name
+   * @return The attribute data values named keys of the sensor whose SKU is sku connected to the designated port. Separate attribute values using ","
+   * @n For example, Temp_Air:  28.65,28.65
    */
   String getValue(eInterfaceList_t inf, char sku[7], char *keys);
   String getValue(uint8_t inf, char sku[7], char *keys);
 
   /**
    * @fn getUnit(eInterfaceList_t inf, char sku[7], char *keys)
-   * @brief 获取所有接口所连接的传感器中属性名称为 keys 的数据单位，多个属性单位之间用','号隔开
+   * @brief Get attribute data units named keys of all sensors. Separate attribute units using ","
    * 
-   * @param keys  传感器属性名称
-   * @return  所有接口所连接的传感器中属性名称为 keys 的数据单位，多个属性单位之间用','号隔开
-   * @n 例Temp_Air:  C,C
+   * @param keys  Sensor attribute name
+   * @return  The attribute data units named keys of all sensors. Separate attribute units using ","
+   * @n For example, Temp_Air:  C,C
    */
   String getUnit(char *keys);
   /**
    * @fn getUnit(eInterfaceList_t inf, char sku[7], char *keys)
-   * @brief 获取指定接口所连接的传感器中属性名称为 keys 的数据单位，多个属性单位之间用','号隔开
-   * @param inf    接口选择，及参数查找范围
-   * @n     ePort1                                          选中Port1接口，在Port1接口所连接的传感器中查找属性名称为keys的属性单位
-   * @n     ePort2                                          选中Port2接口，在Port2接口所连接的传感器中查找属性名称为keys的属性单位
-   * @n     ePort3                                          选中Port3接口，在Port3接口所连接的传感器中查找属性名称为keys的属性单位
-   * @n     eALL  or  (ePort1 | ePort2 | ePort3)      选中Port1, Port2和Port3接口，在所有接口接口中查找属性名称为keys的属性单位
-   * @param keys  传感器属性名称
-   * @return 指定接口所连接的传感器中属性名称为 keys 的数据单位，多个属性单位之间用','号隔开
-   * @n 例Temp_Air:  C,C
+   * @brief Get the attribute data units named keys of the sensor connected to the designated port. Separate attribute units using ","
+   * @param inf    Port select, and parameter search range
+   * @n     ePort1                                          Select Port1, and find attribute units named keys of the sensor connected to port1
+   * @n     ePort2                                          Select Port2, and find attribute units named keys of the sensor connected to port2
+   * @n     ePort3                                          Select Port3, and find attribute units named keys of the sensor connected to port3
+   * @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select Port1, Port2 and Port3, and find attribute units named keys of all sensors 
+   * @param keys  Sensor attribute name
+   * @return The attribute data units named keys of the sensor connected to the designated port. Separate attribute units using ","
+   * @n For example, Temp_Air:  C,C
    */
   String getUnit(eInterfaceList_t inf, char *keys);
   String getUnit(uint8_t inf, char *keys);
   /**
    * @fn getUnit(eInterfaceList_t inf, char sku[7], char *keys)
-   * @brief 获取指定接口所连接的传感器中SKU为sku的传感器中属性名称为 keys 的数据单位，多个属性单位之间用','号隔开
-   * @param inf    接口选择，及参数查找范围
-   * @n     ePort1                                          选中Port1接口，在Port1接口所连接的传感器中查找SKU为sku的传感器，并读出属性名称为keys的属性单位
-   * @n     ePort2                                          选中Port2接口，在Port2接口所连接的传感器中查找SKU为sku的传感器，并读出属性名称为keys的属性单位
-   * @n     ePort3                                          选中Port3接口，在Port3接口所连接的传感器中查找SKU为sku的传感器，并读出属性名称为keys的属性单位
-   * @n     eALL  or  (ePort1 | ePort2 | ePort3)      选中Port1, Port2和Port3接口，在所有接口接口中查找SKU为sku的传感器，并读出属性名称为keys的属性单位
-   * @param sku 传感器SKU
-   * @param keys  传感器属性名称
-   * @return 指定接口所连接的传感器中SKU为sku的传感器中属性名称为 keys 的数据单位，多个属性单位之间用','号隔开
-   * @n 例Temp_Air:  C,C
+   * @brief Get the attribute data units named keys of the sensor whose SKU is sku connected to the designated port. Separate attribute units using ","
+   * @param inf    Port select, and parameter search range
+   * @n     ePort1                                          Select Port1, find the sensor whose SKU is sku connected to port1, and read attribute units named keys
+   * @n     ePort2                                          Select Port2, find the sensor whose SKU is sku connected to port2, and read attribute units named keys
+   * @n     ePort3                                          Select Port3, find the sensor whose SKU is sku connected to port3, and read attribute units named keys
+   * @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select Port1, Port2 and Port3, find all the sensors whose SKU is sku, and read attribute units named keys
+   * @param sku Sensor SKU
+   * @param keys  Sensor attribute name
+   * @return The attribute data units named keys of the sensor whose SKU is sku connected to the designated port. Separate attribute units using ","
+   * @n For example, Temp_Air:  C,C
    */
   String getUnit(eInterfaceList_t inf, char sku[7], char *keys);
   String getUnit(uint8_t inf, char sku[7], char *keys);
   /**
    * @fn getAnalogSensorSKU
-   * @brief 获取SCI采集模块(SCI Acquisition Module)支持的模拟传感器的SKU清单，各SKU之间用',号隔开   * 
-   * @return String 支持的模拟传感器的SKU列表
+   * @brief Get the SKU list of analog sensors supported by SCI Acquisition Module, separate SKUs with ','   * 
+   * @return String SKU list of supported analog sensors
    */
   String getAnalogSensorSKU();
   /**
    * @fn getDigitalSensorSKU
-   * @brief 获取SCI采集模块(SCI Acquisition Module)支持的数字传感器的SKU清单，各SKU之间用',号隔开   * 
-   * @return String 支持的数字传感器的SKU列表
+   * @brief Get the SKU list of digital sensors supported by SCI Acquisition Module, separate SKUs with ','   * 
+   * @return String SKU list of supported digital sensors
    */
   String getDigitalSensorSKU();
   /**
    * @fn getI2CSensorSKU
-   * @brief 获取SCI采集模块(SCI Acquisition Module)支持的I2C传感器的SKU清单，各SKU之间用',号隔开   * 
-   * @return String 支持的I2C传感器的SKU列表
+   * @brief Get the SKU list of I2C sensors supported by SCI Acquisition Module, separate SKUs with ','   * 
+   * @return String SKU list of supported I2C sensors
    */
   String getI2CSensorSKU();
   /**
    * @fn getUARTSensorSKU
-   * @brief 获取SCI采集模块(SCI Acquisition Module)支持的UART传感器的SKU清单，各SKU之间用',号隔开   * 
-   * @return String 支持的UART传感器的SKU列表
+   * @brief Get the SKU list of UART sensors supported by SCI Acquisition Module, separate SKUs with ','   * 
+   * @return String SKU list of supported UART sensors
    */
   String getUARTSensorSKU();
 
@@ -614,71 +619,71 @@ protected:
   uint32_t getRefreshRate_ms(uint8_t rate);
   /**
    * @fn recvPacket
-   * @brief 接收并解析响应的数据包
+   * @brief Receive and parse the response data packet
    * 
-   * @param cmd       要接收包的命令
-   * @param errorCode 接收错误代码
-   * @return 指针数组
-   * @n      NULL    表示接收包失败
-   * @n      非NULL  响应包指针
+   * @param cmd       Command to receive packet
+   * @param errorCode Receive error code
+   * @return Pointer array
+   * @n      NULL    indicates receiving packet failed
+   * @n      Non-NULL  response packet pointer
    */
   void *recvPacket(uint8_t cmd, uint8_t *errorCode);
   /**
    * @fn init
-   * @brief 纯虚函数，接口初始化
+   * @brief Pure virtual function, interface init
    * 
-   * @param freq     通信频率
-   * @return 初始化状态
-   * @n       0    初始化成功
-   * @n      -1    接口对象为空指针
-   * @n      -2    设备不存在
+   * @param freq     Communication frequency
+   * @return Init status
+   * @n       0    Init succeeded
+   * @n      -1    Interface object is null pointer
+   * @n      -2    Device does not exist
    */
   virtual int init(uint32_t freq) = 0;
   /**
    * @fn sendPacket
-   * @brief I2C接口初始化
+   * @brief I2C interface init
    * 
-   * @param pkt    设置I2C通信频率
-   * @param length 设置I2C通信频率
+   * @param pkt    Set I2C communication frequency
+   * @param length Set I2C communication frequency
    * @param stop   
-   * @n     true   停止
-   * @n     false  不停止
+   * @n     true   Stop
+   * @n     false  Not stop
    */
   virtual void sendPacket(void *pkt, int length, bool stop) = 0;
   /**
    * @fn recvData
-   * @brief I2C接口初始化
+   * @brief I2C interface init
    * 
-   * @param data    存放接收的数据缓存
-   * @param len     要读取得字节数
-   * @return 实际读取得字节数   
+   * @param data    Store the received data cache
+   * @param len     Byte number to be read
+   * @return Actually read byte number    
    */
   virtual int recvData(void *data, int len) = 0;
   /**
    * @fn recvFlush
-   * @brief 清空接收缓存
+   * @brief Clear receive cache
    */
   virtual void recvFlush() = 0;
   /**
    * @fn sendFlush
-   * @brief 清空发送缓存
+   * @brief Clear send cache
    */
   virtual void sendFlush() = 0;
   /**
    * @fn dayOfTheWeek
-   * @brief 根据年/月/日计算星期数
+   * @brief Calculate the day of the week according to year/month/day
    * 
-   * @param year   年
-   * @param month  月
-   * @param day    日
-   * @return uint8_t 0~6星期数
-   * @n 0   星期天
-   * @n 1   星期一
-   * @n 2   星期二
-   * @n 3   星期三
-   * @n 4   星期四
-   * @n 5   星期五
-   * @n 6   星期六
+   * @param year   Year
+   * @param month  Month
+   * @param day    Day
+   * @return uint8_t Day of the week(0-6)
+   * @n 0   Sunday
+   * @n 1   Monday
+   * @n 2   Tuesday
+   * @n 3   Wednesday
+   * @n 4   Thursday
+   * @n 5   Friday
+   * @n 6   Saturday
    */
   uint8_t dayOfTheWeek(uint16_t year, uint8_t month, uint8_t day);
  	/**
