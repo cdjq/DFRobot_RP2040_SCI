@@ -310,7 +310,7 @@ There two methods:
   uint8_t adjustRtc(uint16_t year, uint8_t month, uint8_t day, uint8_t week, uint8_t hour, uint8_t minute, uint8_t second);
   /**
    * @fn getRtcTime(uint16_t *year, uint8_t *month, uint8_t *day, uint8_t *week, uint8_t *hour, uint8_t *minute, uint8_t *second)
-   * @brief Get the time information of year, month, day, hour, minute, second, week, etc. of SCI Acquisition Module
+   * @brief Get year, month, day, week, hour, minute, second of SCI Acquisition Module
    * 
    * @param year   Year
    * @param month  Month
@@ -553,9 +553,9 @@ There two methods:
 
   /**
    * @fn getValue(char *keys)
-   * @brief Get the attribute data values named keys of all sensors connected to all ports. Separate attribute values using "," 
+   * @brief Get the attribute data values named keys of all sensors. Separate attribute values using "," 
    * @param keys  Sensor attribute name
-   * @return The attribute data values named keys of all sensors connected to all ports. Separate attribute values using ","
+   * @return The attribute data values named keys of all sensors. Separate attribute values using ","
    * @n For example, Temp_Air:  28.65,28.65
    */
   String getValue(char *keys);
@@ -577,10 +577,10 @@ There two methods:
    * @fn getValue(eInterfaceList_t inf, char sku[7], char *keys)
    * @brief Get the attribute data values named keys of the sensor whose SKU is sku connected to the designated port. Separate attribute values using ","
    * @param inf    Port select, and parameter search range
-   * @n     ePort1                                          Select port1, get the sensor whose SKU is sku connected to port1, and read attribute values named keys  
-   * @n     ePort2                                          Select port2, get the sensor whose SKU is sku connected to port2, and read attribute values named keys
-   * @n     ePort3                                          Select port3, get the sensor whose SKU is sku connected to port3, and read attribute values named keys
-   * @n     eALL  or  (ePort1 | ePort2 | ePort3)            Select ePort1, ePort2 and ePort3, get all the sensors whose SKU is sku, and read attribute values named keys
+   * @n     ePort1                                          Select port1, find the sensor whose SKU is sku connected to port1, and read attribute values named keys  
+   * @n     ePort2                                          Select port2, find the sensor whose SKU is sku connected to port2, and read attribute values named keys
+   * @n     ePort3                                          Select port3, find the sensor whose SKU is sku connected to port3, and read attribute values named keys
+   * @n     eALL  or  (ePort1 | ePort2 | ePort3)            Select ePort1, ePort2 and ePort3, find all the sensors whose SKU is sku, and read attribute values named keys
    * @param sku Sensor SKU
    * @param keys  Sensor attribute name
    * @return The attribute data values named keys of the sensor whose SKU is sku connected to the designated port. Separate attribute values using ","
