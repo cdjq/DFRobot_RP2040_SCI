@@ -1,10 +1,10 @@
 /*!
  * @file control.ino
  * @brief Control the CSV data acquisition and display On/Off of SCI Acquisition Module via serial commands.
- * @n Command 1: RECORD ON: Enable CSV record
- * @n Command 2: RECORD OFF: Disable CSV record
- * @n Command 3: OLED OFF: Disable OLED display
- * @n Command 4: OLED ON: Enable OLED display
+ * @n Command 1: RECORD ON: Switch on CSV record
+ * @n Command 2: RECORD OFF: Switch off CSV record
+ * @n Command 3: OLED OFF: Switch off OLED display
+ * @n Command 4: OLED ON: Switch on OLED display
  *
  * @copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
  * @license     The MIT License (MIT)
