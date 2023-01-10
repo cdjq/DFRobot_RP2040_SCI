@@ -1,20 +1,20 @@
 /*!
  * @file DFRobot_RP2040_SCI.cpp
- * @brief This is an Arduino drive library for the DFRobot SCI Acquisition module. Users can read or set its relevant config and data through the I2C interface. The following demonstrates its detailed functions:
- * @n 1. Set or read the I2C communication address of the SCI acquisition module as 0x21, 0x22 or 0x23, the factory default is 0x21, after the I2C address is changed, it takes effect after power-off and reboot;
+ * @brief This is an Arduino drive library for the DFRobot SCI Acquisition module. Users can read or set its config and data via I2C. The following demonstrates its detailed functions:
+ * @n 1. Set or read the I2C address of the module as 0x21, 0x22 or 0x23, the factory default is 0x21, after the I2C address is changed, it will take effect after power-off and reboot;
  * @n 2. Set or read the config of Port1, Port2 or Port3:
- * @n    Port1: can be configured as analog or digital sensor mode, supporting NULL, Analog, and analog sensor SKU in analog sensor mode, and supporting digital sensor SKU in digital sensor mode
- * @n    Port2: can be configured as I2C or UART sensor mode, supporting NULL or I2C sensor in I2C sensor mode, in which I2C sensor will be automatically recognized by the module when powered on, and supporting UART sensor SKU in UART sensor mode
- * @n    Port3: can be configured as I2C or UART sensor mode, supporting NULL or I2C sensor in I2C sensor mode, in which I2C sensor will be automatically recognized by the module when powered on, and supporting UART sensor SKU in UART sensor mode
- * @n 3. Enable/disable data record of CSV file
+ * @n    Port1: can be configured as analog or digital sensor mode, support NULL, Analog, and analog sensor SKU in analog sensor mode, and support digital sensor SKU in digital sensor mode
+ * @n    Port2: can be configured as I2C or UART sensor mode, support NULL or I2C sensor in I2C sensor mode, in which I2C sensor will be automatically recognized by the module when powered on, and support UART sensor SKU in UART sensor mode
+ * @n    Port3: can be configured as I2C or UART sensor mode, support NULL or I2C sensor in I2C sensor mode, in which I2C sensor will be automatically recognized by the module when powered on, and support UART sensor SKU in UART sensor mode
+ * @n 3. Enable/disable data recording in CSV file
  * @n 4. Enable/disable OLED display
  * @n 5. Read the parameters of the sensors on the board：
- * @n      a. Get the "name" of the sensor data, the names are separated by a comma(,);
- * @n      b. Get the "value" of the sensor data, the values are separated by a comma(,);
- * @n      c. Get the unit of the sensor data, the units are separated by a comma(,);
+ * @n      a. Get sensor data "name", separate names by a comma(,);
+ * @n      b. Get sensor data "value", separate values by a comma(,);
+ * @n      c. Get sensor data unit, separate units by a comma(,);
  * @n      d. Get the SKU of the connected sensor;
- * @n      e. Get the complete sensor information in the format of name:value unit, multiple pieces of information are separated by a comma (,)
- * @n 6. Set and read the data refresh time
+ * @n      e. Get the complete sensor information in the format of name:value unit, separate multiple pieces of information by a comma (,)
+ * @n 6. Set and read the data refresh rate
  * @n 7. Get data refresh timestamp
  *
  * @copyright   Copyright (c) 2022 DFRobot Co.Ltd (http://www.dfrobot.com)
@@ -46,26 +46,26 @@
 
 #define CMD_SET_ADDR         0x03  ///< Set I2C address command (the command will take effect immediately when it's set successfully)
 #define CMD_READ_ADDR        0x03  ///< Read I2C address command (the command will take effect immediately when it's set successfully)
-#define CMD_SET_TIME         0x04  ///< Set the time information of year, month, day, hour, minute, second 
-#define CMD_GET_TIME         0x04  ///< Get the time information of year, month, day, hour, minute, second
-#define CMD_RECORD_ON        0x05  ///< Enable CSV record
-#define CMD_RECORD_OFF       0x06  ///< Disable CSV record
+#define CMD_SET_TIME         0x04  ///< Set year, month, day, hour, minute, second 
+#define CMD_GET_TIME         0x04  ///< Get year, month, day, hour, minute, second
+#define CMD_RECORD_ON        0x05  ///< Switch on CSV record
+#define CMD_RECORD_OFF       0x06  ///< Switch off CSV record
 
-#define CMD_SCREEN_ON        0x07  ///< Enable OLED display
-#define CMD_SCREEN_OFF       0x08  ///< Disable OLED display
+#define CMD_SCREEN_ON        0x07  ///< Switch on OLED display
+#define CMD_SCREEN_OFF       0x08  ///< Switch on OLED display
 #define CMD_GET_NAME         0x09  ///< Get sensor data name
 #define CMD_GET_VALUE        0x0A  ///< Get sensor data value
 #define CMD_GET_UNIT         0x0B  ///< Get sensor data unit
-#define CMD_GET_SKU          0x0C  ///< Get sensor SKU, SKUs are separated by a comma(,) 
-#define CMD_GET_INFO         0x0D  ///< Get the sensor data name, value and unit name, the value and unit name are separated by space, and others are separated by comma(,)
+#define CMD_GET_SKU          0x0C  ///< Get sensor SKU, separate SKUs by a comma(,) 
+#define CMD_GET_INFO         0x0D  ///< Get the sensor data name, value and unit name, separated value and unit name by space, and others by comma(,)
 
 #define CMD_GET_KEY_VALUE0    0x0E  ///< Get the corresponding data value according to the data name
 #define CMD_GET_KEY_VALUE1    0x0F  ///< Get the data value on the selected port according to the data name
 #define CMD_GET_KEY_VALUE2    0x10  ///< Get the data value of the designated SKU on the selected port according to the data name
 #define CMD_GET_KEY_UINT0     0x11  ///< Get the corresponding data unit according to the data name
-#define CMD_GET_KEY_UINT1     0x12  ///< Get unit of the data on the selected port according to the data name
+#define CMD_GET_KEY_UINT1     0x12  ///< Get the data unit on the selected port according to the data name
 #define CMD_GET_KEY_UINT2     0x13  ///< Get the data unit of the designated SKU on the selected port according to the data name
-#define CMD_RESET             0x14  ///< Copy I2C peripheral(slave) and send cache command
+#define CMD_RESET             0x14  ///< Command to copy I2C peripheral(slave) and send cache
 #define CMD_SKU_A             0x15  ///< Command to get the supported analog sensor SKU 
 #define CMD_SKU_D             0x16  ///< Command to get the supported digital sensor SKU
 #define CMD_SKU_IIC           0x17  ///< Command to get the supported I2C sensor SKU
@@ -87,10 +87,10 @@
 #define ERR_CODE_RES_PKT            0x02 ///< Response packet error
 #define ERR_CODE_M_NO_SPACE         0x03 ///< Insufficient memory of I2C controller(master)
 #define ERR_CODE_RES_TIMEOUT        0x04 ///< Response packet reception timeout
-#define ERR_CODE_CMD_PKT            0x05 ///< Invalid command packet or the command doesn't match
+#define ERR_CODE_CMD_PKT            0x05 ///< Invalid command packet or unmatched command
 #define ERR_CODE_SLAVE_BREAK        0x06 ///< Peripheral(slave) fault
-#define ERR_CODE_ARGS               0x07 ///< The set parameter is wrong
-#define ERR_CODE_SKU                0x08 ///< The SKU is an invalid SKU, or the one not supported by SCI Acquisition Module
+#define ERR_CODE_ARGS               0x07 ///< Set wrong parameter
+#define ERR_CODE_SKU                0x08 ///< The SKU is an invalid SKU, or unsupported by SCI Acquisition Module
 #define ERR_CODE_S_NO_SPACE         0x09 ///< Insufficient memory of I2C peripheral(slave)
 #define ERR_CODE_I2C_ADRESS         0x0A ///< Invalid I2C address
 #if defined(ESP32)
@@ -104,7 +104,7 @@ typedef struct{
   uint8_t cmd;      /**< Command                     */
   uint8_t argsNumL; /**< Low byte of parameter number after the command    */
   uint8_t argsNumH; /**< High byte of parameter number after the command    */
-  uint8_t args[0];  /**< The array with length of 0, its size depends on the value of the previous variables argsNumL and argsNumH     */
+  uint8_t args[0];  /**< The array with 0-data length, its size depends on the value of the previous variables argsNumL and argsNumH     */
 }__attribute__ ((packed)) sCmdSendPkt_t, *pCmdSendPkt_t;
 
 typedef struct{
@@ -112,7 +112,7 @@ typedef struct{
   uint8_t cmd;      /**< Response packet command */
   uint8_t lenL;     /**< Low byte of the buf array length excluding packet header */
   uint8_t lenH;     /**< High byte of the buf array length excluding packet header */
-  uint8_t buf[0];   /**< The array with length of 0, its size depends on the value of the previous variables lenL and lenH */
+  uint8_t buf[0];   /**< The array with 0-data length, its size depends on the value of the previous variables lenL and lenH */
 }__attribute__ ((packed)) sCmdRecvPkt_t, *pCmdRecvPkt_t;
 
 DFRobot_SCI::DFRobot_SCI()
@@ -164,12 +164,12 @@ uint8_t DFRobot_SCI::setPort1(char *sku){
   uint8_t errorCode;
   pCmdSendPkt_t sendpkt = NULL;
   uint16_t length = 0;
-  //1. Determine if the SKU pointer is null
+  //1. Determine if the sku pointer is null
   if(sku == NULL){
     RP2040_SUAB_DBG("sku pointer is NULL");
     return ERR_CODE_ARGS;
   }
-  //2. Determine SKU length
+  //2. Determine sku length
   if(strlen(sku) > SKU_MAX_VAILD_LEN){
     RP2040_SUAB_DBG("sku length is too long!");
     return ERR_CODE_ARGS;
@@ -226,12 +226,12 @@ uint8_t DFRobot_SCI::setPort2(char *sku){
   uint8_t errorCode;
   pCmdSendPkt_t sendpkt = NULL;
   uint16_t length = 0;
-  //1. Determine if the SKU pointer is null
+  //1. Determine if the sku pointer is null
   if(sku == NULL){
     RP2040_SUAB_DBG("sku pointer is NULL");
     return ERR_CODE_ARGS;
   }
-  //2. Determine SKU length
+  //2. Determine sku length
   if(strlen(sku) > SKU_MAX_VAILD_LEN){
     RP2040_SUAB_DBG("sku length is too long!");
     return ERR_CODE_ARGS;
@@ -288,12 +288,12 @@ uint8_t DFRobot_SCI::setPort3(char *sku){
   uint8_t errorCode;
   pCmdSendPkt_t sendpkt = NULL;
   uint16_t length = 0;
-  //1. Determine if the SKU pointer is null
+  //1. Determine if the sku pointer is null
   if(sku == NULL){
     RP2040_SUAB_DBG("sku pointer is NULL");
     return ERR_CODE_ARGS;
   }
-  //2. Determine SKU length
+  //2. Determine sku length
   if(strlen(sku) > SKU_MAX_VAILD_LEN){
     RP2040_SUAB_DBG("sku length is too long!");
     return ERR_CODE_ARGS;
