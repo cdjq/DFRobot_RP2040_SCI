@@ -11,8 +11,8 @@ This SCI acquisition module is a sensor adapter designed by DFRobot. It supports
   A: Each sensor from DFRobot has a unique SKU. The adapter can identify the connected sensor through automatic identification or the user-selected SKU, and call the corresponding driver to acquire and convert data. (Note: For some I2C sensors, the adapter can identify the SKU by I2C address, but for the others, it can only identify the connected one by user-selected SKU.)
 * **Q4: How is the SCI Acquisition Module connected to these sensors?**<br>
   A: The adapter has an onboard Gravity 3pin analog/digital interfaces (for connecting analog or digital sensors) and 2 Gravity 4pin I2C/UART interfaces (for connecting I2C or UART sensors), so users can connect the corresponding sensor by switching to the corresponding interface mode.
-* **Q5: What's the onboard display and button used for?**<br>
-  A: Users can configure or view the module parameters such as I2C slave address, time, switchable interface mode, SKU select, firmware version, and sensor data by the onboard display and buttons.
+* **Q5: What are the onboard display and button used for?**<br>
+  A: Users can configure or view the module parameters such as I2C slave address, time, interface mode, SKU select, firmware version, and sensor data by the onboard display and buttons.
 * **Q6: How can I use Arduino or Raspberry Pi to read and set parameters of SCI Acquisition Module, and read the sensor data?**<br> 
   A: Connect your controller to the acquisition module via the onboard Gravity I2C interface, and then you can operate the module. Find more details on [the wiki page](https://wiki.dfrobot.com/SKU_DFR0999_Gravity_SCI_Acquisition_Module). 
 * **Q7: What's the USB on the module used for?**<br>
@@ -67,7 +67,7 @@ This SCI acquisition module is a sensor adapter designed by DFRobot. It supports
 * [Credits](#credits)
 
 ## Summary
-This is an Arduino library for the DFRobot SCI Acquisition module. It aims to provide users with a series of interface functions to set and read module parameters, or read sensor data. It has the following functions:<br>
+This is an Arduino library for the DFRobot SCI Acquisition module. It aims to provide users with a series of interface functions to set and read module parameters or read sensor data. Its functions are as follows:<br>
 * 1. Read/set the I2C address of SCI Acquisition Module within the range of 0x01~0x7F;
 * 2. Read/set the time information of year, month, day, hour, minute and second of SCI Acquisition Module;
 * 3. Enable/disable sensor data record of CSV file;
@@ -89,7 +89,7 @@ There two methods:
    * @fn DFRobot_RP2040_SCI_IIC
    * @brief Constructor for DFRobot_RP2040_SCI_IIC class
    * @param addr:  7-bit I2C address, support the following address settings
-   * @n RP2040_SCI_ADDR_0X21      0x21 Default I2C address
+   * @n RP2040_SCI_ADDR_0X21      0x21 default I2C address
    * @n RP2040_SCI_ADDR_0X22      0x22
    * @n RP2040_SCI_ADDR_0X23      0x23
    * @n Or view the I2C address on the initial page of the onboard OLED display, the factory default I2C address is 0x01
@@ -99,26 +99,26 @@ There two methods:
   ~DFRobot_RP2040_SCI_IIC();
   /**
    * @fn setI2CAddress
-   * @brief Set the I2C communication address of SCI Acquisition Module
+   * @brief Set I2C address of SCI Acquisition Module
    * 
-   * @param addr    I2C communication address of SCI Acquisition Module, support the following address settings
-   * @n RP2040_SCI_ADDR_0X21      0x21 Default I2C address of the adapter
+   * @param addr    I2C address of SCI Acquisition Module, support the following address settings
+   * @n RP2040_SCI_ADDR_0X21      0x21 default I2C address
    * @n RP2040_SCI_ADDR_0X22      0x22
    * @n RP2040_SCI_ADDR_0X23      0x23
    * @return uint8_t Error Code
    * @n      ERR_CODE_NONE         or 0x00  Set successful
    * @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
    * @n      ERR_CODE_RES_PKT      or 0x02  Response packet error
-   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C master 
-   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response packet reception timeout
-   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command packet or command mismatch 
+   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller(master)  
+   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response packet receive timeout
+   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command packet or unmatched command  
    * @n      ERR_CODE_I2C_ADRESS   or 0x0A  Invalid I2C address
    */
   uint8_t setI2CAddress(uint8_t addr);
   /**
    * @fn getI2CAddress
-   * @brief Get the I2C communication address of SCI Acquisition Module
-   * @return I2C communication address
+   * @brief Get the I2C address of SCI Acquisition Module
+   * @return I2C address
    */
   uint8_t getI2CAddress();
 
@@ -136,7 +136,7 @@ There two methods:
   
   /**
    * @fn begin
-   * @brief Init SCI Acquisition Module, which aims to init the communication interface
+   * @brief Initalize the SCI Acquisition Module, mainly for initializing communication interface
    * 
    * @param freq Set communication frequency, no more than 100kHz
    * @return int Init status
@@ -149,126 +149,128 @@ There two methods:
   /**
    * @fn getVersion
    * @brief Get firmware version number of SCI Acquisition Module
-   * @n The version number is 16-bit data, high 8 bits (b15~b9): represents the leftmost number
-   * @n Middle 4 bits (b8~b4): represents the middle number
-   * @n Low 4 bits: represents the rightmost number
-   * @n For example: 0x0123 corresponds to the version number of V1.2.3
+   * @n The version number is 16-bit data, the high 8bits(b15-b9) represent the leftmost number
+   * @n The middle 4bits (b8-b4) represent the middle number
+   * @n The low 4bits represent the rightmost number 
+   * @n For example, 0x0123 corresponds to V1.2.3
    * 
    * @return 16-bit version number
    */
   uint16_t getVersion();
   /**
    * @fn getVersionDescription
-   * @brief Get version description character string
+   * @brief Get version description char string
    * 
-   * @return Return version description character string, for example, version id: 0x0123 returns the version description character string of V1.2.3
+   * @return Return version description char string, e.g. id：0x0123 The returned version decription char string is V1.2.3
    */
   String getVersionDescription(uint16_t version);
 
   /**
    * @fn setPort1(char *sku)
-   * @brief Set supported SKU on Port1, which can be connected to analog & digital sensors, select the sensor connected to Port1 by SKU
+   * @brief Set SKU on Port1, which can be connected to analog & digital sensors, select the sensor connected to Port1 by SKU
    * 
-   * @param sku  Parameters of Port1, the list of supported SKU can be viewed on OLED display or by getAnalogSensorSKU()/getDigitalSensorSKU()
-   * @n     "NULL"       Indicates clearing sensor settings of Port1 and configuring sensor mode as analog sensor mode
-   * @n     "Analog"     Indicates selecting Analog voltage data acquisition, unit mV
-   * @n     SKU of analog sensor indicates selecting the SKU of an analog sensor and configuring mode as analog sensor mode
-   * @n     SKU of digital sensor indicates selecting the SKU of an analog sensor and configuring mode as digital sensor mode
+   * @param sku  Parameters for Port1, The supported SKU list can be viewed on OLED display or by getAnalogSensorSKU()/getDigitalSensorSKU()
+   * @n     "NULL"       Clear sensor settings for Port1 and configure mode as analog sensor mode
+   * @n     "Analog"     Select analog voltage data acquisition, unit mV 
+   * @n     Analog sensor SKU  Select the SKU of an analog sensor and configure mode as analog sensor mode
+   * @n     Digital sensor SKU Select the SKU of a digital sensor and configure mode as digital sensor mode
    * @return uint8_t Error Code
-   * @n      ERR_CODE_NONE         or 0x00  Set successful
+   * @n      ERR_CODE_NONE         or 0x00  Setting succeed
    * @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
-   * @n      ERR_CODE_RES_PKT      or 0x02  Response packet error
-   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C master
-   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response packet reception timeout
-   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command packet or command mismatch
-   * @n      ERR_CODE_SLAVE_BREAK  or 0x06  Slave break
-   * @n      ERR_CODE_ARGS         or 0x07  The set parameter is wrong
+   * @n      ERR_CODE_RES_PKT      or 0x02  Response package error
+   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller(master)
+   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout
+   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command 
+   * @n      ERR_CODE_SLAVE_BREAK  or 0x06  Peripheral(slave) fault
+   * @n      ERR_CODE_ARGS         or 0x07  Set wrong parameters 
    */
   uint8_t setPort1(char *sku);
 
   /**
    * @fn getPort1(ePort1IFMode_t mode)
-   * @brief Get the sensor mode and SKU config of Port1
+   * @brief Get the sensor mode on port1 and SKU config
    * 
    * @param mode  eADIFMode_t enum variable pointer
    * @n     eAnalogMode    Analog sensor mode
    * @n     eDigitalMode   Digital sensor mode
-   * @return SKU of the sensor connected to Port1
-   * @n      "NULL"        Indicates that Port1 is configured or connected to no sensor 
-   * @n      "Analog"      Indicates that Port1 is configured as reading voltage data of Port1
-   * @n      7-bit SKU        Indicates that Port1 is configured as reading data from a digital or analog sensor
+   * @return SKU of the sensor connected to port1
+   * @n      "NULL"        Port1 is configured or connected to no sensor 
+   * @n      "Analog"      Port1 is configured as reading its voltage data
+   * @n      7-bit SKU     Port1 is configured as reading data from a digital or analog sensor
    */
   String getPort1(ePort1IFMode_t *mode);
 
   /**
    * @fn setPort2(char *sku)
-   * @brief Set supported SKU on Port2, which can be connected to I2C & UART sensors, UART sensors need to be selected by SKU; I2C sensors are automatically selected after connection, and you just need to configure Port2 as I2C mode
+   * @brief Set SKU on Port2, which can be connected to I2C & UART sensors. I2C sensors can be auto selected when connected, 
+     @ you just need to configure the mode as I2C mode for port2. But for UART sensors, please select by SKU. 
    * 
-   * @param sku  Parameters of Port2, the list of supported SKU can be viewed on the OLED display or by getUARTSensorSKU()
+   * @param sku  Parameters for Port2, the supported SKU list can be viewed on the OLED display or by getUARTSensorSKU()
    * @n     "NULL"       Configure Port2 as I2C mode and clear the config related to UART sensor on Port2
-   * @n     SKU of a UART sensor indicates the SKU of a UART sensor is selected and the mode is configured as UART sensor mode
+   * @n     UART sensor SKU indicates a UART sensor SKU is selected and the mode is configured as UART sensor mode
    * @return uint8_t Error code
-   * @n      ERR_CODE_NONE         or 0x00  Set successful
+   * @n      ERR_CODE_NONE         or 0x00  Setting succeed
    * @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
-   * @n      ERR_CODE_RES_PKT      or 0x02  Response packet error
-   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C master 
-   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response packet reception timeout
-   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command packet or command mismatch 
-   * @n      ERR_CODE_SLAVE_BREAK  or 0x06  Slave break
-   * @n      ERR_CODE_ARGS         or 0x07  The set parameter is wrong
+   * @n      ERR_CODE_RES_PKT      or 0x02  Response package error
+   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout
+   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command
+   * @n      ERR_CODE_SLAVE_BREAK  or 0x06  Peripheral fault
+   * @n      ERR_CODE_ARGS         or 0x07  Set wrong parameters 
    */
   uint8_t setPort2(char *sku);
 
   /**
    * @fn getPort2(ePort23Mode_t mode)
-   * @brief Get the sensor mode and SKU config of Port2
+   * @brief Get the sensor mode on port2 and SKU config
    * 
    * @param mode  eI2CUARTMode_t enum variable pointer
    * @n     eI2CMode    I2C sensor mode
    * @n     eUARTMode   UART sensor mode
    * @return SKU of the sensor connected to Port2
-   * @n      "NULL"        Indicates Port2 is configured or connected to no sensor
-   * @n      7-bit SKU set     SKU corresponding to I2C or UART sensor
+   * @n      "NULL"        Port2 is configured or connected to no sensor
+   * @n      7-bit SKU set     The SKU corresponding to I2C or UART sensor
    */
   String getPort2(ePort23Mode_t *mode);
 
   /**
    * @fn setPort3(char *sku)
-   * @brief Set supported SKU on Port3, which can be connected to I2C & UART sensors, UART sensors need to be selected by SKU; I2C sensors are automatically selected after connection, and you just need to configure Port3 as I2C mode
+   * @brief Set SKU on Port3, which can be connected to I2C & UART sensors. I2C sensors can be auto selected when connected,
+     @ you just need to configure the mode as I2C mode for port2. But for UART sensors, please select by SKU.
    * 
-   * @param sku  Parameters of Port3, the list of supported SKU can be viewed on the OLED display or by getUARTSensorSKU()
+   * @param sku  Parameters for Port3, the supported SKU list can be viewed on the OLED display or by getUARTSensorSKU()
    * @n     "NULL"       Configure Port3 as I2C mode and clear the config related to UART sensors on Port3
-   * @n     SKU of a UART sensor indicates the SKU of a UART sensor is selected and the mode is configured as UART sensor mode
+   * @n     UART sensor SKU indicates a UART sensor SKU is selected and the mode is configured as UART sensor mode
    * @return uint8_t Error code
-   * @n      ERR_CODE_NONE         or 0x00  Set successful
+   * @n      ERR_CODE_NONE         or 0x00  Setting succeed
    * @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
-   * @n      ERR_CODE_RES_PKT      or 0x02  Response packet error
-   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C master 
-   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response packet reception timeout
-   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command packet or command mismatch 
-   * @n      ERR_CODE_SLAVE_BREAK  or 0x06  Slave break
-   * @n      ERR_CODE_ARGS         or 0x07  The set parameter is wrong
+   * @n      ERR_CODE_RES_PKT      or 0x02  Response package error
+   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout
+   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command 
+   * @n      ERR_CODE_SLAVE_BREAK  or 0x06  Peripheral fault
+   * @n      ERR_CODE_ARGS         or 0x07  Set wrong parameters 
    */
   uint8_t setPort3(char *sku);
 
   /**
    * @fn getPort3(ePort23Mode_t mode)
-   * @brief Get the sensor mode and SKU config of Port3
+   * @brief Get the sensor mode on port3 and SKU config
    * 
    * @param mode  eI2CUARTMode_t enum variable pointer
    * @n     eI2CMode    I2C sensor mode
    * @n     eUARTMode   UART sensor mode
    * @return SKU of the sensor connected to Port3
-   * @n      "NULL"        Indicates Port3 is configured or connected to no sensor 
-   * @n      7-bit SKU set     SKU corresponding to I2C or UART sensor
+   * @n      "NULL"        Port3 is configured or connected to no sensor 
+   * @n      7-bit SKU set     The SKU corresponding to I2C or UART sensor
    */
   String getPort3(ePort23Mode_t *mode);
 
   /**
    * @fn setRecvTimeout
-   * @brief Set reception timeout
+   * @brief Set receive timeout
    * 
-   * @param timeout When there are many sensors connected to SCI Acquisition Module, you need to increase the reception timeout value appropriately when reading a large amount of data, the default is 2s
+   * @param timeout When there are many sensors connected to SCI Acquisition Module, you need to increase the receive timeout value appropriately when reading a large amount of data, the default is 2s
    */
   void setRecvTimeout(uint32_t timeout = 2000);
   /**
@@ -278,12 +280,12 @@ There two methods:
    * @param date Year, month & day
    * @param time Hour, minute & second
    * @return Error code
-   * @n      ERR_CODE_NONE         or 0x00  Set successful
+   * @n      ERR_CODE_NONE         or 0x00  Setting succeed 
    * @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
-   * @n      ERR_CODE_RES_PKT      or 0x02  Response packet error
-   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C master 
-   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response packet reception timeout
-   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command packet or command mismatch 
+   * @n      ERR_CODE_RES_PKT      or 0x02  Response package error 
+   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout 
+   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command 
    */
   uint8_t adjustRtc(const __FlashStringHelper* date, const __FlashStringHelper* time);
 	/**
@@ -298,12 +300,12 @@ There two methods:
    * @param minute Minute
    * @param second Second
    * @return uint8_t Error code
-   * @n      ERR_CODE_NONE         or 0x00  Set successful
-   * @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
-   * @n      ERR_CODE_RES_PKT      or 0x02  Response packet error
-   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C master 
-   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response packet reception timeout
-   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command packet or command mismatch
+   * @n      ERR_CODE_NONE         or 0x00  Setting succeed 
+   * @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command 
+   * @n      ERR_CODE_RES_PKT      or 0x02  Response package error 
+   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout 
+   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command
    */
   uint8_t adjustRtc(uint16_t year, uint8_t month, uint8_t day, uint8_t week, uint8_t hour, uint8_t minute, uint8_t second);
   /**
@@ -318,19 +320,19 @@ There two methods:
    * @param minute Minute
    * @param second Second
    * @return uint8_t Error code
-   * @n      ERR_CODE_NONE         or 0x00  Set successful
-   * @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
-   * @n      ERR_CODE_RES_PKT      or 0x02  Response packet error
-   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C master 
-   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response packet reception timeout
-   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command packet or command mismatch
+   * @n      ERR_CODE_NONE         or 0x00  Setting succeed 
+   * @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command 
+   * @n      ERR_CODE_RES_PKT      or 0x02  Response package error 
+   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout 
+   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command
    */
   uint8_t getRtcTime(uint16_t *year, uint8_t *month, uint8_t *day, uint8_t *week, uint8_t *hour, uint8_t *minute, uint8_t *second);
   /**
    * @fn getRtcTime()
-   * @brief Get the time information of year, month, day, hour, minute, second, week, etc. of SCI Acquisition Module
+   * @brief Get the year, month, day, week, hour, minute, second of the SCI Acquisition Module
    * 
-   * @return The character string for year/month/day week hour:minute:second, for example, 2022/08/09 2 09:08:00 represents Tuesday, August 9, 2022, at 9:08:0 
+   * @return The char string for year/month/day week hour:minute:second, for example, 2022/08/09 2 09:08:00 represents Tuesday, August 9, 2022, at 9:08:0 
    */
   String getRtcTime();
   /**
@@ -338,38 +340,38 @@ There two methods:
    * @brief Set data refresh rate
    * 
    * @param refreshRate eRefreshRate_t enum variable
-   * @n eRefreshRateMs     Refresh rate measured in ms, refresh at actual data refresh rate
-   * @n eRefreshRate1s     Refresh rate 1s, if the actual data refresh rate is less than the value, then refresh at the value;l if greater than the value, then refresh at the actual refresh rate
-   * @n eRefreshRate3s     Refresh rate 3s, if the actual data refresh rate is less than the value, then refresh at the value;l if greater than the value, then refresh at the actual refresh rate
-   * @n eRefreshRate5s     Refresh rate 5s, if the actual data refresh rate is less than the value, then refresh at the value;l if greater than the value, then refresh at the actual refresh rate
-   * @n eRefreshRate10s    Refresh rate 10s, if the actual data refresh rate is less than the value, then refresh at the value;l if greater than the value, then refresh at the actual refresh rate
-   * @n eRefreshRate30s    Refresh rate 30s, if the actual data refresh rate is less than the value, then refresh at the value;l if greater than the value, then refresh at the actual refresh rate
-   * @n eRefreshRate1min   Refresh rate 1min, if the actual data refresh rate is less than the value, then refresh at the value;l if greater than the value, then refresh at the actual refresh rate
-   * @n eRefreshRate5min   Refresh rate 5min, if the actual data refresh rate is less than the value, then refresh at the value;l if greater than the value, then refresh at the actual refresh rate
-   * @n eRefreshRate10min  Refresh rate 10min, if the actual data refresh rate is less than the value, then refresh at the value;l if greater than the value, then refresh at the actual refresh rate
+   * @n eRefreshRateMs     ms-level, refresh at the actual refresh rate
+   * @n eRefreshRate1s     1s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+   * @n eRefreshRate3s     3s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+   * @n eRefreshRate5s     5s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+   * @n eRefreshRate10s    10s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+   * @n eRefreshRate30s    30s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+   * @n eRefreshRate1min   1min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+   * @n eRefreshRate5min   5min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+   * @n eRefreshRate10min  10min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
    * @return uint8_t Error code
-   * @n      ERR_CODE_NONE         or 0x00  Set successful
+   * @n      ERR_CODE_NONE         or 0x00  Setting succeed
    * @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
-   * @n      ERR_CODE_RES_PKT      or 0x02  Response packet error
-   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C master 
-   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response packet reception timeout
-   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command packet or command mismatch
+   * @n      ERR_CODE_RES_PKT      or 0x02  Response package error
+   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout
+   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command 
    */
   uint8_t setRefreshRate(eRefreshRate_t refreshRate);
   /**
    * @fn getRefreshRate
-   * @brief Get the set refresh time, which may not be the actual refresh time, the relationship between them is: the set refresh time <= the actual refresh time
+   * @brief Get the set refresh rate, which may not be the actual rate, the relationship between them is: the set refresh rate <= the actual refresh rate
    * 
    * @param refreshRate eRefreshRate_t enum variable, get the level
-   * @n eRefreshRateMs     Refresh rate measured in ms, refresh at actual data refresh rate
-   * @n eRefreshRate1s     Refresh rate 1s, if the actual data refresh rate is less than the value, then refresh at the value;l if greater than the value, then refresh at the actual refresh rate
-   * @n eRefreshRate3s     Refresh rate 3s, if the actual data refresh rate is less than the value, then refresh at the value;l if greater than the value, then refresh at the actual refresh rate
-   * @n eRefreshRate5s     Refresh rate 5s, if the actual data refresh rate is less than the value, then refresh at the value;l if greater than the value, then refresh at the actual refresh rate
-   * @n eRefreshRate10s    Refresh rate 10s, if the actual data refresh rate is less than the value, then refresh at the value;l if greater than the value, then refresh at the actual refresh rate
-   * @n eRefreshRate30s    Refresh rate 30s, if the actual data refresh rate is less than the value, then refresh at the value;l if greater than the value, then refresh at the actual refresh rate
-   * @n eRefreshRate1min   Refresh rate 1min, if the actual data refresh rate is less than the value, then refresh at the value;l if greater than the value, then refresh at the actual refresh rate
-   * @n eRefreshRate5min   Refresh rate 5min, if the actual data refresh rate is less than the value, then refresh at the value;l if greater than the value, then refresh at the actual refresh rate
-   * @n eRefreshRate10min  Refresh rate 10min, if the actual data refresh rate is less than the value, then refresh at the value;l if greater than the value, then refresh at the actual refresh rate
+   * @n eRefreshRateMs     ms-level, refresh at the actual refresh rate
+   * @n eRefreshRate1s     1s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate 
+   * @n eRefreshRate3s     3s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+   * @n eRefreshRate5s     5s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+   * @n eRefreshRate10s    10s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+   * @n eRefreshRate30s    30s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+   * @n eRefreshRate1min   1min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+   * @n eRefreshRate5min   5min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
+   * @n eRefreshRate10min  10min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
    * @return uint32_t Return refresh rate, unit ms
    * @n eRefreshRateMs     0ms
    * @n eRefreshRate1s     1000ms
@@ -384,9 +386,9 @@ There two methods:
   uint32_t getRefreshRate(eRefreshRate_t *refreshRate = NULL);
   /**
    * @fn getTimeStamp()
-   * @brief Get time stamp, which is the data refresh time of SCI Acquisition Module
+   * @brief Get time stamp, also the data refresh time of SCI Acquisition Module
    * 
-   * @return Hour:minute:second(00:00:00) or minute:second.(0~99)% second (00:00.00)
+   * @return Hour:Minute:Second(00:00:00) or Minute:Second. X%(0-99)second(00:00.00)
    */
   String getTimeStamp();
   
@@ -397,7 +399,7 @@ There two methods:
    * @param mode  ePort1IFMode_t enum variable
    * @n     eAnalogMode    Analog sensor mode
    * @n     eDigitalMode   Digital sensor mode
-   * @return Character string of sensor mode description
+   * @return Sensor mode description char string
    * @n      "ANALOG"         Analog sensor mode
    * @n      "DIGITAL"        Digital sensor mode
    * @n      "UNKNOWN"        Unknown Mode
@@ -410,7 +412,7 @@ There two methods:
    * @param mode  ePort23Mode_t enum variable
    * @n     eI2CMode    I2C sensor mode
    * @n     eUARTMode   UART sensor mode
-   * @return Character string of sensor mode description
+   * @return Sensor mode description char string
    * @n      "I2C"         I2C sensor mode
    * @n      "UART"        UART sensor mode
    * @n      "UNKNOWN"     Unknown Mode
@@ -419,62 +421,62 @@ There two methods:
   
   /**
    * @fn enableRecord
-   * @brief Enable CSV file record, after the command is called, the data collected by the sensor will be recorded in a CSV file named with information of year, month, day, hour, minute and second.
+   * @brief Enable data recording in CSV file. When enabled, the sensor data will be recorded in the csv file named by date year, month, day, hour, minute, and second.
    * 
    * @return uint8_t Error code
-   * @n      ERR_CODE_NONE         or 0x00  Set successful
+   * @n      ERR_CODE_NONE         or 0x00  Setting succeed
    * @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
-   * @n      ERR_CODE_RES_PKT      or 0x02  Response packet error
-   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C master 
-   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response packet reception timeout
-   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command packet or command mismatch
+   * @n      ERR_CODE_RES_PKT      or 0x02  Response package error
+   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout
+   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command
    */
   uint8_t enableRecord();
   /**
    * @fn disableRecord
-   * @brief Disable CSV file record, after the command is called, the data collected by the sensor will not be recorded in a CSV file named with information of year, month, day, hour, minute and second
+   * @brief Disable data recording in CSV file. When disabled, data recording stops
    * 
    * @return uint8_t Error code
-   * @n      ERR_CODE_NONE         or 0x00  Set successful
+   * @n      ERR_CODE_NONE         or 0x00  Setting succeed
    * @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
-   * @n      ERR_CODE_RES_PKT      or 0x02  Response packet error
-   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C master 
-   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response packet reception timeout
-   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command packet or command mismatch
+   * @n      ERR_CODE_RES_PKT      or 0x02  Response package error
+   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout
+   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command
    */
   uint8_t disableRecord();
   
   /**
    * @fn oledScreenOn
-   * @brief Enable display of SCI Acquisition Module
+   * @brief Switch on SCI Acquisition Module Screen
    * 
    * @return uint8_t Error code
-   * @n      ERR_CODE_NONE         or 0x00  Set successful
+   * @n      ERR_CODE_NONE         or 0x00  Setting succeed
    * @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
-   * @n      ERR_CODE_RES_PKT      or 0x02  Response packet error
-   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C master 
-   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response packet reception timeout
-   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command packet or command mismatch
+   * @n      ERR_CODE_RES_PKT      or 0x02  Response package error
+   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout
+   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command
    */
   uint8_t oledScreenOn();
   /**
    * @fn oledScreenOff
-   * @brief Disable display of SCI Acquisition Module
+   * @brief Switch off SCI Acquisition Module Screen
    * 
    * @return uint8_t Error code
-   * @n      ERR_CODE_NONE         or 0x00  Set successful
+   * @n      ERR_CODE_NONE         or 0x00  Setting succeed
    * @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
-   * @n      ERR_CODE_RES_PKT      or 0x02  Response packet error
-   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C master 
-   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response packet reception timeout
-   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command packet or command mismatch
+   * @n      ERR_CODE_RES_PKT      or 0x02  Response package error
+   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller
+   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response package receive timeout
+   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command
    */
   uint8_t oledScreenOff();
   
   /**
    * @fn getInformation
-   * @brief Get information about the connected sensor on one or more ports of SCI Acquisition Module, name: value unit,
-   * @n separate multiple pieces of information with ","
+   * @brief Get information of the sensor connected to one or more ports of SCI Acquisition Module, name: value unit.
+   * @n Separate multiple pieces of information using ","
    * 
    * @param inf    Port select
    * @n     ePort1                                           Select Port1
@@ -484,23 +486,23 @@ There two methods:
    * @param timestamp Whether the acquired information is timestamped or not
    * @n     false  Not timestamped
    * @n     ture   Timestamped 
-   * @return Properties of the sensor connected to the selected port, each one is in the format of name:value unit, separate properties with "," and separate unit and value with a space
-   * @n Not timestamped for example, SEN0334:  Temp_Air:28.65 C,Humi_Air:30.12 %RH
-   * @n Timestamped   for example, SEN0334:  minute:second.(0~99)% second Temp_Air:28.65 C,Humi_Air:30.12 %RH or hour:minute:second Temp_Air:28.65 C,Humi_Air:30.12 %RH
+   * @return Attributes of the sensor connected to the selected port, each one is in the format of name:value unit, separate attributes using "," and separate unit and value using a space
+   * @n Not timestamped e.g. SEN0334:  Temp_Air:28.65 C,Humi_Air:30.12 %RH
+   * @n Timestamped   e.g. SEN0334:  Minute:Second. X%(0-99)second Temp_Air:28.65 C,Humi_Air:30.12 %RH or Hour:Minute:Second Temp_Air:28.65 C,Humi_Air:30.12 %RH
    */
   String getInformation(eInterfaceList_t inf = eALL, bool timestamp = false);
   String getInformation(uint8_t inf, bool timestamp = false);
 
   /**
    * @fn getSKU
-   * @brief Get the SKU of the connected sensor on one or more ports of SCI Acquisition Module, separate multiple SKUs with ","
+   * @brief Get the SKU of the sensor connected to one or more ports of SCI Acquisition Module, separate SKUs using ","
    * 
    * @param inf    Port select
    * @n     ePort1                                           Select Port1
    * @n     ePort2                                           Select Port2
    * @n     ePort3                                           Select Port3
    * @n     eALL  or  (ePort1 | ePort2 | ePort3)             Select Port1, Port2 and Port3
-   * @return The SKU of the connected sensor on the selected port, separate SKUs with ","
+   * @return The SKU of the sensor connected to the selected port, separate SKUs using ","
    * @n For example:  SEN0161,SEN0334
    */
   String getSKU(eInterfaceList_t inf = eALL);
@@ -508,42 +510,42 @@ There two methods:
 
   /**
    * @fn getKeys
-   * @brief Get the name of the connected sensor on one or more ports of SCI Acquisition Module, name:value unit, separate multiple names with ","
+   * @brief Get the name of the sensor connected to one or more ports, separate names using ","
    * 
    * @param inf    Port select
    * @n     ePort1                                           Select Port1
    * @n     ePort2                                           Select Port2
    * @n     ePort3                                           Select Port3
    * @n     eALL  or  (ePort1 | ePort2 | ePort3)             Select Port1, Port2 and Port3
-   * @return The name of the connected sensor on the selected port, separate multiple names with ","
+   * @return The name of the sensor connected to the selected port, separate names using ","
    * @n For example:  Temp_Air,Humi_Air
    */
   String getKeys(eInterfaceList_t inf = eALL);
   String getKeys(uint8_t inf);
   /**
    * @fn getValues
-   * @brief Get the property value of the connected sensor on one or more ports of SCI Acquisition Module, separate multiple property values with ","
+   * @brief Get attribute values of the sensor connected to one or more ports, separate attribute values using ","
    * 
    * @param inf    Port select
    * @n     ePort1                                           Select Port1
    * @n     ePort2                                           Select Port2
    * @n     ePort3                                           Select Port3
    * @n     eALL  or  (ePort1 | ePort2 | ePort3)             Select Port1, Port2 and Port3
-   * @return The property values of the connected sensor on the selected port, separate multiple property values with ","
+   * @return The attribute values of the sensor connected to the selected port, separate attribute values using ","
    * @n For example:  28.65,30.12
    */
   String getValues(eInterfaceList_t inf = eALL);
   String getValues(uint8_t inf);
   /**
    * @fn getUnits
-   * @brief Get the value unit of the connected sensor on one or more ports of the SCI acquisition module, separate multiple units with ","
+   * @brief Get the value unit of the sensor connected to one or more ports, separate units using ","
    * 
    * @param inf    Port select
    * @n     ePort1                                           Select Port1
    * @n     ePort2                                           Select Port2
    * @n     ePort3                                           Select Port3
    * @n     eALL  or  (ePort1 | ePort2 | ePort3)             Select Port1, Port2 and Port3
-   * @return The value unit of the connected sensor on the selected port, separate multiple units with ","
+   * @return The value unit of the sensor connected to the selected port, separate units using ","
    * @n For example:  C,%RH
    */
   String getUnits(eInterfaceList_t inf = eALL);
@@ -551,22 +553,22 @@ There two methods:
 
   /**
    * @fn getValue(char *keys)
-   * @brief Get data values of the properties with name of keys in the connected sensors on all the ports, separate multiple property values with ',' 
-   * @param keys  Sensor property name
-   * @return Data values of the properties with name of keys in the connected sensors on all the ports, separate multiple property values with ',' 
+   * @brief Get the attribute data values named keys of all sensors connected to all ports. Separate attribute values using "," 
+   * @param keys  Sensor attribute name
+   * @return The attribute data values named keys of all sensors connected to all ports. Separate attribute values using ","
    * @n For example, Temp_Air:  28.65,28.65
    */
   String getValue(char *keys);
   /**
    * @fn getValue(eInterfaceList_t inf, char *keys)
-   * @brief Get data values of the properties with name of keys in the connected sensors on the designated ports, separate multiple property values with ','
+   * @brief Get the attribute data values named keys of the sensors connected to the designated port. Separate attribute values using ","
    * @param inf    Port select, and parameter search range
-   * @n     ePort1                                          Select Port1, and find values of properties with the name of keys in the connected sensors on all the A&D ports
-   * @n     ePort2                                          Select Port2, and find values of properties with the name of keys in the connected sensors on all the I2C&UART1 ports
-   * @n     ePort3                                          Select Port3, and find values of properties with the name of keys in the connected sensors on all the I2C&UART2 ports
-   * @n     eALL  or  (ePort1 | ePort2 | ePort3)            Select Port1, Port2 & Port3, and find values of properties with the name of keys in the connected sensors on all the ports
-   * @param keys  Sensor property name
-   * @return Get data values of the properties with name of keys in the connected sensors on the designated ports, separate multiple property values with ','
+   * @n     ePort1                                          Select Port1, and find attribute data values named keys of the sensors connected to A&D ports
+   * @n     ePort2                                          Select Port2, and find attribute data values named keys of the sensors connected to I2C&UART1 ports
+   * @n     ePort3                                          Select Port3, and find attribute data values named keys of the sensors connected to I2C&UART2 ports
+   * @n     eALL  or  (ePort1 | ePort2 | ePort3)            Select ePort1, ePort2 & ePort3, and find attribute data values named keys of all sensors
+   * @param keys  Sensor attribute name
+   * @return The attribute data values named keys of the sensors connected to the designated port. Separate attribute values using ","
    * @n For example, Temp_Air:  28.65,28.65
    */
   String getValue(eInterfaceList_t inf, char *keys);
