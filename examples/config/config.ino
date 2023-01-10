@@ -40,10 +40,10 @@ void setup() {
   Serial.print("Set I2C Address: 0x23......");
   /**
    * @fn setI2CAddress
-   * @brief Set the I2C communication address of SCI Acquisition Module
+   * @brief Set the I2C address of SCI Acquisition Module
    * 
-   * @param addr    I2C communication address of SCI Acquisition Module, support the following address settings
-   * @n RP2040_SCI_ADDR_0X21      0x21 Default I2C address
+   * @param addr    I2C address of SCI Acquisition Module, support the following address settings
+   * @n RP2040_SCI_ADDR_0X21      0x21 default I2C address
    * @n RP2040_SCI_ADDR_0X22      0x22
    * @n RP2040_SCI_ADDR_0X23      0x23
    * @return uint8_t Error code
