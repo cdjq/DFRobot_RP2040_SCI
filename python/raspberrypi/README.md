@@ -84,6 +84,7 @@ dtparam=i2c_arm=on,i2c_arm_baudrate=100000
 ```
 
 ## Installation
+
 1. To use this library, first download the library file<br>
 ```python
 sudo git clone https://github.com/DFRobot/DFRobot_RP2040_SCI
@@ -435,13 +436,13 @@ class DFRobot_SCI:
 
   def get_sku(self, inf):
     '''!
-      @brief Get the SKU of all sensors connected to the designated one or more ports. Separate SKUs using ","
+      @brief Get the SKUs of all sensors connected to the designated one or more ports. Separate SKUs using ","
       @param inf Designate one or more ports
-      @n     ePort1                                    Designate port1, get SKUs of all sensors connected to port1
-      @n     ePort2                                    Designate port2, get SKUs of all sensors connected to port2
-      @n     ePort3                                    Designate port3, get SKUs of all sensors connected to port3
-      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Designate port1, port2 and port3, get SKUs of all sensors
-      @return The SKU of all sensors connected to the designated one or more ports of the SCI Acquisition Module
+      @n     ePort1                                    Select port1, get SKUs of all sensors connected to port1
+      @n     ePort2                                    Select port2, get SKUs of all sensors connected to port2
+      @n     ePort3                                    Select port3, get SKUs of all sensors connected to port3
+      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select port1, port2 and port3, get SKUs of all sensors connected to all ports
+      @return The SKUs of all sensors connected to the designated one or more ports of the SCI Acquisition Module
       @n For example:  SEN0161,SEN0334
     '''
 
@@ -452,7 +453,7 @@ class DFRobot_SCI:
       @n     ePort1                                    Select port1, get attribute names of all sensors connected to port1
       @n     ePort2                                    Select port2, get attribute names of all sensors connected to port2
       @n     ePort3                                    Select port3, get attribute names of all sensors connected to port3
-      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select port1, port2 and port3, get attribute names of all sensors
+      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select port1, port2 and port3, get attribute names of all sensors connected to all ports
       @return The attribute names of all sensors connected to the designated one or more ports of the SCI Acquisition Module
       @n For example:  Temp_Air,Humi_Air
     '''
@@ -464,7 +465,7 @@ class DFRobot_SCI:
       @n     ePort1                                    Select port1, get attribute data values of all sensors connected to port1
       @n     ePort2                                    Select port2, get attribute data values of all sensors connected to port2
       @n     ePort3                                    Select port3, get attribute data values of all sensors connected to port3
-      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select port1, port2 and port3, get attribute data values of all sensors
+      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select port1, port2 and port3, get attribute data values of all sensors connected to all ports
       @return The attribute data values of all sensors connected to the designated one or more ports of the SCI Acquisition Module
       @n For example:  28.65,30.12
     '''
@@ -476,52 +477,55 @@ class DFRobot_SCI:
       @n     ePort1                                    Select port1, get attribute units of all sensors connected to port1
       @n     ePort2                                    Select port2, get attribute units of all sensors connected to port2
       @n     ePort3                                    Select port3, get attribute units of all sensors connected to port3
-      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select port1, port2 and port3, get attribute units of all sensors
+      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select port1, port2 and port3, get attribute units of all sensors connected to all ports
       @return The attribute units of all sensors connected to the designated one or more ports of the SCI Acquisition Module
       @n For example:  C,%RH
     '''
 
   def get_value0(self, keys):
     '''!
-      @brief Get attribute data values named keys of all sensors connected to all ports. Separate attribute values using ","
+      @brief Get data values of the attribute named keys from sensors connected to all ports. Separate attribute values using ","
       @param keys  Sensor attribute name
-      @return Attribute data values named keys of all sensors connected to all ports. Separate attribute values using ","
+      @return Data values of the attribute named keys from sensors connected to all ports. Separate attribute values using ","
       @n For example, Temp_Air:  28.65,28.65
     '''
 
   def get_value1(self, inf, keys):
     '''!
-      @brief Get attribute data values named keys of all sensors connected to the designated port. Separate attribute values using ","
+      @brief Get data values of the attribute named keys from sensors connected to the designated port. Separate attribute values using ","
       @param inf    Port select, and parameter search range
-      @n     ePort1                                    Select port1, get attribute values named keys of all sensors connected to port1
-      @n     ePort2                                    Select port2, get attribute values named keys of all sensors connected to port2
-      @n     ePort3                                    Select port3, get attribute values named keys of all sensors connected to port3
-      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select port1, port2 and port3, get attribute values named keys of all sensors
+      @n     ePort1                                    Select port1, get data values of the attribute named keys from sensors connected to port1
+      @n     ePort2                                    Select port2, get data values of the attribute named keys from sensors connected to port2
+      @n     ePort3                                    Select port3, get data values of the attribute named keys from sensors connected to port3
+      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select port1, port2 and port3, get data values of the attribute named keys from sensors connected to all ports
       @param keys  Sensor attribute name
-      @return The attribute values named keys of all sensors connected to the designated port. Separate attribute values using ","
+      @return The data values of the attribute named keys from sensors connected to the designated port. Separate attribute values using ","
       @n For example, Temp_Air:  28.65,28.65
     '''
 
   def get_value2(self, inf, sku, keys):
     '''!
-      @brief Get attribute data values named keys of the sensor whose SKU is sku connected to the designated port. Separate attribute values using ","
+      @brief Get data values of the attribute named keys from the sensor with a specific sku among sensors connected to the designated port. 
+      @ Separate attribute values using ","
       @param inf    Port select, and parameter search range
-      @n     ePort1                                    Select port1, get the sensor whose SKU is sku connected to port1, and read attribute values named keys
-      @n     ePort2                                    Select port2, get the sensor whose SKU is sku connected to port2, and read attribute values named keys
-      @n     ePort3                                    Select port3, get the sensor whose SKU is sku connected to port3, and read attribute values named keys
-      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select port1, port2 and port3, get all the sensors whose SKU is sku, and read attribute values named keys
+      @n     ePort1                                    Select port1, get the sensor whose SKU is sku from port1, and read data values of the attribute named keys
+      @n     ePort2                                    Select port2, get the sensor whose SKU is sku from port2, and read data values of the attribute named keys
+      @n     ePort3                                    Select port3, get the sensor whose SKU is sku from port3, and read data values of the attribute named keys
+      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select port1, port2 and port3, get sensors whose SKU is sku from all ports, and read data values of the       
+      @                                                attribute named keys
       @param sku Sensor SKU
       @param keys  Sensor attribute name
-      @return The attribute data values named keys of the sensor whose SKU is sku connected to the designated port. Separate attribute values using ","
+      @return The data values of the attribute named keys from the sensor with a specific sku among sensors connected to the designated port. 
+      @ Separate attribute values using ","
       @n For example, Temp_Air:  28.65,28.65
     '''
 
   def get_unit0(self, keys):
     '''!
-      @brief Get attribute data units named keys of all sensors. Separate attribute units using ","
+      @brief Get data units of the attribute named keys from sensors connected to all ports. Separate attribute units using ","
       @param keys  Sensor attribute name
-      @return Attribute data units named keys of all sensors. Separate attribute units using ","
-      @n 例Temp_Air:  C,C
+      @return Data units of the attribute named keys from sensors connected to all ports. Separate attribute units using ","
+      @n For example, Temp_Air:  C,C
     '''
 
   def get_unit1(self, inf, keys):
