@@ -57,7 +57,7 @@
 #define CMD_GET_VALUE        0x0A  ///< Get sensor data value
 #define CMD_GET_UNIT         0x0B  ///< Get sensor data unit
 #define CMD_GET_SKU          0x0C  ///< Get sensor SKU, separate SKUs by a comma(,) 
-#define CMD_GET_INFO         0x0D  ///< Get the sensor data name, value and unit name, separated value and unit name by space, and others by comma(,)
+#define CMD_GET_INFO         0x0D  ///< Get the sensor data name, value and unit name, separate value and unit name by space, and others by comma(,)
 
 #define CMD_GET_KEY_VALUE0    0x0E  ///< Get the corresponding data value according to the data name
 #define CMD_GET_KEY_VALUE1    0x0F  ///< Get the data value on the selected port according to the data name
