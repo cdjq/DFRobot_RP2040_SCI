@@ -688,114 +688,114 @@ protected:
   uint8_t dayOfTheWeek(uint16_t year, uint8_t month, uint8_t day);
  	/**
    * @fn date2days
-   * @brief 计算当前年月日距2000年1月1日相差的天数
+   * @brief Calculate the number of days between the current date year/month/day and January 1, 2000
    * 
-   * @param year   年
-   * @param month  月
-   * @param day    日
-   * @return uint16_t 天数，当前年月日距离2000年1月1日的天数
-   * @note 只能保证2000年到2099年的计算是准确的
+   * @param year   Year
+   * @param month  Month
+   * @param day    Day
+   * @return uint16_t The number of days between the current date year/month/day and January 1, 2000
+   * @note Only calculations from 2000 to 2099 are guaranteed to be accurate
    */
   uint16_t date2days(uint16_t y, uint8_t m, uint8_t d);
   /**
    * @fn conv2d
-   * @brief 将字符转换为2位10进制数据
+   * @brief Convert characters to 2-bit decimal data
    * 
-   * @param p 指向数组的指针
-   * @return uint8_t 返回2位十进制数据
+   * @param p Pointer to array
+   * @return uint8_t Return 2-bit decimal data
    */
 	uint8_t conv2d(const char* p);
   /**
    * @fn reset
-   * @brief 复位SCI采集模块(SCI Acquisition Module)的发送缓存
+   * @brief Reset the cache sending of SCI Acquisition Module
    * 
-   * @param cmd 通信命令
+   * @param cmd Communication command
    */
   void reset(uint8_t cmd);
 
 private:
-  uint32_t _timeout; ///< 接收超时时间
+  uint32_t _timeout; ///< Time of receive timeout
 };
 
 class DFRobot_RP2040_SCI_IIC: public DFRobot_SCI{
 public:
   /**
    * @fn DFRobot_RP2040_SCI_IIC
-   * @brief DFRobot_RP2040_SCI_IIC 类的构造函数.
-   * @param addr:  7位I2C地址，支持以下地址设置
-   * @n RP2040_SCI_ADDR_0X21      0x21 转换板默认I2C地址
+   * @brief Constructor for DFRobot_RP2040_SCI_IIC class.
+   * @param addr:  7-bit I2C address, support the following address settings
+   * @n RP2040_SCI_ADDR_0X21      0x21 default I2C address
    * @n RP2040_SCI_ADDR_0X22      0x22
    * @n RP2040_SCI_ADDR_0X23      0x23
-   * @n 或通过板子的OLED屏的初始页查看I2C地址，出厂默认I2C地址为0x01
-   * @param pWire:   TwoWire类对象指针.
+   * @n Or view I2C address on the initial page of the onboard OLED display, the factory default I2C address is 0x01
+   * @param pWire:   TwoWire class & object pointer.
    */
   DFRobot_RP2040_SCI_IIC(uint8_t addr = RP2040_SCI_ADDR_0X21, TwoWire *pWire = &Wire);
   ~DFRobot_RP2040_SCI_IIC();
   /**
    * @fn setI2CAddress
-   * @brief 设置SCI采集模块(SCI Acquisition Module)的I2C通信地址
+   * @brief Set I2C address of SCI Acquisition Module
    * 
-   * @param addr    SCI采集模块(SCI Acquisition Module)的I2C通信地址，支持以下地址设置
-   * @n RP2040_SCI_ADDR_0X21      0x21 转换板默认I2C地址
+   * @param addr    I2C address of SCI Acquisition Module, support the following address settings
+   * @n RP2040_SCI_ADDR_0X21      0x21 default I2C address
    * @n RP2040_SCI_ADDR_0X22      0x22
    * @n RP2040_SCI_ADDR_0X23      0x23
-   * @return uint8_t 错误代码
-   * @n      ERR_CODE_NONE         or 0x00  设置成功
-   * @n      ERR_CODE_CMD_INVAILED or 0x01  无效命令
-   * @n      ERR_CODE_RES_PKT      or 0x02  响应包错误
-   * @n      ERR_CODE_M_NO_SPACE   or 0x03  I2C主机内存不够
-   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  响应包接收超时
-   * @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配 
-   * @n      ERR_CODE_I2C_ADRESS   or 0x0A  I2C地址无效
+   * @return uint8_t Error Code
+   * @n      ERR_CODE_NONE         or 0x00  Setting succeed
+   * @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
+   * @n      ERR_CODE_RES_PKT      or 0x02  Response packet error
+   * @n      ERR_CODE_M_NO_SPACE   or 0x03  Insufficient memory of I2C controller(master) 
+   * @n      ERR_CODE_RES_TIMEOUT  or 0x04  Response packet receive timeout
+   * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command packet or unmatched command 
+   * @n      ERR_CODE_I2C_ADRESS   or 0x0A  Invalid I2C address
    */
   uint8_t setI2CAddress(uint8_t addr);
   /**
    * @fn getI2CAddress
-   * @brief 获取SCI采集模块(SCI Acquisition Module)的I2C通信地址
-   * @return I2C通信地址
+   * @brief Get the I2C address of SCI Acquisition Module
+   * @return I2C address
    */
   uint8_t getI2CAddress();
 
 protected:
   /**
    * @fn init
-   * @brief I2C接口初始化
+   * @brief Initalize I2C interface
    * 
-   * @param freq 设置I2C通信频率
-   * @return int 初始化状态
-   * @n       0  初始化成功
-   * @n      -1  通信接口类对象未传入
-   * @n      -2  请检测硬件连接是否正确
+   * @param freq Set I2C communication frequency
+   * @return int Init status
+   * @n       0  Init successful
+   * @n      -1  The communication interface class & object are not passed in
+   * @n      -2  Check if the hardware connection is correct
    */
   int init(uint32_t freq);
   /**
    * @fn sendPacket
-   * @brief 发送数据
+   * @brief Send data
    * 
-   * @param pkt    数据指针
-   * @param length 要发送的数据的长度
-   * @param stop   是否发送停止条件
-   * @n     true   停止
-   * @n     false  不停止
+   * @param pkt    Data pointer
+   * @param length Length of the data to be sent
+   * @param stop   Whether to send stop condition
+   * @n     true   Stop
+   * @n     false  Not stop
    */
   void sendPacket(void *pkt, int length, bool stop = true);
   /**
    * @fn recvData
-   * @brief I2C读取字节
+   * @brief I2C read byte
    * 
-   * @param data    存放接收的数据缓存
-   * @param len     要读取得字节数
-   * @return 实际读取得字节数   
+   * @param data    Received and stored data cache
+   * @param len     Byte number to be read
+   * @return Actually read byte number   
    */
   int recvData(void *data, int len);
   /**
    * @fn recvFlush
-   * @brief 清空接收缓存
+   * @brief Clear receive cache
    */
   void recvFlush();
   /**
    * @fn sendFlush
-   * @brief 清空发送缓存
+   * @brief Clear send cache
    */
   void sendFlush();
 private:
