@@ -530,28 +530,31 @@ class DFRobot_SCI:
 
   def get_unit1(self, inf, keys):
     '''!
-      @brief Get attribute data units named keys of the sensor connected to the designated port. Separate attribute units using ","
+      @brief Get data units of the attribute named keys from sensors connected to the designated port. Separate attribute units using ","
       @param inf    Port select, and parameter search range
-      @n     ePort1                                    Select port1, get attribute units named keys of the sensor connected to port1
-      @n     ePort2                                    Select port2, get attribute units named keys of the sensor connected to port2
-      @n     ePort3                                    Select port3, get attribute units named keys of the sensor connected to port3
-      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select port1, port2 and port3, get attribute units named keys of all sensors 
+      @n     ePort1                                    Select port1, get data units of the attribute named keys from sensors connected to port1
+      @n     ePort2                                    Select port2, get data units of the attribute named keys from sensors connected to port2
+      @n     ePort3                                    Select port3, get data units of the attribute named keys from sensors connected to port3
+      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select port1, port2 and port3, get data units of the attribute named keys from sensors connected to all ports 
       @param keys  Sensor attribute name
-      @return The attribute data units named keys of the sensor connected to the designated port. Separate attribute units using ","
+      @return The data units of the attribute named keys from sensors connected to the designated port. Separate attribute units using ","
       @n For example, Temp_Air:  C,C
     '''
 
   def get_unit2(self, inf, sku, keys):
     '''!
-      @brief Get attribute data units named keys of the sensor whose SKU is sku connected to the designated port. Separate attribute units using ","
+      @brief Get data units of the attribute named keys from the sensor with a specific sku among sensors connected to the designated port. 
+      @ Separate attribute units using ","
       @param inf    Port select, and parameter search range
-      @n     ePort1                                    Select port1, get the sensor whose SKU is sku connected to ePort1, and read attribute units named keys
-      @n     ePort2                                    Select port2, get the sensor whose SKU is sku connected to ePort2, and read attribute units named keys
-      @n     ePort3                                    Select port3, get the sensor whose SKU is sku connected to ePort3, and read attribute units named keys
-      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select port1, port2 and port3, get all the sensors whose SKU is sku, and read attribute units named keys
+      @n     ePort1                                    Select port1, get the sensor whose SKU is sku from ePort1, and read data units of the attribute named keys
+      @n     ePort2                                    Select port2, get the sensor whose SKU is sku from ePort2, and read data units of the attribute named keys
+      @n     ePort3                                    Select port3, get the sensor whose SKU is sku from ePort3, and read data units of the attribute named keys
+      @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select port1, port2 and port3, get sensors whose SKU is sku from all ports, and read data units of the 
+      @                                                attribute named keys
       @param sku Sensor SKU
       @param keys  Sensor attribute name
-      @return The attribute data units named keys of the sensor whose SKU is sku connected to the designated port. Separate attribute units using ","
+      @return The data units of the attribute named keys from the sensor with a specific sku among sensors connected to the designated port. 
+      @       Separate attribute units using ","
       @n For example, Temp_Air:  C,C
     '''
 
