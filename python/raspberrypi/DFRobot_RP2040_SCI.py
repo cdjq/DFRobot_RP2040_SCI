@@ -1,21 +1,21 @@
 # -*- coding:utf-8 -*-
 '''!
   @file DFRobot_RP2040_SCI.py
-  @brief This is an Arduino drive library for the DFRobot SCI Acquisition module. Users can read or set its relevant config and data through the I2C interface. The following demonstrates its detailed functions:
-  @n 1. Set or read the I2C communication address of SCI acquisition module as 0x21, 0x22 or 0x23, the factory default is 0x21, after the I2C address is changed, it takes effect after power-off and reboot;
+  @brief This is an Arduino drive library for the DFRobot SCI Acquisition module. Users can read or set its config and data via I2C. The following demonstrates its detailed functions:
+  @n 1. Set or read the I2C address of the module as 0x21, 0x22 or 0x23, the factory default is 0x21, after the I2C address is changed, it will take effect after power-off and reboot;
   @n 2. Set or read the config of Port1, Port2 or Port3:
-  @n    Port1: can be configured as analog or digital sensor mode, supporting NULL, Analog, and analog sensor SKU in analog sensor mode, and supporting digital sensor SKU in digital sensor mode
-  @n    Port2: can be configured as I2C or UART sensor mode, supporting NULL or I2C sensor in I2C sensor mode, in which I2C sensor will be automatically recognized by the module when powered on, and supporting UART sensor SKU in UART sensor mode
-  @n    Port3: can be configured as I2C or UART sensor mode, supporting NULL or I2C sensor in I2C sensor mode, in which I2C sensor will be automatically recognized by the module when powered on, and supporting UART sensor SKU in UART sensor mode
+  @n    Port1: can be configured as analog or digital sensor mode, support NULL, Analog, and analog sensor SKU in analog sensor mode, and support digital sensor SKU in digital sensor mode
+  @n    Port2: can be configured as I2C or UART sensor mode, support NULL or I2C sensor in I2C sensor mode, in which I2C sensor will be automatically recognized by the module when powered on, and support UART sensor SKU in UART sensor mode
+  @n    Port3: can be configured as I2C or UART sensor mode, support NULL or I2C sensor in I2C sensor mode, in which I2C sensor will be automatically recognized by the module when powered on, and support UART sensor SKU in UART sensor mode
   @n 3. Enable/disable data record of CSV file
-  @n 4. Enable/disable OLED display
+  @n 4. Switch on/off OLED display
   @n 5. Read the parameters of the sensors on the board：
-  @n      a. Get the "name" of sensor data, the names are separated by a comma(,);
-  @n      b. Get the "value" of sensor data, the values are separated by a comma(,);
-  @n      c. Get the unit of sensor data, the units are separated by a comma(,);
+  @n      a. Get sensor data "name", separate names by a comma(,);
+  @n      b. Get sensor data "value", separate values by a comma(,);
+  @n      c. Get sensor data unit, separate units by a comma(,);
   @n      d. Get the SKU of the connected sensor;
-  @n      e. Get the complete sensor information in the format of name:value unit, multiple pieces of information are separated by a comma (,)
-  @n 6. Set and read data refresh time
+  @n      e. Get the complete sensor information in the format of name:value unit, separate multiple pieces of information by a comma(,)
+  @n 6. Set and read data refresh rate
   @n 7. Get data refresh timestamp
   @copyright   Copyright (c) 2022 DFRobot Co.Ltd (http://www.dfrobot.com)
   @license     The MIT License (MIT)
@@ -103,9 +103,9 @@ class DFRobot_SCI:
   CMD_RECORD_ON  =   0x05 
   ## Disable CSV record
   CMD_RECORD_OFF =   0x06 
-  ## Enable OLED display
+  ## Switch on OLED display
   CMD_SCREEN_ON  =   0x07  
-  ## Disable OLED display
+  ## Switch off OLED display
   CMD_SCREEN_OFF =   0x08  
   ## Get sensor data name
   CMD_GET_NAME   =   0x09  
@@ -115,7 +115,7 @@ class DFRobot_SCI:
   CMD_GET_UNIT   =   0x0B  
   ## Get sensor SKU, SKUs are separated by a comma(,)
   CMD_GET_SKU    =   0x0C  
-  ## Get the sensor data name, value and unit name, the value and unit name are separated by space, and others are separated by comma(,)
+  ## Get the sensor data name, value and unit name, separate value and unit name by space, and others by comma(,)
   CMD_GET_INFO   =   0x0D  
   ## Get the corresponding data value according to the data name
   CMD_GET_KEY_VALUE0  =  0x0E  
@@ -171,7 +171,7 @@ class DFRobot_SCI:
   ERR_CODE_SLAVE_BREAK     =   0x06
   ## Set wrong parameters 
   ERR_CODE_ARGS            =   0x07 
-  ## The SKU is an invalid SKU, or the one unsupported by SCI Acquisition Module
+  ## The SKU is an invalid SKU or unsupported by SCI Acquisition Module
   ERR_CODE_SKU             =   0x08 
   ## Insufficient memory of I2C peripheral
   ERR_CODE_S_NO_SPACE      =   0x09 
@@ -1237,12 +1237,12 @@ class DFRobot_SCI:
       @brief Receive and parse the response data packet
       @param cmd Command to receive the packet
       @return Error code and response packet list
-      @n      The zeroth element: error code: error code, when the error code is ERR_CODE_NONE, there can be other elements
-      @n      The first element: response packet status code, 0x53-correct response packet 0x63-wrong response packet
-      @n      The second element: response packet command, which indicates the response packet belongs to which communication command
-      @n      The third element: low byte of the valid data length after the response packet
-      @n      The fourth element: high byte of the valid data length after the response packet
-      @n      The 5th element and more: valid data
+      @n      The zeroth element in the list: error code, only when the error code is ERR_CODE_NONE, there can be other elements
+      @n      The first element in the list: response packet status code, 0x53-correct response packet 0x63-wrong response packet
+      @n      The second element in the list: response packet command, which indicates the response packet belongs to which communication command
+      @n      The third element in the list: low byte of the valid data length after the response packet
+      @n      The fourth element in the list: high byte of the valid data length after the response packet
+      @n      The 5th element or more in the list: valid data
     '''
     rslt = [0] * 1
     t = time.time()
