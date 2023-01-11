@@ -685,7 +685,7 @@ class DFRobot_SCI:
     '''!
       @brief Get mode description of Aanlog & Digital sensor
       @param mode Sensor mode 
-      @n     eAnalogMode    Aanlog sensor mode
+      @n     eAnalogMode    Analog sensor mode
       @n     eDigitalMode   Digital sensor mode
       @return Sensor mode description char string
       @n      "ANALOG"         Analog sensor mode 
