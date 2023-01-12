@@ -2,7 +2,7 @@
 
 '''
   @file demo_get_key_value_unit.py
-  @brief Get all the key, value, and unit of the board
+  @brief Get all the keys, values, and units of the board
   
   @copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
   @license     The MIT License (MIT)
@@ -43,7 +43,7 @@ if __name__ == "__main__":
   while True:
     '''!
       @fn get_keys/get_values/get_units
-      @param inf Parameter of the designated one or more ports
+      @param inf Parameters for selecting port
       @n     ePort1                                           Select Port1
       @n     ePort2                                           Select Port2
       @n     ePort3                                           Select Port3
