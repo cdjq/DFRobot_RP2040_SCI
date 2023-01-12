@@ -4,12 +4,12 @@
   @brief This is an Arduino drive library for the DFRobot SCI Acquisition module. Users can read or set its config and data via I2C. The following demonstrates its detailed functions:
   @n 1. Set or read the I2C address of the module as 0x21, 0x22 or 0x23, the factory default is 0x21, after the I2C address is changed, it will take effect after power-off and reboot;
   @n 2. Set or read the config of Port1, Port2 or Port3:
-  @n    Port1: can be configured as analog or digital sensor mode, support NULL, Analog, and analog sensor SKU in analog sensor mode, and support digital sensor SKU in digital sensor mode
+  @n    Port1: can be configured as analog or digital sensor mode, support NULL, Analog, and analog sensor SKU in analog sensor mode; support digital sensor SKU in digital sensor mode
   @n    Port2: can be configured as I2C or UART sensor mode, support NULL or I2C sensor in I2C sensor mode, in which I2C sensor will be automatically recognized by the module when powered on, and support UART sensor SKU in UART sensor mode
   @n    Port3: can be configured as I2C or UART sensor mode, support NULL or I2C sensor in I2C sensor mode, in which I2C sensor will be automatically recognized by the module when powered on, and support UART sensor SKU in UART sensor mode
   @n 3. Enable/disable data record of CSV file
   @n 4. Switch on/off OLED display
-  @n 5. Read the parameters of the sensors on the board：
+  @n 5. Read the parameters of the sensors connected to the SCI Acquisition module：
   @n      a. Get sensor data "name", separate names by a comma(,);
   @n      b. Get sensor data "value", separate values by a comma(,);
   @n      c. Get sensor data unit, separate units by a comma(,);
@@ -81,7 +81,7 @@ class DFRobot_SCI:
   CMD_START   =  0x00
   ## Set port 0 command, which can be used to configure the function and SKU on A&D ports
   CMD_SET_IF0    =   0x00  
-  ## Set port 1 command, which can be used to configure the function and SKU on I2C1&UART1 ports
+  ## Set port 1 command, which can be used to configure the function and SKU on I2C1 & UART1 ports
   CMD_SET_IF1    =   0x01  
   ## Set port 2 command, which can be used to configure the function and SKU on I2C2 & UART2 ports
   CMD_SET_IF2    =   0x02  
@@ -91,17 +91,17 @@ class DFRobot_SCI:
   CMD_READ_IF1   =   0x01  
   ## Read the function and SKU on port 2
   CMD_READ_IF2   =   0x02  
-  ## Set I2C address command (the command will take effect immediately when it's set successfully)
+  ## Set I2C address (the command will take effect immediately when it's set successfully)
   CMD_SET_ADDR   =   0x03 
-  ## Read I2C address command (the command will take effect immediately when it's set successfully)
+  ## Read I2C address  (the command will take effect immediately when it's set successfully)
   CMD_READ_ADDR  =   0x03 
   ## Set the time information of year, month, day, hour, minute, second
   CMD_SET_TIME   =   0x04 
   ## Get the time information of year, month, day, hour, minute, second
   CMD_GET_TIME   =   0x04 
-  ## Enable CSV record
+  ## Enable CSV recording 
   CMD_RECORD_ON  =   0x05 
-  ## Disable CSV record
+  ## Disable CSV recording 
   CMD_RECORD_OFF =   0x06 
   ## Switch on OLED display
   CMD_SCREEN_ON  =   0x07  
@@ -129,15 +129,15 @@ class DFRobot_SCI:
   CMD_GET_KEY_UINT1   =  0x12 
   ## Get the corresponding data unit according to the data name
   CMD_GET_KEY_UINT2   =  0x13  
-  ## Command to copy I2C peripheral(slave) and send cache
+  ## Reset I2C peripheral(slave) transmitting cache
   CMD_RESET           =  0x14 
-  ## Command to get the supported Analog sensor SKU 
+  ## Get the supported Analog sensor SKU 
   CMD_SKU_A           =  0x15  
-  ## Command to get the supported Digital sensor SKU
+  ## Get the supported Digital sensor SKU
   CMD_SKU_D           =  0x16  
-  ## Command to get the supported I2C sensor SKU
+  ## Get the supported I2C sensor SKU
   CMD_SKU_IIC         =  0x17  
-  ## Command to get the supported UART sensor SKU
+  ## Get the supported UART sensor SKU
   CMD_SKU_UART        =  0x18  
   ## Get timestamp
   CMD_GET_TIMESTAMP     = 0x19  
