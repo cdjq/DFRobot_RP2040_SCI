@@ -44,7 +44,7 @@ if __name__ == "__main__":
   while True:
     '''!
       @fn get_sku/get_information
-      @param inf Parameter of the designated one or more ports
+      @param inf Parameters for selecting port
       @n     ePort1                                           Select Port1
       @n     ePort2                                           Select Port2
       @n     ePort3                                           Select Port3
