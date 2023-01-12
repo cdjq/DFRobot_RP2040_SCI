@@ -27,7 +27,7 @@ if __name__ == "__main__":
     time.sleep(1)
   print("Initialization SCI Acquisition Module done.")
   
-  # Set the date and time of the SCI Acquisition Module as the current time of Raspberry Pi
+  # Set the date and time of the SCI Acquisition Module to the current time of Raspberry Pi
   sci.adjust_rtc_datetime()
   #Set the RTC time manually
   #sci.adjust_rtc(2022,8,17,3,12,0,0);  #Set time: 2022/08/17, Wednesday, 12:00:00
