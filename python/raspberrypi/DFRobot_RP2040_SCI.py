@@ -457,7 +457,7 @@ class DFRobot_SCI:
     
   def adjust_rtc_datetime(self):
     '''!
-      @brief Set the date and time of the SCI Acquisition Module as the current time of Raspbbery Pi
+      @brief Set the date and time of the SCI Acquisition Module to the current time of Raspbbery Pi
       @return  Error code
       @n      ERR_CODE_NONE         or 0x00  Setting succeed 
       @n      ERR_CODE_CMD_INVAILED or 0x01  Invalid command
