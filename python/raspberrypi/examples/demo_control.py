@@ -3,8 +3,8 @@
 '''
   @file demo_control.py
   @brief Control the CSV data acquisition and display On/Off of SCI Acquisition Module via serial commands.
-  @n Command 0: RECORD ON: Switch on CSV record
-  @n Command 1: RECORD OFF: Switch off CSV record
+  @n Command 0: RECORD ON: Enable CSV recording 
+  @n Command 1: RECORD OFF: Disable CSV recording 
   @n Command 2: OLED OFF: Switch off OLED display
   @n Command 3: OLED ON: Switch on OLED display
   
