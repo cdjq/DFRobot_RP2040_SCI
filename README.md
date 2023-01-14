@@ -553,37 +553,39 @@ There two methods:
 
   /**
    * @fn getValue(char *keys)
-   * @brief Get the attribute data values named keys of all sensors. Separate attribute values using "," 
+   * @brief Get data values of the attribute named keys from sensors connected to all ports. Separate attribute values using "," 
    * @param keys  Sensor attribute name
-   * @return The attribute data values named keys of all sensors. Separate attribute values using ","
+   * @return Data values of the attribute named keys from sensors connected to all ports. Separate attribute values using ","
    * @n For example, Temp_Air:  28.65,28.65
    */
   String getValue(char *keys);
   /**
    * @fn getValue(eInterfaceList_t inf, char *keys)
-   * @brief Get the attribute data values named keys of the sensors connected to the designated port. Separate attribute values using ","
+   * @brief Get data values of the attribute named keys from sensors connected to the designated port. Separate attribute values using ","
    * @param inf    Port select, and parameter search range
-   * @n     ePort1                                          Select Port1, and find attribute data values named keys of the sensors connected to A&D ports
-   * @n     ePort2                                          Select Port2, and find attribute data values named keys of the sensors connected to I2C&UART1 ports
-   * @n     ePort3                                          Select Port3, and find attribute data values named keys of the sensors connected to I2C&UART2 ports
-   * @n     eALL  or  (ePort1 | ePort2 | ePort3)            Select ePort1, ePort2 & ePort3, and find attribute data values named keys of all sensors
+   * @n     ePort1                                          Select Port1, and search data values of the attribute named keys from sensors connected to A&D ports
+   * @n     ePort2                                          Select Port2, and search data values of the attribute named keys from sensors connected to I2C & UART1 ports
+   * @n     ePort3                                          Select Port3, and search data values of the attribute named keys from sensors connected to I2C & UART2 ports
+   * @n     eALL  or  (ePort1 | ePort2 | ePort3)            Select ePort1, ePort2 & ePort3, and search data values of the attribute named keys from sensors connected to all ports
    * @param keys  Sensor attribute name
-   * @return The attribute data values named keys of the sensors connected to the designated port. Separate attribute values using ","
+   * @return The data values of the attribute named keys from sensors connected to the designated port. Separate attribute values using ","
    * @n For example, Temp_Air:  28.65,28.65
    */
   String getValue(eInterfaceList_t inf, char *keys);
   String getValue(uint8_t inf, char *keys);
   /**
    * @fn getValue(eInterfaceList_t inf, char sku[7], char *keys)
-   * @brief Get the attribute data values named keys of the sensor whose SKU is sku connected to the designated port. Separate attribute values using ","
+   * @brief Get data values of the attribute named keys from the sensor with a specific sku among sensors connected to the designated port. 
+   * @ Separate attribute values using ","
    * @param inf    Port select, and parameter search range
-   * @n     ePort1                                          Select port1, find the sensor whose SKU is sku connected to port1, and read attribute values named keys  
-   * @n     ePort2                                          Select port2, find the sensor whose SKU is sku connected to port2, and read attribute values named keys
-   * @n     ePort3                                          Select port3, find the sensor whose SKU is sku connected to port3, and read attribute values named keys
-   * @n     eALL  or  (ePort1 | ePort2 | ePort3)            Select ePort1, ePort2 and ePort3, find all the sensors whose SKU is sku, and read attribute values named keys
+   * @n     ePort1                                          Select port1, search the sensor whose SKU is sku from port1, and read data values of the attribute named keys  
+   * @n     ePort2                                          Select port2, search the sensor whose SKU is sku from port2, and read data values of the attribute named keys
+   * @n     ePort3                                          Select port3, search the sensor whose SKU is sku from port3, and read data values of the attribute named keys
+   * @n     eALL  or  (ePort1 | ePort2 | ePort3)            Select ePort1, ePort2 and ePort3, search sensors whose SKU is sku from all ports, and read data values of the attribute named keys
    * @param sku Sensor SKU
    * @param keys  Sensor attribute name
-   * @return The attribute data values named keys of the sensor whose SKU is sku connected to the designated port. Separate attribute values using ","
+   * @return The data values of the attribute named keys from the sensor with a specific sku among sensors connected to the designated port.
+   * @ Separate attribute values using ","
    * @n For example, Temp_Air:  28.65,28.65
    */
   String getValue(eInterfaceList_t inf, char sku[7], char *keys);
@@ -591,38 +593,40 @@ There two methods:
 
   /**
    * @fn getUnit(eInterfaceList_t inf, char sku[7], char *keys)
-   * @brief Get attribute data units named keys of all sensors. Separate attribute units using ","
+   * @brief Get data units of the attribute named keys from sensors connected to all ports. Separate attribute units using ","
    * 
    * @param keys  Sensor attribute name
-   * @return  The attribute data units named keys of all sensors. Separate attribute units using ","
+   * @return  Data units of the attribute named keys from sensors connected to all ports. Separate attribute units using ","
    * @n For example, Temp_Air:  C,C
    */
   String getUnit(char *keys);
   /**
    * @fn getUnit(eInterfaceList_t inf, char sku[7], char *keys)
-   * @brief Get the attribute data units named keys of the sensor connected to the designated port. Separate attribute units using ","
+   * @brief Get data units of the attribute named keys from sensors connected to the designated port. Separate attribute units using ","
    * @param inf    Port select, and parameter search range
-   * @n     ePort1                                          Select Port1, and find attribute units named keys of the sensor connected to port1
-   * @n     ePort2                                          Select Port2, and find attribute units named keys of the sensor connected to port2
-   * @n     ePort3                                          Select Port3, and find attribute units named keys of the sensor connected to port3
-   * @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select Port1, Port2 and Port3, and find attribute units named keys of all sensors 
+   * @n     ePort1                                          Select Port1, and search get data units of the attribute named keys from sensors connected to port1
+   * @n     ePort2                                          Select Port2, and search get data units of the attribute named keys from sensors connected to port2
+   * @n     ePort3                                          Select Port3, and search get data units of the attribute named keys from sensors connected to port3
+   * @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select Port1, Port2 and Port3, and search data units of the attribute named keys from sensors connected to all ports 
    * @param keys  Sensor attribute name
-   * @return The attribute data units named keys of the sensor connected to the designated port. Separate attribute units using ","
+   * @return The data units of the attribute named keys from sensors connected to the designated port. Separate attribute units using ","
    * @n For example, Temp_Air:  C,C
    */
   String getUnit(eInterfaceList_t inf, char *keys);
   String getUnit(uint8_t inf, char *keys);
   /**
    * @fn getUnit(eInterfaceList_t inf, char sku[7], char *keys)
-   * @brief Get the attribute data units named keys of the sensor whose SKU is sku connected to the designated port. Separate attribute units using ","
+   * @brief Get data units of the attribute named keys from the sensor with a specific sku among sensors connected to the designated port.
+   * @ Separate attribute units using ","
    * @param inf    Port select, and parameter search range
-   * @n     ePort1                                          Select Port1, find the sensor whose SKU is sku connected to port1, and read attribute units named keys
-   * @n     ePort2                                          Select Port2, find the sensor whose SKU is sku connected to port2, and read attribute units named keys
-   * @n     ePort3                                          Select Port3, find the sensor whose SKU is sku connected to port3, and read attribute units named keys
-   * @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select Port1, Port2 and Port3, find all the sensors whose SKU is sku, and read attribute units named keys
+   * @n     ePort1                                          Select Port1, search the sensor whose SKU is sku from port1, and read data units of the attribute named keys
+   * @n     ePort2                                          Select Port2, search the sensor whose SKU is sku from port2, and read data units of the attribute named keys
+   * @n     ePort3                                          Select Port3, search the sensor whose SKU is sku from port3, and read data units of the attribute named keys
+   * @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select Port1, Port2 and Port3, search sensors whose SKU is sku from all ports, and read data units of the attribute named keys
    * @param sku Sensor SKU
    * @param keys  Sensor attribute name
-   * @return The attribute data units named keys of the sensor whose SKU is sku connected to the designated port. Separate attribute units using ","
+   * @return The data units of the attribute named keys from the sensor with a specific sku among sensors connected to the designated port. 
+   * @ Separate attribute units using ","
    * @n For example, Temp_Air:  C,C
    */
   String getUnit(eInterfaceList_t inf, char sku[7], char *keys);
