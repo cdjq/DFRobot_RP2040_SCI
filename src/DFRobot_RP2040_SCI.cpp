@@ -8,7 +8,7 @@
  * @n    Port3: can be configured as I2C or UART sensor mode, support NULL or I2C sensor in I2C sensor mode, in which I2C sensor will be automatically recognized by the module when powered on, and support UART sensor SKU in UART sensor mode
  * @n 3. Enable/disable data recording in CSV file
  * @n 4. Enable/disable OLED display
- * @n 5. Read the parameters of the sensors on the board：
+ * @n 5. Read the parameters of the sensors connected to the SCI Acquisition module：
  * @n      a. Get sensor data "name", separate names by a comma(,);
  * @n      b. Get sensor data "value", separate values by a comma(,);
  * @n      c. Get sensor data unit, separate units by a comma(,);
@@ -38,18 +38,18 @@
 #define IIC_MAX_TRANSFER     32     ///< Maximum transferred data via I2C
 #define CMD_START            0x00
 #define CMD_SET_IF0          0x00  ///< Set port 0 command, which can be used to configure the function and SKU on A&D ports
-#define CMD_SET_IF1          0x01  ///< Set port 1 command, which can be used to configure the function and SKU on I2C1&UART1 ports 
+#define CMD_SET_IF1          0x01  ///< Set port 1 command, which can be used to configure the function and SKU on I2C1 & UART1 ports 
 #define CMD_SET_IF2          0x02  ///< Set port 2 command, which can be used to configure the function and SKU on I2C2 & UART2 ports
 #define CMD_READ_IF0         0x00  ///< Read the function and SKU on port 0
 #define CMD_READ_IF1         0x01  ///< Read the function and SKU on port 1
 #define CMD_READ_IF2         0x02  ///< Read the function and SKU on port 2
 
-#define CMD_SET_ADDR         0x03  ///< Set I2C address command (the command will take effect immediately when it's set successfully)
-#define CMD_READ_ADDR        0x03  ///< Read I2C address command (the command will take effect immediately when it's set successfully)
+#define CMD_SET_ADDR         0x03  ///< Set I2C address (the command will take effect immediately when it's set successfully)
+#define CMD_READ_ADDR        0x03  ///< Read I2C address (the command will take effect immediately when it's set successfully)
 #define CMD_SET_TIME         0x04  ///< Set year, month, day, hour, minute, second 
 #define CMD_GET_TIME         0x04  ///< Get year, month, day, hour, minute, second
-#define CMD_RECORD_ON        0x05  ///< Switch on CSV record
-#define CMD_RECORD_OFF       0x06  ///< Switch off CSV record
+#define CMD_RECORD_ON        0x05  ///< Switch on CSV recording
+#define CMD_RECORD_OFF       0x06  ///< Switch off CSV recording
 
 #define CMD_SCREEN_ON        0x07  ///< Switch on OLED display
 #define CMD_SCREEN_OFF       0x08  ///< Switch on OLED display
@@ -65,11 +65,11 @@
 #define CMD_GET_KEY_UINT0     0x11  ///< Get the corresponding data unit according to the data name
 #define CMD_GET_KEY_UINT1     0x12  ///< Get the data unit on the selected port according to the data name
 #define CMD_GET_KEY_UINT2     0x13  ///< Get the data unit of the designated SKU on the selected port according to the data name
-#define CMD_RESET             0x14  ///< Command to copy I2C peripheral(slave) and send cache
-#define CMD_SKU_A             0x15  ///< Command to get the supported analog sensor SKU 
-#define CMD_SKU_D             0x16  ///< Command to get the supported digital sensor SKU
-#define CMD_SKU_IIC           0x17  ///< Command to get the supported I2C sensor SKU
-#define CMD_SKU_UART          0x18  ///< Command to get the supported UART sensor SKU
+#define CMD_RESET             0x14  ///< Reset I2C peripheral(slave) transmitting cache
+#define CMD_SKU_A             0x15  ///< Get the supported analog sensor SKU 
+#define CMD_SKU_D             0x16  ///< Get the supported digital sensor SKU
+#define CMD_SKU_IIC           0x17  ///< Get the supported I2C sensor SKU
+#define CMD_SKU_UART          0x18  ///< Get the supported UART sensor SKU
 #define CMD_GET_TIMESTAMP     0x19  ///< Get timestamp
 #define CMD_SET_REFRESH_TIME  0x20  ///< Set refresh rate
 #define CMD_GET_REFRESH_TIME  0x20  ///< Get refresh rate
