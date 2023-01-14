@@ -1,6 +1,6 @@
 /*!
  * @file getKeyValueUnit.ino
- * @brief Get all the key, value, and unit of the board
+ * @brief Get all the keys, values, and units of the board
  *
  * @copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
  * @license     The MIT License (MIT)
