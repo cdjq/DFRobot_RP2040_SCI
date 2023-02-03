@@ -23,7 +23,7 @@ SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接�
 
 
 ## Product Link（[https://www.dfrobot.com.cn](https://www.dfrobot.com.cn)）
-    SKU: DFR0999   
+    SKU: DFR0999
 
 ## Supported Analog SKU
 * SEN0161 
@@ -56,9 +56,11 @@ SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接�
 * SEN0206
 * SEN0291
 * SEN0536
+* SEN0540
+* TEL0157
 
 ## Supported UART SKU
-* NULL  
+* NULL
 
 ## Table of Contents
 
@@ -669,6 +671,7 @@ FireBeetle M0      |      √       |              |             |
 ## 历史
 
 - 2021/08/17 - 1.0.0 版本
+- 2023/02/03 - 1.0.1 版本
 
 ## 创作者
 

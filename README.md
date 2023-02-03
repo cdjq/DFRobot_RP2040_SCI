@@ -53,9 +53,11 @@ This SCI acquisition module is a sensor adapter designed by DFRobot. It supports
 * SEN0206
 * SEN0291
 * SEN0536
+* SEN0540
+* TEL0157
 
 ## Supported UART SKU
-* NULL  
+* NULL
 
 ## Table of Contents
 
@@ -672,12 +674,8 @@ FireBeetle M0      |      √       |              |             |
 ## History
 
 - 2021/08/17 - Version 1.0.0 released.
+- 2023/02/03 - Version 1.0.1 released.
 
 ## Credits
 
 Written by Arya(xue.peng@dfrobot.com), 2022. (Welcome to our [website](https://www.dfrobot.com/))
-
-
-
-
-

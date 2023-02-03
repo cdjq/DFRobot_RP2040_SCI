@@ -54,6 +54,8 @@ This SCI acquisition module is a multi-functional data acquisition module design
 * SEN0206
 * SEN0291
 * SEN0536
+* SEN0540
+* TEL0157
 
 ## Supported UART SKU
 * NULL  

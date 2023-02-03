@@ -20,6 +20,7 @@
  * @copyright   Copyright (c) 2022 DFRobot Co.Ltd (http://www.dfrobot.com)
  * @license     The MIT License (MIT)
  * @author [Arya](xue.peng@dfrobot.com)
+ * @maintainer [qsjhyy](yihuan.huang@dfrobot.com)
  * @version  V1.0
  * @date  2022-07-20
  * @url https://github.com/DFRobot/DFRobot_RP2040_SCI
@@ -27,7 +28,7 @@
 #include <Arduino.h>
 #include "DFRobot_RP2040_SCI.h"
 
-//#define RP2040_SUAB_DBG_ENABLE
+// #define RP2040_SUAB_DBG_ENABLE
 
 #ifdef RP2040_SUAB_DBG_ENABLE
 #define DEBUG_SERIAL  Serial
@@ -357,7 +358,7 @@ uint8_t DFRobot_SCI::adjustRtc(const __FlashStringHelper* date, const __FlashStr
   uint8_t month = 0;
   // Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec
   switch (buff[0]) {
-      case 'J': month = buff[1] == 'a' ? 1 : month = buff[2] == 'n' ? 6 : 7; break;
+      case 'J': month = buff[1] == 'a' ? 1 : buff[2] == 'n' ? 6 : 7; break;   // hyy - Delete the second "month = "
       case 'F': month = 2; break;
       case 'A': month = buff[2] == 'r' ? 4 : 8; break;
       case 'M': month = buff[2] == 'r' ? 3 : 5; break;
@@ -491,6 +492,9 @@ uint8_t DFRobot_SCI::setRefreshRate(eRefreshRate_t refreshRate){
   sendpkt->argsNumL = 1;
   sendpkt->argsNumH = 0;
   sendpkt->args[0]  = (uint8_t)refreshRate;
+  length += sizeof(sCmdSendPkt_t);
+  sendPacket(sendpkt, length, true);
+  free(sendpkt);
 
   pCmdRecvPkt_t rcvpkt = (pCmdRecvPkt_t)recvPacket(CMD_SET_REFRESH_TIME, &errorCode);
   if((rcvpkt != NULL) && (rcvpkt->status == STATUS_FAILED)) errorCode = rcvpkt->buf[0];
@@ -1408,7 +1412,13 @@ int DFRobot_RP2040_SCI_IIC::recvData(void *data, int len){
 #else
     if(remain) _pWire->requestFrom(_addr, len, false);
 #endif
-    else _pWire->requestFrom(_addr, len, true);
+    else {   // hyy - else _pWire->requestFrom(_addr, len, true);
+#if defined(NRF5) || defined(NRF52833)
+      _pWire->requestFrom(_addr, len, false);
+#else
+      _pWire->requestFrom(_addr, len, true);
+#endif
+    }
     for(int i = 0; i < len; i++){
       pBuf[i] = _pWire->read();
       RP2040_SUAB_DBG(pBuf[i],HEX);
