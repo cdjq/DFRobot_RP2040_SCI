@@ -24,10 +24,10 @@ void setup() {
       delay(1000);
       Serial.print("Initialization SCI Acquisition Module...");
   }
-  Serial.println("done.");
+  Serial.println((char *)"done.");
   
-  sci.setPort2("NULL");
-  sci.setPort3("NULL");
+  sci.setPort2((char *)"NULL");
+  sci.setPort3((char *)"NULL");
   
   DFRobot_RP2040_SCI_IIC::ePort1IFMode_t mode0;
   DFRobot_RP2040_SCI_IIC::ePort23Mode_t mode1, mode2;
@@ -44,10 +44,10 @@ void setup() {
 }
 
 void loop() {
-  String Temp_Air_val  = sci.getValue("Temp_Air") + ' ';
-  String Temp_Air_unit = sci.getUnit("Temp_Air");
-  String Humi_Air_val  = sci.getValue("Humi_Air")+ ' ';
-  String Humi_Air_unit = sci.getUnit("Humi_Air");
+  String Temp_Air_val  = sci.getValue((char *)"Temp_Air") + ' ';
+  String Temp_Air_unit = sci.getUnit((char *)"Temp_Air");
+  String Humi_Air_val  = sci.getValue((char *)"Humi_Air")+ ' ';
+  String Humi_Air_unit = sci.getUnit((char *)"Humi_Air");
   Serial.print("Temp_Air: "); Serial.print(Temp_Air_val); Serial.print(Temp_Air_unit);
   Serial.print(" Humi_Air: "); Serial.print(Humi_Air_val); Serial.println(Humi_Air_unit);
   Serial.println();

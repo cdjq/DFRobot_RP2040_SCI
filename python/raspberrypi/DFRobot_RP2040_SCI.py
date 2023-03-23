@@ -20,6 +20,7 @@
   @copyright   Copyright (c) 2022 DFRobot Co.Ltd (http://www.dfrobot.com)
   @license     The MIT License (MIT)
   @author [Arya](xue.peng@dfrobot.com)
+  @maintainer [qsjhyy](yihuan.huang@dfrobot.com)
   @version  V1.0
   @date  2022-07-20
   @url https://github.com/DFRobot/DFRobot_RP2040_SCI

@@ -563,21 +563,23 @@ String DFRobot_SCI::getTimeStamp(){
 String DFRobot_SCI::getSensorModeDescribe(ePort1IFMode_t mode){
   switch(mode){
     case eAnalogMode:
-         return "ANALOG";
+      return "ANALOG";
     case eDigitalMode:
-         return "DIGITAL";
+      return "DIGITAL";
+    default:
+      return "UNKNOWN";
   }
-  return "UNKNOWN";
 }
 
 String DFRobot_SCI::getSensorModeDescribe(ePort23Mode_t mode){
   switch(mode){
     case eI2CMode:
-         return "I2C";
+      return "I2C";
     case eUARTMode:
-         return "UART";
+      return "UART";
+    default:
+      return "UNKNOWN";
   }
-  return "UNKNOWN";
 }
 
 uint8_t DFRobot_SCI::enableRecord(){
@@ -1408,15 +1410,15 @@ int DFRobot_RP2040_SCI_IIC::recvData(void *data, int len){
     len = remain > I2C_ACHE_MAX_LEN ? I2C_ACHE_MAX_LEN : remain;
     remain -= len;
 #if defined(ESP32)
-    if(remain) _pWire->requestFrom(_addr, len, true);
+    if(remain) _pWire->requestFrom((int)_addr, len, true);
 #else
-    if(remain) _pWire->requestFrom(_addr, len, false);
+    if(remain) _pWire->requestFrom((int)_addr, len, false);
 #endif
     else {   // hyy - else _pWire->requestFrom(_addr, len, true);
 #if defined(NRF5) || defined(NRF52833)
-      _pWire->requestFrom(_addr, len, false);
+      _pWire->requestFrom((int)_addr, len, false);
 #else
-      _pWire->requestFrom(_addr, len, true);
+      _pWire->requestFrom((int)_addr, len, true);
 #endif
     }
     for(int i = 0; i < len; i++){

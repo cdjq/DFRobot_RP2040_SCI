@@ -1,5 +1,5 @@
 #######################################
-# Syntax Map For DFRobot_ICG20660L
+# Syntax Map For DFRobot_RP2040_SCI
 #######################################
 
 #######################################
@@ -15,6 +15,10 @@ DFRobot_RP2040_SCI_IIC	KEYWORD1
 #######################################
 
 begin	KEYWORD2
+setI2CAddress	KEYWORD2
+getI2CAddress	KEYWORD2
+getVersion	KEYWORD2
+getVersionDescription	KEYWORD2
 setPort1	KEYWORD2
 getPort1	KEYWORD2
 setPort2	KEYWORD2
@@ -27,7 +31,6 @@ getRtcTime	KEYWORD2
 setRefreshRate	KEYWORD2
 getRefreshRate	KEYWORD2
 getTimeStamp	KEYWORD2
-getSensorModeDescribe	KEYWORD2
 getSensorModeDescribe	KEYWORD2
 enableRecord	KEYWORD2
 disableRecord	KEYWORD2

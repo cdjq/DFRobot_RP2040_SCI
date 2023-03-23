@@ -23,6 +23,7 @@
  * @copyright   Copyright (c) 2022 DFRobot Co.Ltd (http://www.dfrobot.com)
  * @license     The MIT License (MIT)
  * @author [Arya](xue.peng@dfrobot.com)
+ * @maintainer [qsjhyy](yihuan.huang@dfrobot.com)
  * @version  V1.0
  * @date  2022-07-20
  * @url https://github.com/DFRobot/DFRobot_RP2040_SCI
@@ -180,6 +181,8 @@ public:
    * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command
    * @n      ERR_CODE_SLAVE_BREAK  or 0x06  Peripheral fault
    * @n      ERR_CODE_ARGS         or 0x07  Set wrong parameters 
+   * @n      ERR_CODE_SKU          or 0x08  The SKU is an invalid SKU, or unsupported by SCI Acquisition Module
+   * @n      ERR_CODE_S_NO_SPACE   or 0x09  Insufficient memory of I2C peripheral(slave)
    */
   uint8_t setPort2(char *sku);
 

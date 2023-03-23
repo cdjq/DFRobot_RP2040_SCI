@@ -1,7 +1,7 @@
-DFRobot_RP2040_SCI
+# DFRobot_RP2040_SCI
 ===========================
 
-* [English Version](./README.md)
+- [English Version](./README.md)
 
 SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接板，它能够连接DFRobot的模拟、数字、I2C、UART等传感器，并将传感器采集到的数据转换为 名称+数据+单位的格式，供主控读取，或显示在板载的显示屏上供用户查看。看到这里，相信很多人都对它的使用有疑问，接下来我就用问答的方式来详细的介绍这块板子的功能: <br>
 * 问题1. DFRobot有那么多传感器，这块板子都能识别么？
@@ -19,50 +19,51 @@ SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接�
 * 问题7：SCI采集模块(SCI Acquisition Module)上的USB有什么用呢？
   答：固件升级或导出CSV文件。按住boot键上电进入U盘固件升级模式，可以升级固件，直接上电会弹出一个U盘，用户可以在这里查看或导出记录传感器数据的CSV文件。
 
-![产品效果图](./resources/images/SEN0443.png)
+![产品效果图](./resources/images/DFR0999.png)
 
 
-## Product Link（[https://www.dfrobot.com.cn](https://www.dfrobot.com.cn)）
+## 产品链接 (https://www.dfrobot.com.cn/goods-3658.html)
     SKU: DFR0999
 
-## Supported Analog SKU
-* SEN0161 
+## 模拟接口支持模块的 SKU
+* SEN0114
+* SEN0161
+* SEN0193
+* SEN0231
 * SEN0232
 * SEN0244
-* SEN0231
-* SEN0193
 * DFR0300
 
 
-## Supported Digital SKU
+## 数字接口支持模块的 SKU
 * KIT0021
 
-## Supported I2C SKU
+## I2C接口支持模块的 SKU
+* TEL0157
+* KIT0176
+* DFR0216
+* SEN0206
+* SEN0228
+* SEN0291
+* SEN0304
+* SEN0321
+* SEN0322
+* SEN0334
+* SEN0364
+* SEN0456
+* SEN0460
 * SEN0497
 * SEN0514
-* SEN0334
-* SEN0228
-* DFR0216
-* SEN0322 
-* SEN0364 
 * SEN0517
-* SEN0456
+* SEN0518
 * SEN0529
-* KIT0176
-* SEN0304
-* SEN0321 
-* SEN0498
-* SEN0460
-* SEN0206
-* SEN0291
 * SEN0536
 * SEN0540
-* TEL0157
 
-## Supported UART SKU
+## UART接口支持模块的 SKU
 * NULL
 
-## Table of Contents
+## 目录
 
 * [概述](#概述)
 * [库安装](#库安装)
@@ -72,6 +73,7 @@ SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接�
 * [创作者](#创作者)
 
 ## 概述
+
 这是一个基于Arduino平台的SCI采集模块(SCI Acquisition Module)库。旨在为用户提供一系列接口函数去设置和读取该适配器板的参数，以及读取适配器板上各传感器的数据，它具有以下功能：<br>
 * 1. 读取/设置SCI采集模块(SCI Acquisition Module)的I2C地址，范围0x01~0x7F；
 * 2. 读取/设置SCI采集模块(SCI Acquisition Module)的年，月，日，时，分，秒的时间；
@@ -221,6 +223,8 @@ SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接�
    * @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
    * @n      ERR_CODE_SLAVE_BREAK  or 0x06  从机故障
    * @n      ERR_CODE_ARGS         or 0x07  设置的参数错误
+   * @n      ERR_CODE_SKU          or 0x08  该SKU为无效SKU，或者传感器通用适配器板(Sensor Universal Adapter Board)不支持
+   * @n      ERR_CODE_S_NO_SPACE   or 0x09  I2C从机内存不够
    */
   uint8_t setPort2(char *sku);
 
@@ -239,7 +243,7 @@ SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接�
 
   /**
    * @fn setPort3(char *sku)
-   * @brief 设置Port3的SKU，此接口可连接I2C传感器和UART传感器，其中UART传感器需通过SKU选择，I2C是连接后，自动选择，只需将Port2配置为I2C模式即可
+   * @brief 设置Port3的SKU，此接口可连接I2C传感器和UART传感器，其中UART传感器需通过SKU选择，I2C是连接后，自动选择，只需将Port3配置为I2C模式即可
    * 
    * @param sku  Port3接口的参数，支持的SKU列表可以通过OLED显示或者 getUARTSensorSKU()查看
    * @n     "NULL"       将Port配置为I2C模式，并清除Port3上关于UART传感器的配置
@@ -632,25 +636,25 @@ SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接�
   String getUnit(uint8_t inf, char sku[7], char *keys);
   /**
    * @fn getAnalogSensorSKU
-   * @brief 获取SCI采集模块(SCI Acquisition Module)支持的模拟传感器的SKU清单，各SKU之间用',号隔开   * 
+   * @brief 获取SCI采集模块(SCI Acquisition Module)支持的模拟传感器的SKU清单，各SKU之间用',号隔开
    * @return String 支持的模拟传感器的SKU列表
    */
   String getAnalogSensorSKU();
   /**
    * @fn getDigitalSensorSKU
-   * @brief 获取SCI采集模块(SCI Acquisition Module)支持的数字传感器的SKU清单，各SKU之间用',号隔开   * 
+   * @brief 获取SCI采集模块(SCI Acquisition Module)支持的数字传感器的SKU清单，各SKU之间用',号隔开
    * @return String 支持的数字传感器的SKU列表
    */
   String getDigitalSensorSKU();
   /**
    * @fn getI2CSensorSKU
-   * @brief 获取SCI采集模块(SCI Acquisition Module)支持的I2C传感器的SKU清单，各SKU之间用',号隔开   * 
+   * @brief 获取SCI采集模块(SCI Acquisition Module)支持的I2C传感器的SKU清单，各SKU之间用',号隔开
    * @return String 支持的I2C传感器的SKU列表
    */
   String getI2CSensorSKU();
   /**
    * @fn getUARTSensorSKU
-   * @brief 获取SCI采集模块(SCI Acquisition Module)支持的UART传感器的SKU清单，各SKU之间用',号隔开   * 
+   * @brief 获取SCI采集模块(SCI Acquisition Module)支持的UART传感器的SKU清单，各SKU之间用',号隔开
    * @return String 支持的UART传感器的SKU列表
    */
   String getUARTSensorSKU();
@@ -672,11 +676,9 @@ FireBeetle M0      |      √       |              |             |
 
 - 2021/08/17 - 1.0.0 版本
 - 2023/02/03 - 1.0.1 版本
+- 2023/03/23 - 1.0.2 版本
 
 ## 创作者
 
 Written by Arya(xue.peng@dfrobot.com), 2022. (Welcome to our [website](https://www.dfrobot.com/))
-
-
-
 

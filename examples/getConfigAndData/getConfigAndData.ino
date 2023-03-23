@@ -26,11 +26,11 @@ void setup() {
   }
   Serial.println("done.");
 
-  sci.setPort1("Analog");
+  sci.setPort1((char *)"Analog");
   //sci.setPort1("NULL");
   //sci.setPort1("SEN0161");
-  sci.setPort2("NULL");
-  sci.setPort3("NULL");
+  sci.setPort2((char *)"NULL");
+  sci.setPort3((char *)"NULL");
   
   DFRobot_RP2040_SCI_IIC::ePort1IFMode_t mode0;
   DFRobot_RP2040_SCI_IIC::ePort23Mode_t mode1, mode2;

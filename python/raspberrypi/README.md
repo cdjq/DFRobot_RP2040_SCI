@@ -1,6 +1,6 @@
 # DFRobot_RP2040_SCI
-
-* [中文版](./README_CN.md)
+===========================
+- [中文版](./README_CN.md)
 
 This SCI acquisition module is a multi-functional data acquisition module designed by DFRobot. It supports all kinds of digital, analog, I2C, and UART sensors from DFRobot. The module is capable of standardizing sensor output into the format of name+data+unit, which then can be read by main controllers or displayed on the onboard display so users can view it. The following demonstrates more details about this product through Q&A. <br>
 * **Q1: DFRobot has so many sensors, so can this board support all of them?** <br>
@@ -18,44 +18,45 @@ This SCI acquisition module is a multi-functional data acquisition module design
 * **Q7: What's the USB on the module used for?** <br>
   It's used for firmware upgrading or CSV file export. Press the boot button and power on the module to enter the firmware upgrading mode, then you can upgrade the firmware. When it's powered on directly, a U-disk will pop up on your PC and you can view or export the CSV file of recorded sensor data there. 
 
-![Product Image](../../resources/images/SEN0443.png)
+![Product Image](../../resources/images/DFR0999.png)
 
 
-## Product Link（[https://www.dfrobot.com](https://www.dfrobot.com)）
-    SKU: DFR0999   
+## Product Link (https://www.dfrobot.com/product-2655.html)
+    SKU: DFR0999
+
 ## Supported Analog SKU
+* SEN0114
 * SEN0161 
+* SEN0193
+* SEN0231
 * SEN0232
 * SEN0244
-* SEN0231
-* SEN0193
 * DFR0300
-
 
 ## Supported Digital SKU
 * KIT0021
 
 ## Supported I2C SKU
+* TEL0157
+* KIT0176
+* DFR0216
+* SEN0206
+* SEN0228
+* SEN0291
+* SEN0304
+* SEN0321
+* SEN0322
+* SEN0334
+* SEN0364
+* SEN0456
+* SEN0460
 * SEN0497
 * SEN0514
-* SEN0334
-* SEN0228
-* DFR0216
-* SEN0322 
-* SEN0364 
 * SEN0517
-* SEN0456
+* SEN0518
 * SEN0529
-* KIT0176
-* SEN0304
-* SEN0321 
-* SEN0498
-* SEN0460
-* SEN0206
-* SEN0291
 * SEN0536
 * SEN0540
-* TEL0157
 
 ## Supported UART SKU
 * NULL  
@@ -603,12 +604,10 @@ class DFRobot_SCI:
 ## History
 
 - 2021/08/19 - Version 1.0.0 released.
+- 2023/02/03 - Version 1.0.1 released.
+- 2023/03/23 - Version 1.0.2 released.
 
 ## Credits
 
 Written by Arya(xue.peng@dfrobot.com), 2022. (Welcome to our [website](https://www.dfrobot.com/))
-
-
-
-
 

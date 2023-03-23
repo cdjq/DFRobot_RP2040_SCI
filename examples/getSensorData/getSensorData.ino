@@ -26,6 +26,9 @@ void setup() {
   }
   Serial.println("done.");
 
+  Serial.println(sci.setPort1((char *)"NULL"));
+      delay(10000);
+  Serial.println(sci.setPort1((char *)"DFR0300"));
   sci.setRefreshRate(sci.eRefreshRate1s);
   Serial.print("Refresh rate: ");Serial.print(sci.getRefreshRate());Serial.println(" ms");
   uint16_t version = sci.getVersion();

@@ -1,4 +1,5 @@
 # DFRobot_RP2040_SCI
+===========================
 
 - [English Version](./README.md)
 
@@ -18,48 +19,49 @@ SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接�
 * 问题7：SCI采集模块(SCI Acquisition Module)上的USB有什么用呢？
   答：固件升级或导出CSV文件。按住boot键上电进入U盘固件升级模式，可以升级固件，直接上电会弹出一个U盘，用户可以在这里查看或导出记录传感器数据的CSV文件。
 
-![产品效果图](../../resources/images/SEN0443.png)
+![产品效果图](../../resources/images/DFR0999.png)
 
 
-## 产品链接（[https://www.dfrobot.com.cn/goods-3336.html](https://www.dfrobot.com.cn/goods-3336.html)）
+## 产品链接 (https://www.dfrobot.com.cn/goods-3658.html)
     SKU: DFR0999 
 
-## Supported Analog SKU
+## 模拟接口支持模块的 SKU
+* SEN0114
 * SEN0161 
+* SEN0193
+* SEN0231
 * SEN0232
 * SEN0244
-* SEN0231
-* SEN0193
 * DFR0300
 
 
-## Supported Digital SKU
+## 数字接口支持模块的 SKU
 * KIT0021
 
-## Supported I2C SKU
+## I2C接口支持模块的 SKU
+* TEL0157
+* KIT0176
+* DFR0216
+* SEN0206
+* SEN0228
+* SEN0291
+* SEN0304
+* SEN0321
+* SEN0322
+* SEN0334
+* SEN0364
+* SEN0456
+* SEN0460
 * SEN0497
 * SEN0514
-* SEN0334
-* SEN0228
-* DFR0216
-* SEN0322 
-* SEN0364 
 * SEN0517
-* SEN0456
+* SEN0518
 * SEN0529
-* KIT0176
-* SEN0304
-* SEN0321 
-* SEN0498
-* SEN0460
-* SEN0206
-* SEN0291
 * SEN0536
 * SEN0540
-* TEL0157
 
-## Supported UART SKU
-* NULL   
+## UART接口支持模块的 SKU
+* NULL
 
 ## 目录
 
@@ -596,13 +598,10 @@ class DFRobot_SCI:
 ## 历史
 
 - 2021/08/19 - 1.0.0 版本
+- 2023/02/03 - 1.0.1 版本
+- 2023/03/23 - 1.0.2 版本
 
 ## 创作者
 
 Written by Arya(xue.peng@dfrobot.com), 2022. (Welcome to our [website](https://www.dfrobot.com/))
-
-
-
-
-
 

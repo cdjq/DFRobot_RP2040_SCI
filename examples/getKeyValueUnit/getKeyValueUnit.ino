@@ -24,10 +24,10 @@ void setup() {
       delay(1000);
       Serial.print("Initialization SCI Acquisition Module...");
   }
-  Serial.println("done.");
+  Serial.println((char *)"done.");
   
-  sci.setPort2("NULL");
-  sci.setPort3("NULL");
+  sci.setPort2((char *)"NULL");
+  sci.setPort3((char *)"NULL");
   
   DFRobot_RP2040_SCI_IIC::ePort1IFMode_t mode0;
   DFRobot_RP2040_SCI_IIC::ePort23Mode_t mode1, mode2;
