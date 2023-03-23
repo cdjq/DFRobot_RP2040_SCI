@@ -116,16 +116,16 @@ typedef struct{
   uint8_t buf[0];   /**< The array with 0-data length, its size depends on the value of the previous variables lenL and lenH */
 }__attribute__ ((packed)) sCmdRecvPkt_t, *pCmdRecvPkt_t;
 
-DFRobot_SCI::DFRobot_SCI()
+DFRobot_RP2040_SCI::DFRobot_RP2040_SCI()
   :_timeout(DEBUG_TIMEOUT_MS){}
 
-DFRobot_SCI::~DFRobot_SCI(){}
+DFRobot_RP2040_SCI::~DFRobot_RP2040_SCI(){}
 
-int DFRobot_SCI::begin(uint32_t freq){
+int DFRobot_RP2040_SCI::begin(uint32_t freq){
   return init(freq);
 }
 
-uint16_t DFRobot_SCI::getVersion(){
+uint16_t DFRobot_RP2040_SCI::getVersion(){
   uint16_t version = 0;
 
   uint8_t errorCode;
@@ -152,7 +152,7 @@ uint16_t DFRobot_SCI::getVersion(){
   return version;
 }
 
-String DFRobot_SCI::getVersionDescription(uint16_t version){
+String DFRobot_RP2040_SCI::getVersionDescription(uint16_t version){
   String verstr = "V";
   verstr += String((version >> 8)&0xFF) + ".";
   verstr += String((version >> 4) & 0x0F) + ".";
@@ -161,7 +161,7 @@ String DFRobot_SCI::getVersionDescription(uint16_t version){
 }
 
 
-uint8_t DFRobot_SCI::setPort1(char *sku){
+uint8_t DFRobot_RP2040_SCI::setPort1(char *sku){
   uint8_t errorCode;
   pCmdSendPkt_t sendpkt = NULL;
   uint16_t length = 0;
@@ -194,7 +194,7 @@ uint8_t DFRobot_SCI::setPort1(char *sku){
   return errorCode;
 }
 
-String DFRobot_SCI::getPort1(ePort1IFMode_t *mode){
+String DFRobot_RP2040_SCI::getPort1(ePort1IFMode_t *mode){
   String config;
 
   uint8_t errorCode;
@@ -223,7 +223,7 @@ String DFRobot_SCI::getPort1(ePort1IFMode_t *mode){
   return config;
 }
 
-uint8_t DFRobot_SCI::setPort2(char *sku){
+uint8_t DFRobot_RP2040_SCI::setPort2(char *sku){
   uint8_t errorCode;
   pCmdSendPkt_t sendpkt = NULL;
   uint16_t length = 0;
@@ -256,7 +256,7 @@ uint8_t DFRobot_SCI::setPort2(char *sku){
   return errorCode;
 }
 
-String DFRobot_SCI::getPort2(ePort23Mode_t *mode){
+String DFRobot_RP2040_SCI::getPort2(ePort23Mode_t *mode){
   String config;
 
   uint8_t errorCode;
@@ -285,7 +285,7 @@ String DFRobot_SCI::getPort2(ePort23Mode_t *mode){
   return config;
 }
 
-uint8_t DFRobot_SCI::setPort3(char *sku){
+uint8_t DFRobot_RP2040_SCI::setPort3(char *sku){
   uint8_t errorCode;
   pCmdSendPkt_t sendpkt = NULL;
   uint16_t length = 0;
@@ -318,7 +318,7 @@ uint8_t DFRobot_SCI::setPort3(char *sku){
   return errorCode;
 }
 
-String DFRobot_SCI::getPort3(ePort23Mode_t *mode){
+String DFRobot_RP2040_SCI::getPort3(ePort23Mode_t *mode){
   String config;
 
   uint8_t errorCode;
@@ -347,11 +347,11 @@ String DFRobot_SCI::getPort3(ePort23Mode_t *mode){
   return config;
 }
 
-void DFRobot_SCI::setRecvTimeout(uint32_t timeout){
+void DFRobot_RP2040_SCI::setRecvTimeout(uint32_t timeout){
   _timeout = timeout;
 }
 
-uint8_t DFRobot_SCI::adjustRtc(const __FlashStringHelper* date, const __FlashStringHelper* time){
+uint8_t DFRobot_RP2040_SCI::adjustRtc(const __FlashStringHelper* date, const __FlashStringHelper* time){
   char buff[11];
   memcpy_P(buff, date, 11);
   uint16_t year = conv2d(buff + 9);
@@ -377,7 +377,7 @@ uint8_t DFRobot_SCI::adjustRtc(const __FlashStringHelper* date, const __FlashStr
 	return adjustRtc(year,month,day,week,hour,minute,second);
 }
 
-uint8_t DFRobot_SCI::adjustRtc(uint16_t year, uint8_t month, uint8_t day, uint8_t week, uint8_t hour, uint8_t minute, uint8_t second){
+uint8_t DFRobot_RP2040_SCI::adjustRtc(uint16_t year, uint8_t month, uint8_t day, uint8_t week, uint8_t hour, uint8_t minute, uint8_t second){
   uint8_t errorCode;
   pCmdSendPkt_t sendpkt = NULL;
   uint16_t length = sizeof(year) + sizeof(month) + sizeof(day) + sizeof(week) + sizeof(hour) + sizeof(minute) + sizeof(second);
@@ -404,7 +404,7 @@ uint8_t DFRobot_SCI::adjustRtc(uint16_t year, uint8_t month, uint8_t day, uint8_
   return errorCode;
 }
 
-uint8_t DFRobot_SCI::getRtcTime(uint16_t *year, uint8_t *month, uint8_t *day, uint8_t *week, uint8_t *hour, uint8_t *minute, uint8_t *second){
+uint8_t DFRobot_RP2040_SCI::getRtcTime(uint16_t *year, uint8_t *month, uint8_t *day, uint8_t *week, uint8_t *hour, uint8_t *minute, uint8_t *second){
   uint8_t errorCode;
   pCmdSendPkt_t sendpkt = NULL;
   uint16_t length = 0;
@@ -435,7 +435,7 @@ uint8_t DFRobot_SCI::getRtcTime(uint16_t *year, uint8_t *month, uint8_t *day, ui
   return errorCode;
 }
 
-String DFRobot_SCI::getRtcTime(){
+String DFRobot_RP2040_SCI::getRtcTime(){
   uint8_t errorCode;
   String time = "";
   pCmdSendPkt_t sendpkt = NULL;
@@ -481,7 +481,7 @@ String DFRobot_SCI::getRtcTime(){
   return time;
 }
 
-uint8_t DFRobot_SCI::setRefreshRate(eRefreshRate_t refreshRate){
+uint8_t DFRobot_RP2040_SCI::setRefreshRate(eRefreshRate_t refreshRate){
   uint8_t errorCode;
   uint16_t length = 1;
   
@@ -501,7 +501,7 @@ uint8_t DFRobot_SCI::setRefreshRate(eRefreshRate_t refreshRate){
   if(rcvpkt) free(rcvpkt);
   return errorCode;
 }
-uint32_t DFRobot_SCI::getRefreshRate(eRefreshRate_t *refreshRate){
+uint32_t DFRobot_RP2040_SCI::getRefreshRate(eRefreshRate_t *refreshRate){
   //
   uint8_t rate;
   uint8_t errorCode;
@@ -531,7 +531,7 @@ uint32_t DFRobot_SCI::getRefreshRate(eRefreshRate_t *refreshRate){
   return rateTime;
 }
 
-String DFRobot_SCI::getTimeStamp(){
+String DFRobot_RP2040_SCI::getTimeStamp(){
   String timestamp;
 
   uint8_t errorCode;
@@ -560,7 +560,7 @@ String DFRobot_SCI::getTimeStamp(){
 
 }
 
-String DFRobot_SCI::getSensorModeDescribe(ePort1IFMode_t mode){
+String DFRobot_RP2040_SCI::getSensorModeDescribe(ePort1IFMode_t mode){
   switch(mode){
     case eAnalogMode:
       return "ANALOG";
@@ -571,7 +571,7 @@ String DFRobot_SCI::getSensorModeDescribe(ePort1IFMode_t mode){
   }
 }
 
-String DFRobot_SCI::getSensorModeDescribe(ePort23Mode_t mode){
+String DFRobot_RP2040_SCI::getSensorModeDescribe(ePort23Mode_t mode){
   switch(mode){
     case eI2CMode:
       return "I2C";
@@ -582,7 +582,7 @@ String DFRobot_SCI::getSensorModeDescribe(ePort23Mode_t mode){
   }
 }
 
-uint8_t DFRobot_SCI::enableRecord(){
+uint8_t DFRobot_RP2040_SCI::enableRecord(){
   String config;
 
   uint8_t errorCode;
@@ -603,7 +603,7 @@ uint8_t DFRobot_SCI::enableRecord(){
   return errorCode;
 
 }
-uint8_t DFRobot_SCI::disableRecord(){
+uint8_t DFRobot_RP2040_SCI::disableRecord(){
   String config;
 
   uint8_t errorCode;
@@ -624,7 +624,7 @@ uint8_t DFRobot_SCI::disableRecord(){
   return errorCode;
 }
 
-uint8_t DFRobot_SCI::oledScreenOn(){
+uint8_t DFRobot_RP2040_SCI::oledScreenOn(){
   String config;
 
   uint8_t errorCode;
@@ -645,7 +645,7 @@ uint8_t DFRobot_SCI::oledScreenOn(){
   return errorCode;
 }
 
-uint8_t DFRobot_SCI::oledScreenOff(){
+uint8_t DFRobot_RP2040_SCI::oledScreenOff(){
   String config;
 
   uint8_t errorCode;
@@ -666,11 +666,11 @@ uint8_t DFRobot_SCI::oledScreenOff(){
   return errorCode;
 }
 
-String DFRobot_SCI::getInformation(eInterfaceList_t inf, bool timestamp){
+String DFRobot_RP2040_SCI::getInformation(eInterfaceList_t inf, bool timestamp){
   return getInformation((uint8_t)inf, timestamp);
 }
 
-String DFRobot_SCI::getInformation(uint8_t inf, bool timestamp){
+String DFRobot_RP2040_SCI::getInformation(uint8_t inf, bool timestamp){
   String info = "";
 
   uint8_t errorCode;
@@ -700,11 +700,11 @@ String DFRobot_SCI::getInformation(uint8_t inf, bool timestamp){
   return info;
 }
 
-String DFRobot_SCI::getSKU(eInterfaceList_t inf){
+String DFRobot_RP2040_SCI::getSKU(eInterfaceList_t inf){
   return getSKU((uint8_t)inf);
 }
 
-String DFRobot_SCI::getSKU(uint8_t inf){
+String DFRobot_RP2040_SCI::getSKU(uint8_t inf){
   String skus = "";
 
   uint8_t errorCode;
@@ -733,11 +733,11 @@ String DFRobot_SCI::getSKU(uint8_t inf){
   return skus;
 }
 
-String DFRobot_SCI::getKeys(eInterfaceList_t inf){
+String DFRobot_RP2040_SCI::getKeys(eInterfaceList_t inf){
   return getKeys((uint8_t)inf);
 }
 
-String DFRobot_SCI::getKeys(uint8_t inf){
+String DFRobot_RP2040_SCI::getKeys(uint8_t inf){
   String name = "";
 
   uint8_t errorCode;
@@ -766,11 +766,11 @@ String DFRobot_SCI::getKeys(uint8_t inf){
   return name;
 }
 
-String DFRobot_SCI::getValues(eInterfaceList_t inf){
+String DFRobot_RP2040_SCI::getValues(eInterfaceList_t inf){
   return getValues((uint8_t)inf);
 }
 
-String DFRobot_SCI::getValues(uint8_t inf){
+String DFRobot_RP2040_SCI::getValues(uint8_t inf){
   String values = "";
 
   uint8_t errorCode;
@@ -799,11 +799,11 @@ String DFRobot_SCI::getValues(uint8_t inf){
   return values;
 }
 
-String DFRobot_SCI::getUnits(eInterfaceList_t inf){
+String DFRobot_RP2040_SCI::getUnits(eInterfaceList_t inf){
   return getUnits((uint8_t)inf);
 }
 
-String DFRobot_SCI::getUnits(uint8_t inf){
+String DFRobot_RP2040_SCI::getUnits(uint8_t inf){
   String unit = "";
 
   uint8_t errorCode;
@@ -834,7 +834,7 @@ String DFRobot_SCI::getUnits(uint8_t inf){
 
 
 
-String DFRobot_SCI::getValue(char *keys){
+String DFRobot_RP2040_SCI::getValue(char *keys){
   String values = "";
 
   uint8_t errorCode;
@@ -867,11 +867,11 @@ String DFRobot_SCI::getValue(char *keys){
   return values;
 }
 
-String DFRobot_SCI::getValue(eInterfaceList_t inf, char *keys){
+String DFRobot_RP2040_SCI::getValue(eInterfaceList_t inf, char *keys){
   return getValue((uint8_t)inf, keys);
 }
 
-String DFRobot_SCI::getValue(uint8_t inf, char *keys){
+String DFRobot_RP2040_SCI::getValue(uint8_t inf, char *keys){
   String values = "";
 
   uint8_t errorCode;
@@ -905,11 +905,11 @@ String DFRobot_SCI::getValue(uint8_t inf, char *keys){
   return values;
 }
 
-String DFRobot_SCI::getValue(eInterfaceList_t inf, char sku[7], char *keys){
+String DFRobot_RP2040_SCI::getValue(eInterfaceList_t inf, char sku[7], char *keys){
   return getValue((uint8_t)inf, sku, keys);
 }
 
-String DFRobot_SCI::getValue(uint8_t inf, char sku[7], char *keys){
+String DFRobot_RP2040_SCI::getValue(uint8_t inf, char sku[7], char *keys){
   String values = "";
 
   uint8_t errorCode;
@@ -944,7 +944,7 @@ String DFRobot_SCI::getValue(uint8_t inf, char sku[7], char *keys){
   return values;
 }
 
-String DFRobot_SCI::getUnit(char *keys){
+String DFRobot_RP2040_SCI::getUnit(char *keys){
   String values = "";
 
   uint8_t errorCode;
@@ -976,11 +976,11 @@ String DFRobot_SCI::getUnit(char *keys){
   if(rcvpkt) free(rcvpkt);
   return values;
 }
-String DFRobot_SCI::getUnit(eInterfaceList_t inf, char *keys){
+String DFRobot_RP2040_SCI::getUnit(eInterfaceList_t inf, char *keys){
   return getUnit((uint8_t)inf, keys);
 }
 
-String DFRobot_SCI::getUnit(uint8_t inf, char *keys){
+String DFRobot_RP2040_SCI::getUnit(uint8_t inf, char *keys){
   String values = "";
 
   uint8_t errorCode;
@@ -1015,11 +1015,11 @@ String DFRobot_SCI::getUnit(uint8_t inf, char *keys){
 }
 
 
-String DFRobot_SCI::getUnit(eInterfaceList_t inf, char sku[7], char *keys){
+String DFRobot_RP2040_SCI::getUnit(eInterfaceList_t inf, char sku[7], char *keys){
   return getUnit((uint8_t)inf, sku, keys);
 }
 
-String DFRobot_SCI::getUnit(uint8_t inf, char sku[7], char *keys){
+String DFRobot_RP2040_SCI::getUnit(uint8_t inf, char sku[7], char *keys){
   String values = "";
 
   uint8_t errorCode;
@@ -1054,7 +1054,7 @@ String DFRobot_SCI::getUnit(uint8_t inf, char sku[7], char *keys){
   return values;
 }
 
-String DFRobot_SCI::getAnalogSensorSKU(){
+String DFRobot_RP2040_SCI::getAnalogSensorSKU(){
   String sku = "";
 
   uint8_t errorCode;
@@ -1084,7 +1084,7 @@ String DFRobot_SCI::getAnalogSensorSKU(){
   return sku;
 }
 
-String DFRobot_SCI::getDigitalSensorSKU(){
+String DFRobot_RP2040_SCI::getDigitalSensorSKU(){
   String sku = "";
 
   uint8_t errorCode;
@@ -1114,7 +1114,7 @@ String DFRobot_SCI::getDigitalSensorSKU(){
   return sku;
 }
 
-String DFRobot_SCI::getI2CSensorSKU(){
+String DFRobot_RP2040_SCI::getI2CSensorSKU(){
   String sku = "";
 
   uint8_t errorCode;
@@ -1144,7 +1144,7 @@ String DFRobot_SCI::getI2CSensorSKU(){
   return sku;
 }
 
-String DFRobot_SCI::getUARTSensorSKU(){
+String DFRobot_RP2040_SCI::getUARTSensorSKU(){
   String sku = "";
 
   uint8_t errorCode;
@@ -1174,7 +1174,7 @@ String DFRobot_SCI::getUARTSensorSKU(){
   return sku;
 }
 
-void DFRobot_SCI::reset(uint8_t cmd){
+void DFRobot_RP2040_SCI::reset(uint8_t cmd){
   uint16_t length = 1;
   if(cmd > CMD_RESET) return;
   
@@ -1192,7 +1192,7 @@ void DFRobot_SCI::reset(uint8_t cmd){
   delay(1000);
 }
 
-uint32_t DFRobot_SCI::getRefreshRate_ms(uint8_t rate){
+uint32_t DFRobot_RP2040_SCI::getRefreshRate_ms(uint8_t rate){
   switch(rate){
     case eRefreshRateMs:
          return 0;
@@ -1217,7 +1217,7 @@ uint32_t DFRobot_SCI::getRefreshRate_ms(uint8_t rate){
   return 0;
 }
 
-void * DFRobot_SCI::recvPacket(uint8_t cmd, uint8_t *errorCode){
+void * DFRobot_RP2040_SCI::recvPacket(uint8_t cmd, uint8_t *errorCode){
   if(cmd > CMD_END){
     RP2040_SUAB_DBG("cmd is error!");
     if(errorCode) *errorCode = ERR_CODE_CMD_INVAILED; //There is no this command
@@ -1266,7 +1266,7 @@ void * DFRobot_SCI::recvPacket(uint8_t cmd, uint8_t *errorCode){
   return NULL;
 }
 
-uint8_t DFRobot_SCI::conv2d(const char* p)
+uint8_t DFRobot_RP2040_SCI::conv2d(const char* p)
 {
 	uint8_t v = 0;
     if ('0' <= *p && *p <= '9')
@@ -1276,7 +1276,7 @@ uint8_t DFRobot_SCI::conv2d(const char* p)
 
 
 
-uint16_t DFRobot_SCI::date2days(uint16_t year, uint8_t month, uint8_t day)
+uint16_t DFRobot_RP2040_SCI::date2days(uint16_t year, uint8_t month, uint8_t day)
 {
 	if (year >= 2000)
         year -= 2000;
@@ -1312,14 +1312,14 @@ uint16_t DFRobot_SCI::date2days(uint16_t year, uint8_t month, uint8_t day)
     return days + 365 * year + (year + 3) / 4 - 1;
 }
 
-uint8_t DFRobot_SCI::dayOfTheWeek(uint16_t year, uint8_t month, uint8_t day)
+uint8_t DFRobot_RP2040_SCI::dayOfTheWeek(uint16_t year, uint8_t month, uint8_t day)
 {
 	uint16_t days = date2days(year, month, day);
     return (days + 6) % 7; // Jan 1, 2000 is a Saturday, i.e. returns 6
 }
 
 DFRobot_RP2040_SCI_IIC::DFRobot_RP2040_SCI_IIC(uint8_t addr, TwoWire *pWire)
-  :DFRobot_SCI(),_pWire(pWire),_addr(addr){
+  :DFRobot_RP2040_SCI(),_pWire(pWire),_addr(addr){
   
 }
 

@@ -23,7 +23,7 @@ import time
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 from DFRobot_RP2040_SCI import *
 
-sci = DFRobot_RP2040_SCI_IIC(addr = DFRobot_SCI.RP2040_SCI_ADDR_0X21)
+sci = DFRobot_RP2040_SCI_IIC(addr = DFRobot_RP2040_SCI.RP2040_SCI_ADDR_0X21)
 RECORD_ON   = 0
 RECORD_OFF  = 1
 SCREEN_ON   = 2

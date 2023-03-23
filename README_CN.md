@@ -133,13 +133,13 @@ SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接�
    * @fn DFRobot_RP2040_SCI
    * @brief DFRobot_RP2040_SCI类的构造函数.
    */
-  DFRobot_SCI();
+  DFRobot_RP2040_SCI();
 
   /**
    * @fn  ~DFRobot_RP2040_SCI
    * @brief DFRobot_RP2040_SCI类的析构函数. 
    */
-  ~DFRobot_SCI();
+  ~DFRobot_RP2040_SCI();
   
   /**
    * @fn begin

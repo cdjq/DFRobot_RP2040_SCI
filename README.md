@@ -129,13 +129,13 @@ There two methods:
    * @fn DFRobot_RP2040_SCI
    * @brief Constructor of DFRobot_RP2040_SCI class.
    */
-  DFRobot_SCI();
+  DFRobot_RP2040_SCI();
 
   /**
    * @fn  ~DFRobot_RP2040_SCI
    * @brief Destructor of class DFRobot_RP2040_SCI. 
    */
-  ~DFRobot_SCI();
+  ~DFRobot_RP2040_SCI();
   
   /**
    * @fn begin

@@ -106,7 +106,7 @@ python3 demo_config.py
 ## Methods
 
 ```python
-class DFRobot_RP2040_SCI_IIC(DFRobot_SCI):
+class DFRobot_RP2040_SCI_IIC(DFRobot_RP2040_SCI):
   def __init__(self,addr):
     '''!
       @brief DFRobot_SCI_IIC Constructor
@@ -138,7 +138,7 @@ class DFRobot_RP2040_SCI_IIC(DFRobot_SCI):
       @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command 
       @n      ERR_CODE_I2C_ADRESS   or 0x0A  Invalid I2C address
     '''
-class DFRobot_SCI:
+class DFRobot_RP2040_SCI:
   def begin(self):
     '''!
       @brief Initalize the SCI Acquisition Module, mainly for initializing communication interface
@@ -249,7 +249,7 @@ class DFRobot_SCI:
   def set_recv_timeout(self,timeout = 2):
     '''!
       @brief Initalize the SCI Acquisition Module, mainly for initializing communication interface
-      @param freq Set communication frequency
+      @param timeout Set Timeout
       @return int Init status
       @n       0      Init successful
       @n      others  Init failed
@@ -319,16 +319,6 @@ class DFRobot_SCI:
   def get_refresh_rate(self):
     '''!
       @brief Get data refresh rate
-      @param rate Enum variable
-      @n eRefreshRateMs     ms-level, refresh at the actual refresh rate
-      @n eRefreshRate1s     1s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate 
-      @n eRefreshRate3s     3s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
-      @n eRefreshRate5s     5s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
-      @n eRefreshRate10s    10s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
-      @n eRefreshRate30s    30s, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
-      @n eRefreshRate1min   1min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
-      @n eRefreshRate5min   5min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
-      @n eRefreshRate10min  10min, if the actual data refresh rate is less than this value, refresh at this rate, if greater than it, refresh at actual rate
       @return  List
       @n      The zeroth element in the list: error code 
       @n      The first element in the list: refresh rate
@@ -433,6 +423,7 @@ class DFRobot_SCI:
       @n     ePort2                                    Designate port2, get attributes of all sensors connected to port2
       @n     ePort3                                    Designate port3, get attributes of all sensors connected to port3
       @n     eALL  or  (ePort1 | ePort2 | ePort3)      Designate port1, port2 and port3, get attributes of all sensors connected to all ports
+      @param timestamp true or false
       @return The attribute information of all sensors connected to the designated one or more ports of the SCI Acquisition Module
       @n For example, SEN0334:  Temp_Air:28.65 C,Humi_Air:30.12 %RH
     '''

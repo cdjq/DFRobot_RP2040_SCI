@@ -44,7 +44,7 @@
 #define RP2040_SCI_ADDR_0X22      0x22
 #define RP2040_SCI_ADDR_0X23      0x23
 
-class DFRobot_SCI{
+class DFRobot_RP2040_SCI{
 public:
   /**
    * @enum eInterfaceList_t
@@ -91,13 +91,13 @@ public:
    * @fn DFRobot_RP2040_SCI
    * @brief DFRobot_RP2040_SCI Class Constructor.
    */
-  DFRobot_SCI();
+  DFRobot_RP2040_SCI();
 
   /**
-   * @fn  ~DFRobot_RP2040_SCI
+   * @fn ~DFRobot_RP2040_SCI
    * @brief DFRobot_RP2040_SCI Class Destructor. 
    */
-  ~DFRobot_SCI();
+  ~DFRobot_RP2040_SCI();
   
   /**
    * @fn begin
@@ -590,11 +590,11 @@ public:
    * @n     ePort2                                          Select Port2, search the sensor whose SKU is sku from port2, and read data units of the attribute named keys
    * @n     ePort3                                          Select Port3, search the sensor whose SKU is sku from port3, and read data units of the attribute named keys
    * @n     eALL  or  (ePort1 | ePort2 | ePort3)      Select Port1, Port2 and Port3, search sensors whose SKU is sku from all ports, 
-   * @                                                and read data units of the attribute named keys
+   * @n                                               and read data units of the attribute named keys
    * @param sku Sensor SKU
    * @param keys  Sensor attribute name
    * @return The data units of the attribute named keys from the sensor with a specific sku among sensors connected to the designated port.
-   * @       Separate attribute units using ","
+   * @n      Separate attribute units using ","
    * @n For example, Temp_Air:  C,C
    */
   String getUnit(eInterfaceList_t inf, char sku[7], char *keys);
@@ -699,9 +699,9 @@ protected:
    * @fn date2days
    * @brief Calculate the number of days between the current date year/month/day and January 1, 2000
    * 
-   * @param year   Year
-   * @param month  Month
-   * @param day    Day
+   * @param y   Year
+   * @param m   Month
+   * @param d   Day
    * @return uint16_t The number of days between the current date year/month/day and January 1, 2000
    * @note Only calculations from 2000 to 2099 are guaranteed to be accurate
    */
@@ -726,7 +726,7 @@ private:
   uint32_t _timeout; ///< Time of receive timeout
 };
 
-class DFRobot_RP2040_SCI_IIC: public DFRobot_SCI{
+class DFRobot_RP2040_SCI_IIC: public DFRobot_RP2040_SCI{
 public:
   /**
    * @fn DFRobot_RP2040_SCI_IIC

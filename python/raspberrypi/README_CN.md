@@ -107,7 +107,7 @@ python3 demo_config.py
 ## 方法
 
 ```python
-class DFRobot_RP2040_SCI_IIC(DFRobot_SCI):
+class DFRobot_RP2040_SCI_IIC(DFRobot_RP2040_SCI):
   def __init__(self,addr):
     '''!
       @brief DFRobot_SCI_IIC 构造函数
@@ -139,7 +139,7 @@ class DFRobot_RP2040_SCI_IIC(DFRobot_SCI):
       @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配 
       @n      ERR_CODE_I2C_ADRESS   or 0x0A  I2C地址无效
     '''
-class DFRobot_SCI:
+class DFRobot_RP2040_SCI:
   def begin(self):
     '''!
       @brief SCI采集模块(SCI Acquisition Module)初始化，旨在初始化通信接口
@@ -249,7 +249,7 @@ class DFRobot_SCI:
   def set_recv_timeout(self,timeout = 2):
     '''!
       @brief SCI采集模块(SCI Acquisition Module)初始化，旨在初始化通信接口
-      @param freq 设置通信频率
+      @param timeout 设置接收超时时间
       @return int 初始化状态
       @n       0      初始化成功
       @n      others  初始化失败
@@ -319,16 +319,6 @@ class DFRobot_SCI:
   def get_refresh_rate(self):
     '''!
       @brief 获取数据刷新时间
-      @param rate 枚举变量
-      @n eRefreshRateMs     ms级刷新率，按数据的实际刷新率刷新
-      @n eRefreshRate1s     刷新率1s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate3s     刷新率3s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate5s     刷新率5s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate10s    刷新率10s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate30s    刷新率30s，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate1min   刷新率1min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate5min   刷新率5min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
-      @n eRefreshRate10min  刷新率10min，如果数据实际刷新时间小于此值，则按此值刷新，若大于此值，则按数据实际刷新率刷新
       @return  列表
       @n      列表中第0个元素：错误代码
       @n      列表中第1个元素：刷新率
@@ -433,6 +423,7 @@ class DFRobot_SCI:
       @n     ePort2                                    指定Port2接口，获取ePort2接口上所连接的所有传感器的属性项
       @n     ePort3                                    选中Port3接口，获取ePort3接口上所连接的所有传感器的属性项
       @n     eALL  or  (ePort1 | ePort2 | ePort3)      选中Port1, Port2和Port3接口，获取所有接口上所连接的所有传感器的属性项
+      @param timestamp 是否添加时间戳
       @return SCI采集模块(SCI Acquisition Module)上指定的一个或多个接口上所连接的所有传感器的属性项
       @n 例 SEN0334:  Temp_Air:28.65 C,Humi_Air:30.12 %RH
     '''
