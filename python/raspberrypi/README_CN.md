@@ -139,6 +139,7 @@ class DFRobot_RP2040_SCI_IIC(DFRobot_RP2040_SCI):
       @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配 
       @n      ERR_CODE_I2C_ADRESS   or 0x0A  I2C地址无效
     '''
+
 class DFRobot_RP2040_SCI:
   def begin(self):
     '''!

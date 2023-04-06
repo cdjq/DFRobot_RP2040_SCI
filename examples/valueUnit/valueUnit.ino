@@ -29,8 +29,8 @@ void setup() {
   sci.setPort2((char *)"NULL");
   sci.setPort3((char *)"NULL");
   
-  DFRobot_RP2040_SCI_IIC::ePort1IFMode_t mode0;
-  DFRobot_RP2040_SCI_IIC::ePort23Mode_t mode1, mode2;
+  DFRobot_RP2040_SCI_IIC::ePort1IFMode_t mode0 = 0;
+  DFRobot_RP2040_SCI_IIC::ePort23Mode_t mode1 = 0, mode2 = 0;
   String skuIF0, skuIF1, skuIF2;
   skuIF0 = sci.getPort1(&mode0);
   skuIF1 = sci.getPort2(&mode1);

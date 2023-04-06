@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
-
-'''
+'''!
   @file demo_sku_support_list.py
   @brief Get the supported sensor list
   

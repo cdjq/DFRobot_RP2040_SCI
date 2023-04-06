@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
-
-'''
+'''!
   @file demo_control.py
   @brief Control the CSV data acquisition and display On/Off of SCI Acquisition Module via serial commands.
   @n Command 0: RECORD ON: Enable CSV recording 

@@ -104,6 +104,7 @@ SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接�
    */
   DFRobot_RP2040_SCI_IIC(uint8_t addr = RP2040_SCI_ADDR_0X21, TwoWire *pWire = &Wire);
   ~DFRobot_RP2040_SCI_IIC();
+
   /**
    * @fn setI2CAddress
    * @brief 设置SCI采集模块(SCI Acquisition Module)的I2C通信地址
@@ -122,6 +123,7 @@ SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接�
    * @n      ERR_CODE_I2C_ADRESS   or 0x0A  I2C地址无效
    */
   uint8_t setI2CAddress(uint8_t addr);
+
   /**
    * @fn getI2CAddress
    * @brief 获取SCI采集模块(SCI Acquisition Module)的I2C通信地址
@@ -164,6 +166,7 @@ SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接�
    * @return 16位版本号
    */
   uint16_t getVersion();
+
   /**
    * @fn getVersionDescription
    * @brief 获取版本描述字符串
@@ -280,6 +283,7 @@ SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接�
    * @param timeout 当SCI采集模块连接的传感器较多时，在读取大量数据时需要适当提高接收超时时间，默认2s
    */
   void setRecvTimeout(uint32_t timeout = 2000);
+
   /**
    * @fn adjustRtc(const __FlashStringHelper* date, const __FlashStringHelper* time)
    * @brief 设置SCI采集模块(SCI Acquisition Module)的时间
@@ -315,6 +319,7 @@ SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接�
    * @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
    */
   uint8_t adjustRtc(uint16_t year, uint8_t month, uint8_t day, uint8_t week, uint8_t hour, uint8_t minute, uint8_t second);
+
   /**
    * @fn getRtcTime(uint16_t *year, uint8_t *month, uint8_t *day, uint8_t *week, uint8_t *hour, uint8_t *minute, uint8_t *second)
    * @brief 获取SCI采集模块(SCI Acquisition Module)的年月日时分秒周等日期
@@ -335,6 +340,7 @@ SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接�
    * @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
    */
   uint8_t getRtcTime(uint16_t *year, uint8_t *month, uint8_t *day, uint8_t *week, uint8_t *hour, uint8_t *minute, uint8_t *second);
+
   /**
    * @fn getRtcTime()
    * @brief 获取SCI采集模块(SCI Acquisition Module)的年月日时分秒周等日期
@@ -342,6 +348,7 @@ SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接�
    * @return 年/月/日 周 时:分:秒表示的字符串，例 2022/08/09 2 09:08:00 2022年8月9日，星期二 9点8分0秒
    */
   String getRtcTime();
+
   /**
    * @fn setRefreshRate
    * @brief 设置数据刷新时间
@@ -365,6 +372,7 @@ SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接�
    * @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
    */
   uint8_t setRefreshRate(eRefreshRate_t refreshRate);
+
   /**
    * @fn getRefreshRate
    * @brief 获取设置的刷新时间，注意此刷新时间可能不是数据实际刷新时间，它们之间满足这样的关系: 设置的刷新时间 <= 数据实际刷新时间
@@ -391,6 +399,7 @@ SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接�
    * @n eRefreshRate10min  600000ms
    */
   uint32_t getRefreshRate(eRefreshRate_t *refreshRate = NULL);
+
   /**
    * @fn getTimeStamp()
    * @brief 获取时间戳,此时间戳为(SCI Acquisition Module)数据刷新时间
@@ -412,6 +421,7 @@ SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接�
    * @n      "UNKNOWN"        未知模式
    */
   String getSensorModeDescribe(ePort1IFMode_t mode);
+
   /**
    * @fn getSensorModeDescribe(ePort23Mode_t mode)
    * @brief 获取传感器的模式描述
@@ -439,6 +449,7 @@ SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接�
    * @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
    */
   uint8_t enableRecord();
+
   /**
    * @fn disableRecord
    * @brief 关闭CSV文件记录，调用此命令后，会停止将传感器采集到的数据记录在以年月日时分秒命名的CSV文件中
@@ -466,6 +477,7 @@ SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接�
    * @n      ERR_CODE_CMD_PKT      or 0x05  无效的命令包或者命令不匹配
    */
   uint8_t oledScreenOn();
+
   /**
    * @fn oledScreenOff
    * @brief 关闭SCI采集模块(SCI Acquisition Module)屏显示
@@ -529,6 +541,7 @@ SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接�
    */
   String getKeys(eInterfaceList_t inf = eALL);
   String getKeys(uint8_t inf);
+
   /**
    * @fn getValues
    * @brief 获取SCI采集模块(SCI Acquisition Module)上一个或多个接口连接的传感器的属性值，各属性值之间用','号隔开
@@ -543,6 +556,7 @@ SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接�
    */
   String getValues(eInterfaceList_t inf = eALL);
   String getValues(uint8_t inf);
+
   /**
    * @fn getUnits
    * @brief 获取传感器SCI采集模块(SCI Acquisition Module)上一个或多个接口连接的传感器的数值的单位，多个单位之间用','号隔开
@@ -566,6 +580,7 @@ SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接�
    * @n 例Temp_Air:  28.65,28.65
    */
   String getValue(char *keys);
+
   /**
    * @fn getValue(eInterfaceList_t inf, char *keys)
    * @brief 获取指定接口所连接的传感器中属性名称为 keys 的数据值，多个属性值之间用','号隔开
@@ -580,6 +595,7 @@ SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接�
    */
   String getValue(eInterfaceList_t inf, char *keys);
   String getValue(uint8_t inf, char *keys);
+
   /**
    * @fn getValue(eInterfaceList_t inf, char sku[7], char *keys)
    * @brief 获取指定接口所连接的传感器中SKU为sku的传感器中属性名称为 keys 的数据值，多个属性值之间用','号隔开
@@ -605,6 +621,7 @@ SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接�
    * @n 例Temp_Air:  C,C
    */
   String getUnit(char *keys);
+
   /**
    * @fn getUnit(eInterfaceList_t inf, char sku[7], char *keys)
    * @brief 获取指定接口所连接的传感器中属性名称为 keys 的数据单位，多个属性单位之间用','号隔开
@@ -619,6 +636,7 @@ SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接�
    */
   String getUnit(eInterfaceList_t inf, char *keys);
   String getUnit(uint8_t inf, char *keys);
+
   /**
    * @fn getUnit(eInterfaceList_t inf, char sku[7], char *keys)
    * @brief 获取指定接口所连接的传感器中SKU为sku的传感器中属性名称为 keys 的数据单位，多个属性单位之间用','号隔开
@@ -634,24 +652,28 @@ SCI采集模块(SCI Acquisition Module)是DFRobot设计的一款传感器转接�
    */
   String getUnit(eInterfaceList_t inf, char sku[7], char *keys);
   String getUnit(uint8_t inf, char sku[7], char *keys);
+
   /**
    * @fn getAnalogSensorSKU
    * @brief 获取SCI采集模块(SCI Acquisition Module)支持的模拟传感器的SKU清单，各SKU之间用',号隔开
    * @return String 支持的模拟传感器的SKU列表
    */
   String getAnalogSensorSKU();
+
   /**
    * @fn getDigitalSensorSKU
    * @brief 获取SCI采集模块(SCI Acquisition Module)支持的数字传感器的SKU清单，各SKU之间用',号隔开
    * @return String 支持的数字传感器的SKU列表
    */
   String getDigitalSensorSKU();
+
   /**
    * @fn getI2CSensorSKU
    * @brief 获取SCI采集模块(SCI Acquisition Module)支持的I2C传感器的SKU清单，各SKU之间用',号隔开
    * @return String 支持的I2C传感器的SKU列表
    */
   String getI2CSensorSKU();
+
   /**
    * @fn getUARTSensorSKU
    * @brief 获取SCI采集模块(SCI Acquisition Module)支持的UART传感器的SKU清单，各SKU之间用',号隔开

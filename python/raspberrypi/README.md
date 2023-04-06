@@ -138,6 +138,7 @@ class DFRobot_RP2040_SCI_IIC(DFRobot_RP2040_SCI):
       @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command 
       @n      ERR_CODE_I2C_ADRESS   or 0x0A  Invalid I2C address
     '''
+
 class DFRobot_RP2040_SCI:
   def begin(self):
     '''!

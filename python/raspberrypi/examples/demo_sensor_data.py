@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
-
-'''
+'''!
   @file demo_sensor_data.py
   @brief Get sensor data
   

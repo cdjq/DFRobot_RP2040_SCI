@@ -100,6 +100,7 @@ There two methods:
    */
   DFRobot_RP2040_SCI_IIC(uint8_t addr = RP2040_SCI_ADDR_0X21, TwoWire *pWire = &Wire);
   ~DFRobot_RP2040_SCI_IIC();
+
   /**
    * @fn setI2CAddress
    * @brief Set I2C address of SCI Acquisition Module
@@ -118,6 +119,7 @@ There two methods:
    * @n      ERR_CODE_I2C_ADRESS   or 0x0A  Invalid I2C address
    */
   uint8_t setI2CAddress(uint8_t addr);
+
   /**
    * @fn getI2CAddress
    * @brief Get the I2C address of SCI Acquisition Module
@@ -160,6 +162,7 @@ There two methods:
    * @return 16-bit version number
    */
   uint16_t getVersion();
+
   /**
    * @fn getVersionDescription
    * @brief Get version description char string
@@ -276,6 +279,7 @@ There two methods:
    * @param timeout When there are many sensors connected to SCI Acquisition Module, you need to increase the receive timeout value appropriately when reading a large amount of data, the default is 2s
    */
   void setRecvTimeout(uint32_t timeout = 2000);
+
   /**
    * @fn adjustRtc(const __FlashStringHelper* date, const __FlashStringHelper* time)
    * @brief Set time of SCI Acquisition Module
@@ -311,6 +315,7 @@ There two methods:
    * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command
    */
   uint8_t adjustRtc(uint16_t year, uint8_t month, uint8_t day, uint8_t week, uint8_t hour, uint8_t minute, uint8_t second);
+
   /**
    * @fn getRtcTime(uint16_t *year, uint8_t *month, uint8_t *day, uint8_t *week, uint8_t *hour, uint8_t *minute, uint8_t *second)
    * @brief Get year, month, day, week, hour, minute, second of SCI Acquisition Module
@@ -331,6 +336,7 @@ There two methods:
    * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command
    */
   uint8_t getRtcTime(uint16_t *year, uint8_t *month, uint8_t *day, uint8_t *week, uint8_t *hour, uint8_t *minute, uint8_t *second);
+
   /**
    * @fn getRtcTime()
    * @brief Get the year, month, day, week, hour, minute, second of the SCI Acquisition Module
@@ -338,6 +344,7 @@ There two methods:
    * @return The char string for year/month/day week hour:minute:second, for example, 2022/08/09 2 09:08:00 represents Tuesday, August 9, 2022, at 9:08:0 
    */
   String getRtcTime();
+
   /**
    * @fn setRefreshRate
    * @brief Set data refresh rate
@@ -361,6 +368,7 @@ There two methods:
    * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command 
    */
   uint8_t setRefreshRate(eRefreshRate_t refreshRate);
+
   /**
    * @fn getRefreshRate
    * @brief Get the set refresh rate, which may not be the actual rate, the relationship between them is: the set refresh rate <= the actual refresh rate
@@ -387,6 +395,7 @@ There two methods:
    * @n eRefreshRate10min  600000ms
    */
   uint32_t getRefreshRate(eRefreshRate_t *refreshRate = NULL);
+
   /**
    * @fn getTimeStamp()
    * @brief Get time stamp, also the data refresh time of SCI Acquisition Module
@@ -408,6 +417,7 @@ There two methods:
    * @n      "UNKNOWN"        Unknown Mode
    */
   String getSensorModeDescribe(ePort1IFMode_t mode);
+
   /**
    * @fn getSensorModeDescribe(ePort23Mode_t mode)
    * @brief Get sensor mode description
@@ -435,6 +445,7 @@ There two methods:
    * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command
    */
   uint8_t enableRecord();
+
   /**
    * @fn disableRecord
    * @brief Disable data recording in CSV file. When disabled, data recording stops
@@ -462,6 +473,7 @@ There two methods:
    * @n      ERR_CODE_CMD_PKT      or 0x05  Invalid command package or unmatched command
    */
   uint8_t oledScreenOn();
+
   /**
    * @fn oledScreenOff
    * @brief Switch off SCI Acquisition Module Screen
@@ -525,6 +537,7 @@ There two methods:
    */
   String getKeys(eInterfaceList_t inf = eALL);
   String getKeys(uint8_t inf);
+
   /**
    * @fn getValues
    * @brief Get attribute values of the sensor connected to one or more ports, separate attribute values using ","
@@ -539,6 +552,7 @@ There two methods:
    */
   String getValues(eInterfaceList_t inf = eALL);
   String getValues(uint8_t inf);
+
   /**
    * @fn getUnits
    * @brief Get the value unit of the sensor connected to one or more ports, separate units using ","
@@ -562,6 +576,7 @@ There two methods:
    * @n For example, Temp_Air:  28.65,28.65
    */
   String getValue(char *keys);
+
   /**
    * @fn getValue(eInterfaceList_t inf, char *keys)
    * @brief Get data values of the attribute named keys from sensors connected to the designated port. Separate attribute values using ","
@@ -576,6 +591,7 @@ There two methods:
    */
   String getValue(eInterfaceList_t inf, char *keys);
   String getValue(uint8_t inf, char *keys);
+
   /**
    * @fn getValue(eInterfaceList_t inf, char sku[7], char *keys)
    * @brief Get data values of the attribute named keys from the sensor with a specific sku among sensors connected to the designated port. 
@@ -603,6 +619,7 @@ There two methods:
    * @n For example, Temp_Air:  C,C
    */
   String getUnit(char *keys);
+
   /**
    * @fn getUnit(eInterfaceList_t inf, char sku[7], char *keys)
    * @brief Get data units of the attribute named keys from sensors connected to the designated port. Separate attribute units using ","
@@ -617,6 +634,7 @@ There two methods:
    */
   String getUnit(eInterfaceList_t inf, char *keys);
   String getUnit(uint8_t inf, char *keys);
+
   /**
    * @fn getUnit(eInterfaceList_t inf, char sku[7], char *keys)
    * @brief Get data units of the attribute named keys from the sensor with a specific sku among sensors connected to the designated port.
@@ -634,24 +652,28 @@ There two methods:
    */
   String getUnit(eInterfaceList_t inf, char sku[7], char *keys);
   String getUnit(uint8_t inf, char sku[7], char *keys);
+
   /**
    * @fn getAnalogSensorSKU
    * @brief Get the SKU list of analog sensors supported by SCI Acquisition Module, separate SKUs with ','   * 
    * @return String SKU list of supported analog sensors
    */
   String getAnalogSensorSKU();
+
   /**
    * @fn getDigitalSensorSKU
    * @brief Get the SKU list of digital sensors supported by SCI Acquisition Module, separate SKUs with ','   * 
    * @return String SKU list of supported digital sensors
    */
   String getDigitalSensorSKU();
+
   /**
    * @fn getI2CSensorSKU
    * @brief Get the SKU list of I2C sensors supported by SCI Acquisition Module, separate SKUs with ','   * 
    * @return String SKU list of supported I2C sensors
    */
   String getI2CSensorSKU();
+
   /**
    * @fn getUARTSensorSKU
    * @brief Get the SKU list of UART sensors supported by SCI Acquisition Module, separate SKUs with ','   * 

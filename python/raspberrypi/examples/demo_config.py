@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
-
-'''
+'''!
   @file demo_config.py
   @brief Set the I2C address and time of SCI Acquisition Module
   

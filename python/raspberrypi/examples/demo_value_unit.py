@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
-
-'''
+'''!
   @file demo_value_unit.py
   @brief According to the data name of SEN0334 temperature and humidity sensor, get the corresponding value and unit.
   
